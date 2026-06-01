@@ -16,8 +16,8 @@ return new class extends Migration
             $table->string('name');
             $table->string('email')->unique();
             $table->string('password');
-            $table->decimal('wallet_balance', 10, 2)->default(0);
-
+            $table->integer('wallet_balance')->default(0);
+            $table->string('role');
             $table->timestamps();
         });
 

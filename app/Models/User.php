@@ -12,7 +12,15 @@ class User extends Authenticatable
 {
     /** @use HasFactory<UserFactory> */
     use HasFactory, Notifiable;
+    public function fantasyTeams()
+    {
+        return $this->hasMany(FantasyTeams_model::class, 'user_id');
+    }
 
+public function leaderboards()
+{
+    return $this->hasMany(Leaderboards_model::class, 'user_id');
+}
     /**
      * The attributes that are mass assignable.
      *
@@ -22,6 +30,7 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'role',
     ];
 
     /**
@@ -39,6 +48,11 @@ class User extends Authenticatable
      *
      * @return array<string, string>
      */
+    public function isAdmin(): bool
+    {
+        return $this->role === 'admin';
+    }
+
     protected function casts(): array
     {
         return [
