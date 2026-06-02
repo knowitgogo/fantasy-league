@@ -1,0 +1,158 @@
+<?php
+
+namespace App\Http\Controllers;
+
+use Illuminate\Http\Request;
+use App\Models\Playerscore_model;
+use App\Models\Matches_model;
+use App\Models\Players_model;
+class Playerscorecontroller extends Controller
+{
+    /**
+     * Display a listing of the resource.
+     */
+    public function index()
+    {
+        $playerScores = Playerscore_model::with([
+            'match',
+            'player'
+        ])->get();
+
+        $matches = Matches_model::all();
+
+        $players = Players_model::all();
+
+        return view(
+            'admin.player_scores.index',
+            compact(
+                'playerScores',
+                'matches',
+                'players'
+            )
+        );
+    }
+    /**
+     * Show the form for creating a new resource.
+     */
+    public function create()
+    {
+        //
+    }
+
+    /**
+     * Store a newly created resource in storage.
+     */
+    public function store(Request $request)
+    {
+        $request->validate([
+
+            'match_id' => 'required',
+            'player_id' => 'required',
+            'fantasy_points' => 'required',
+
+        ]);
+
+        Playerscore_model::create([
+
+            'match_id' => $request->match_id,
+            'player_id' => $request->player_id,
+            'fantasy_points' => $request->fantasy_points,
+
+        ]);
+
+        return redirect()->back()
+                        ->with('success', 'Player Score Added');
+    }
+
+    /**
+     * Display the specified resource.
+     */
+    public function show(string $id)
+    {
+        //
+    }
+
+    /**
+     * Show the form for editing the specified resource.
+     */
+    public function edit(string $id)
+    {
+        //
+    }
+
+    /**
+     * Update the specified resource in storage.
+     */
+    public function update(Request $request, string $id)
+    {
+
+        $playerScore = Playerscore_model::findOrFail($id);
+
+        $playerScore->update([
+
+            'match_id' => $request->match_id,
+            'player_id' => $request->player_id,
+            'fantasy_points' => $request->fantasy_points,
+
+        ]);
+
+        return redirect()->back()
+                        ->with('success', 'Player Score Updated');
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     */
+    public function destroy($id)
+    {
+        $playerScore = Playerscore_model::findOrFail($id);
+
+        $playerScore->delete();
+
+        return redirect()->back()
+                        ->with('success', 'Player Score Deleted');
+    }
+
+
+    public function manageScores($matchId)
+    {
+        $match = Matches_model::with([
+            'team1',
+            'team2'
+        ])->findOrFail($matchId);
+
+        $players = Players_model::whereIn('team_id', [
+
+            $match->team1_id,
+            $match->team2_id
+
+        ])->get();
+
+        return view(
+            'admin.playerscores.manage',
+            compact('match', 'players')
+        );
+    }
+
+    public function saveScores(Request $request, $matchId)
+    {
+        foreach ($request->scores as $playerId => $score)
+        {
+            Playerscore_model::updateOrCreate(
+
+                [
+                    'match_id' => $matchId,
+                    'player_id' => $playerId
+                ],
+
+                [
+                    'fantasy_points' => $score
+                ]
+
+            );
+        }
+
+        return redirect()->back()
+                        ->with('success', 'Scores Updated Successfully');
+    }
+}

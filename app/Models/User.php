@@ -2,7 +2,6 @@
 
 namespace App\Models;
 
-// use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Database\Factories\UserFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -10,44 +9,43 @@ use Illuminate\Notifications\Notifiable;
 
 class User extends Authenticatable
 {
-    /** @use HasFactory<UserFactory> */
     use HasFactory, Notifiable;
+    protected static function newFactory()
+    {
+        return \Database\Factories\UserFactory::new();
+    }
     public function fantasyTeams()
     {
-        return $this->hasMany(FantasyTeams_model::class, 'user_id');
+        return $this->hasMany(
+            FantasyTeams_model::class,
+            'user_id'
+        );
     }
 
-public function leaderboards()
-{
-    return $this->hasMany(Leaderboards_model::class, 'user_id');
-}
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var list<string>
-     */
+    public function leaderboards()
+    {
+        return $this->hasMany(
+            Leaderboards_model::class,
+            'user_id'
+        );
+    }
+
     protected $fillable = [
+
         'name',
         'email',
         'password',
-        'role',
+        'wallet_balance',
+        'role'
+
     ];
 
-    /**
-     * The attributes that should be hidden for serialization.
-     *
-     * @var list<string>
-     */
     protected $hidden = [
-        'password',
-        'remember_token',
+
+        'password'
+
     ];
 
-    /**
-     * Get the attributes that should be cast.
-     *
-     * @return array<string, string>
-     */
     public function isAdmin(): bool
     {
         return $this->role === 'admin';
@@ -56,8 +54,9 @@ public function leaderboards()
     protected function casts(): array
     {
         return [
-            'email_verified_at' => 'datetime',
+
             'password' => 'hashed',
+
         ];
     }
 }
