@@ -3,13 +3,18 @@ use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\TeamController;
-use App\Http\Controllers\Admincontroller;
+use App\Http\Controllers\AdminController;
 use App\Http\Controllers\PlayerController;
 use App\Http\Controllers\TournamentController;
 use App\Http\Controllers\MatchController;
 use App\Http\Controllers\PlayerScoreController;
 use App\Http\Controllers\UserManagementController;
+use App\Http\Controllers\LeaderboardController;
+use App\Http\Controllers\UserTournamentController;
 use App\Http\Controllers\UserMatchController;
+use App\Http\Controllers\UserLeaderboardController;
+use App\Http\Controllers\FantasyTeamController;
+
 Route::get('/', function () {
     return view('welcome');
 });
@@ -30,7 +35,7 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 Route::get('/admin/dashboard',
-    [Admincontroller::class, 'index']
+    [AdminController::class, 'index']
 )->middleware(['auth','admin'])
  ->name('admin.dashboard');
 
@@ -70,9 +75,97 @@ Route::get(
 )->middleware(['auth','admin'])
  ->name('admin.users');
 
-// user
+
+ Route::get(
+
+    '/leaderboard/generate/{matchId}',
+
+    [LeaderboardController::class, 'generate']
+
+)->name('leaderboard.generate');
+
+
 Route::get(
-    '/matches',
+
+    '/leaderboard/{matchId}',
+
+    [LeaderboardController::class, 'index']
+
+)->name('leaderboard.index');
+
+
+// managing players
+Route::get(
+
+    '/matches/{matchId}/players',
+
+    [MatchController::class, 'managePlayers']
+
+)->name('matches.players.manage');
+
+
+Route::post(
+
+    '/matches/{matchId}/players',
+
+    [MatchController::class, 'savePlayers']
+
+)->name('matches.players.save');
+
+
+
+
+// user side
+Route::get(
+
+    '/user/tournaments',
+
+    [UserTournamentController::class, 'index']
+
+)->name('user.tournaments');
+
+
+// user
+
+
+
+ Route::get(
+
+    '/user/tournament/{id}/matches',
+
     [UserMatchController::class, 'index']
-)->middleware('auth')
- ->name('user.matches');
+
+)->name('user.matches');
+
+Route::get(
+
+    '/user/leaderboard/{matchId}',
+
+    [UserLeaderboardController::class, 'index']
+
+)->name('user.leaderboard');
+
+Route::get(
+
+    '/user/match/{matchId}/create-team',
+
+    [FantasyTeamController::class, 'create']
+
+)->name('fantasy.team.create');
+
+
+Route::post(
+
+    '/user/match/{matchId}/store-team',
+
+    [FantasyTeamController::class, 'store']
+
+)->name('fantasy.team.store');
+
+Route::get(
+
+    '/user/my-teams',
+
+    [FantasyTeamController::class, 'myTeams']
+
+)->name('fantasy.myteams');

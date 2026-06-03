@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Teams_model;
 use App\Models\Tournament_model;
-class Teamcontroller extends Controller
+class TeamController extends Controller
 {
     /**
      * Display a listing of the resource.

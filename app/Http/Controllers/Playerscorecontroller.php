@@ -6,7 +6,8 @@ use Illuminate\Http\Request;
 use App\Models\Playerscore_model;
 use App\Models\Matches_model;
 use App\Models\Players_model;
-class Playerscorecontroller extends Controller
+
+class PlayerscoreController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -18,15 +19,18 @@ class Playerscorecontroller extends Controller
             'player'
         ])->get();
 
-        $matches = Matches_model::all();
 
-        $players = Players_model::all();
+
+        $players = Players_model::select(
+            'id',
+            'player_name',
+            'team_name'
+        )->get();
 
         return view(
             'admin.player_scores.index',
             compact(
                 'playerScores',
-                'matches',
                 'players'
             )
         );
@@ -61,7 +65,7 @@ class Playerscorecontroller extends Controller
         ]);
 
         return redirect()->back()
-                        ->with('success', 'Player Score Added');
+            ->with('success', 'Player Score Added');
     }
 
     /**
@@ -85,19 +89,30 @@ class Playerscorecontroller extends Controller
      */
     public function update(Request $request, string $id)
     {
+        $request->validate([
+
+            'match_id' => 'required|exists:matchess,id',
+
+            'player_id' => 'required|exists:players,id',
+
+            'fantasy_points' => 'required|integer|min:0'
+
+        ]);
 
         $playerScore = Playerscore_model::findOrFail($id);
 
         $playerScore->update([
 
             'match_id' => $request->match_id,
+
             'player_id' => $request->player_id,
+
             'fantasy_points' => $request->fantasy_points,
 
         ]);
 
         return redirect()->back()
-                        ->with('success', 'Player Score Updated');
+            ->with('success', 'Player Score Updated');
     }
 
     /**
@@ -110,7 +125,7 @@ class Playerscorecontroller extends Controller
         $playerScore->delete();
 
         return redirect()->back()
-                        ->with('success', 'Player Score Deleted');
+            ->with('success', 'Player Score Deleted');
     }
 
 
@@ -121,23 +136,43 @@ class Playerscorecontroller extends Controller
             'team2'
         ])->findOrFail($matchId);
 
-        $players = Players_model::whereIn('team_id', [
+        // TEAM 1 PLAYERS
 
-            $match->team1_id,
+        $team1Players = Players_model::where(
+            'team_id',
+            $match->team1_id
+        )->get();
+
+        // TEAM 2 PLAYERS
+
+        $team2Players = Players_model::where(
+            'team_id',
             $match->team2_id
-
-        ])->get();
+        )->get();
 
         return view(
+
             'admin.playerscores.manage',
-            compact('match', 'players')
+
+            compact(
+                'match',
+                'team1Players',
+                'team2Players'
+            )
         );
     }
 
     public function saveScores(Request $request, $matchId)
     {
-        foreach ($request->scores as $playerId => $score)
-        {
+        $request->validate([
+
+            'scores' => 'required|array',
+
+            'scores.*' => 'required|integer|min:0'
+
+        ]);
+
+        foreach ($request->scores as $playerId => $score) {
             Playerscore_model::updateOrCreate(
 
                 [
@@ -153,6 +188,6 @@ class Playerscorecontroller extends Controller
         }
 
         return redirect()->back()
-                        ->with('success', 'Scores Updated Successfully');
+            ->with('success', 'Scores Updated Successfully');
     }
 }

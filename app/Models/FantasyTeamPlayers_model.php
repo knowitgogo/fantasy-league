@@ -7,7 +7,12 @@ use Illuminate\Database\Eloquent\Model;
 class FantasyTeamPlayers_model extends Model
 {
     protected $table = 'fantasy_team_players';
+    protected $fillable = [
 
+        'fantasy_team_id',
+        'player_id'
+
+    ];
     public function fantasyTeam()
     {
         return $this->belongsTo(FantasyTeams_model::class, 'fantasy_team_id');

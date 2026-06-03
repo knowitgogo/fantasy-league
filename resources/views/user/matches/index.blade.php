@@ -2,136 +2,81 @@
 
 @section('content')
 
-<div class="min-h-screen bg-slate-950 px-6 py-24">
+<div class="p-6">
 
     <!-- PAGE HEADER -->
 
-    <div class="mb-10">
+    <div class="mb-6">
 
-        <h1 class="text-4xl font-bold text-white">
+        <h1 class="text-3xl font-bold text-white">
 
-            Upcoming Matches
+            Tournament Matches
 
         </h1>
 
         <p class="mt-2 text-slate-400">
 
-            Create your fantasy teams and join contests
+            Select a match to create your fantasy team
 
         </p>
 
     </div>
 
-    <!-- MATCHES GRID -->
+    <!-- MATCHES -->
 
-    <div class="grid gap-8 md:grid-cols-2 xl:grid-cols-3">
+    <div class="grid gap-6 md:grid-cols-2">
 
         @foreach($matches as $match)
 
-            <div class="rounded-3xl border border-slate-800 bg-slate-900 p-6 shadow-xl transition hover:-translate-y-1 hover:border-indigo-500 hover:shadow-indigo-500/10">
+            <div class="rounded-2xl border border-slate-700 bg-slate-900 p-6 shadow-lg transition hover:bg-slate-800">
 
-                <!-- TOURNAMENT -->
+                <div class="mb-4">
 
-                <div class="mb-5 flex items-center justify-between">
+                    <h2 class="text-2xl font-bold text-white">
 
-                    <span class="rounded-full bg-indigo-600/20 px-4 py-1 text-sm font-medium text-indigo-400">
+                        {{ $match->team1->team_name }}
+                        vs
+                        {{ $match->team2->team_name }}
 
-                        {{ $match->tournament->name }}
+                    </h2>
 
-                    </span>
+                    <p class="mt-2 text-slate-400">
 
-                    <span class="text-sm text-slate-400">
-
-                        {{ $match->status }}
-
-                    </span>
-
-                </div>
-
-                <!-- TEAMS -->
-
-                <div class="mb-8">
-
-                    <div class="flex items-center justify-between">
-
-                        <!-- TEAM 1 -->
-
-                        <div class="text-center">
-
-                            <div class="mx-auto mb-3 flex h-16 w-16 items-center justify-center rounded-full bg-slate-800 text-2xl font-bold text-white">
-
-                                {{ substr($match->team1->team_name, 0, 1) }}
-
-                            </div>
-
-                            <h2 class="text-lg font-semibold text-white">
-
-                                {{ $match->team1->team_name }}
-
-                            </h2>
-
-                        </div>
-
-                        <!-- VS -->
-
-                        <div class="px-4">
-
-                            <span class="text-2xl font-bold text-indigo-400">
-
-                                VS
-
-                            </span>
-
-                        </div>
-
-                        <!-- TEAM 2 -->
-
-                        <div class="text-center">
-
-                            <div class="mx-auto mb-3 flex h-16 w-16 items-center justify-center rounded-full bg-slate-800 text-2xl font-bold text-white">
-
-                                {{ substr($match->team2->team_name, 0, 1) }}
-
-                            </div>
-
-                            <h2 class="text-lg font-semibold text-white">
-
-                                {{ $match->team2->team_name }}
-
-                            </h2>
-
-                        </div>
-
-                    </div>
-
-                </div>
-
-                <!-- MATCH DATE -->
-
-                <div class="mb-6 rounded-2xl bg-slate-800 p-4 text-center">
-
-                    <p class="text-sm text-slate-400">
-
-                        Match Starts
+                        Match Date:
+                        {{ $match->match_date }}
 
                     </p>
 
-                    <p class="mt-1 text-lg font-bold text-white">
+                    <p class="mt-1 text-slate-400">
 
-                        {{ \Carbon\Carbon::parse($match->match_date)->format('d M Y, h:i A') }}
+                        Status:
+                        <span class="text-green-400">
+
+                            {{ $match->status }}
+
+                        </span>
 
                     </p>
 
                 </div>
 
-                <!-- BUTTON -->
+                <div class="mt-6 flex gap-4">
 
-                <a href="#"
-                   class="block rounded-2xl bg-indigo-600 px-5 py-3 text-center font-semibold text-white transition hover:bg-indigo-700">
+                    <a href="{{ route('fantasy.team.create', $match->id) }}"
+                       class="rounded-xl bg-indigo-600 px-5 py-3 text-white transition hover:bg-indigo-700">
 
-                    Create Fantasy Team
+                        Create Fantasy Team
 
-                </a>
+                    </a>
+
+                    <a href="{{ route('user.leaderboard', $match->id) }}"
+                       class="rounded-xl bg-yellow-600 px-5 py-3 text-white transition hover:bg-yellow-700">
+
+                        View Leaderboard
+
+                    </a>
+
+                </div>
 
             </div>
 

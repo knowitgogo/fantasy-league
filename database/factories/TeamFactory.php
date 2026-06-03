@@ -5,30 +5,28 @@ namespace Database\Factories;
 use App\Models\Teams_model;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
-/**
- * @extends Factory<Teams_model>
- */
 class TeamFactory extends Factory
 {
-    /**
-     * Define the model's default state.
-     *
-     * @return array<string, mixed>
-     */
     protected $model = Teams_model::class;
+
     public function definition(): array
     {
+        static $teams = [
+
+            'Falcons',
+            'Titans',
+            'Warriors',
+            'Kings',
+            'Wolves',
+            'Strikers',
+            'Royals',
+            'Riders'
+
+        ];
+
         return [
 
-            'team_name' => fake()->randomElement([
-
-                'Falcons',
-                'Wolves',
-                'Titans',
-                'Warriors',
-                'Kings'
-
-            ]),
+            'team_name' => array_shift($teams),
 
             'tournament_id' => 1
 

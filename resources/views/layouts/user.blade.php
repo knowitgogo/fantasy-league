@@ -38,21 +38,21 @@
 
             <div class="hidden items-center gap-8 md:flex">
 
-                <a href="#"
+                <a href="{{ route('user.dashboard') }}"
                    class="text-slate-300 transition hover:text-white">
 
                     Dashboard
 
                 </a>
 
-                <a href="{{ route('user.matches') }}"
+                <a href="{{ route('user.tournaments') }}"
                    class="text-slate-300 transition hover:text-white">
 
                     Matches
 
                 </a>
 
-                <a href="#"
+                <a href="{{ route('fantasy.myteams') }}"
                    class="text-slate-300 transition hover:text-white">
 
                     My Teams

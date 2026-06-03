@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Leaderboards_model extends Model
 {
-    protected $table = 'leaderboards';
+    protected $table = 'players_leaderboard';
 
     public function user()
     {

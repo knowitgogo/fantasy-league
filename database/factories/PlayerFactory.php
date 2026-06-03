@@ -3,34 +3,24 @@
 namespace Database\Factories;
 
 use App\Models\Players_model;
+use App\Models\Teams_model;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
-/**
- * @extends Factory<Players_model>
- */
 class PlayerFactory extends Factory
 {
-    /**
-     * Define the model's default state.
-     *
-     * @return array<string, mixed>
-     */
     protected $model = Players_model::class;
+
     public function definition(): array
     {
+        $team = Teams_model::inRandomOrder()->first();
+
         return [
 
-            'team_id' => rand(1,5),
+            'team_id' => $team->id,
 
-            'team_name' => fake()->randomElement([
+            'team_name' => $team->team_name,
 
-                'Falcons',
-                'Wolves',
-                'Titans'
-
-            ]),
-
-            'player_name' => fake()->name(),
+            'player_name' => fake()->unique()->name(),
 
             'player_price' => rand(100,1000),
 

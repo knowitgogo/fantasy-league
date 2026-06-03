@@ -13,7 +13,7 @@
         </h1>
 
         <button onclick="openCreateModal()"
-                class="rounded-lg bg-indigo-600 px-5 py-2 text-white hover:bg-indigo-700">
+            class="rounded-lg bg-indigo-600 px-5 py-2 text-white hover:bg-indigo-700">
 
             Add Match
 
@@ -25,11 +25,11 @@
 
     @if(session('success'))
 
-        <div class="mb-4 rounded-lg bg-green-500 p-3 text-white">
+    <div class="mb-4 rounded-lg bg-green-500 p-3 text-white">
 
-            {{ session('success') }}
+        {{ session('success') }}
 
-        </div>
+    </div>
 
     @endif
 
@@ -111,15 +111,22 @@
 
                         <!-- DELETE -->
 
+                        <a href="{{ route('matches.players.manage', $match->id) }}"
+                            class="rounded-lg bg-green-600 px-4 py-2 text-white hover:bg-green-700">
+
+                            Manage Playing 
+
+                        </a>
+
                         <form action="{{ route('matches.destroy', $match->id) }}"
-                              method="POST"
-                              onsubmit="return confirm('Delete this match?')">
+                            method="POST"
+                            onsubmit="return confirm('Delete this match?')">
 
                             @csrf
                             @method('DELETE')
 
                             <button type="submit"
-                                    class="rounded bg-red-600 px-3 py-1 text-white hover:bg-red-700">
+                                class="rounded bg-red-600 px-3 py-1 text-white hover:bg-red-700">
 
                                 Delete
 
@@ -128,9 +135,23 @@
                         </form>
 
                         <a href="{{ route('matches.scores', $match->id) }}"
-                        class="rounded bg-green-600 px-3 py-1 text-white hover:bg-green-700">
+                            class="rounded bg-green-600 px-3 py-1 text-white hover:bg-green-700">
 
                             Update Scores
+
+                        </a>
+
+                        <a href="{{ route('leaderboard.generate', $match->id) }}"
+                            class="rounded-lg bg-yellow-600 px-4 py-2 text-white hover:bg-yellow-700">
+
+                            Generate Leaderboard
+
+                        </a>
+
+                        <a href="{{ route('leaderboard.index', $match->id) }}"
+                            class="rounded-lg bg-indigo-600 px-4 py-2 text-white hover:bg-indigo-700">
+
+                            View Leaderboard
 
                         </a>
 
@@ -151,7 +172,7 @@
 <!-- CREATE MODAL -->
 
 <div id="createModal"
-     class="fixed inset-0 z-50 hidden items-center justify-center bg-black/60 p-4 backdrop-blur-sm">
+    class="fixed inset-0 z-50 hidden items-center justify-center bg-black/60 p-4 backdrop-blur-sm">
 
     <div class="w-full max-w-lg rounded-2xl border border-slate-700 bg-slate-900 p-6 text-white shadow-2xl">
 
@@ -160,8 +181,8 @@
         </h2>
 
         <form action="{{ route('matches.store') }}"
-              method="POST"
-              class="space-y-4">
+            method="POST"
+            class="space-y-4">
 
             @csrf
 
@@ -174,7 +195,7 @@
                 </label>
 
                 <select name="tournament_id"
-                        class="w-full rounded-lg border border-slate-700 bg-slate-800 px-4 py-3 text-white">
+                    class="w-full rounded-lg border border-slate-700 bg-slate-800 px-4 py-3 text-white">
 
                     <option value="">
                         Select Tournament
@@ -182,11 +203,11 @@
 
                     @foreach($tournaments as $tournament)
 
-                        <option value="{{ $tournament->id }}">
+                    <option value="{{ $tournament->id }}">
 
-                            {{ $tournament->name }}
+                        {{ $tournament->name }}
 
-                        </option>
+                    </option>
 
                     @endforeach
 
@@ -203,7 +224,7 @@
                 </label>
 
                 <select name="team1_id"
-                        class="w-full rounded-lg border border-slate-700 bg-slate-800 px-4 py-3 text-white">
+                    class="w-full rounded-lg border border-slate-700 bg-slate-800 px-4 py-3 text-white">
 
                     <option value="">
                         Select Team
@@ -211,11 +232,11 @@
 
                     @foreach($teams as $team)
 
-                        <option value="{{ $team->id }}">
+                    <option value="{{ $team->id }}">
 
-                            {{ $team->team_name }}
+                        {{ $team->team_name }}
 
-                        </option>
+                    </option>
 
                     @endforeach
 
@@ -232,7 +253,7 @@
                 </label>
 
                 <select name="team2_id"
-                        class="w-full rounded-lg border border-slate-700 bg-slate-800 px-4 py-3 text-white">
+                    class="w-full rounded-lg border border-slate-700 bg-slate-800 px-4 py-3 text-white">
 
                     <option value="">
                         Select Team
@@ -240,11 +261,11 @@
 
                     @foreach($teams as $team)
 
-                        <option value="{{ $team->id }}">
+                    <option value="{{ $team->id }}">
 
-                            {{ $team->team_name }}
+                        {{ $team->team_name }}
 
-                        </option>
+                    </option>
 
                     @endforeach
 
@@ -261,8 +282,8 @@
                 </label>
 
                 <input type="datetime-local"
-                       name="match_date"
-                       class="w-full rounded-lg border border-slate-700 bg-slate-800 px-4 py-3 text-white">
+                    name="match_date"
+                    class="w-full rounded-lg border border-slate-700 bg-slate-800 px-4 py-3 text-white">
 
             </div>
 
@@ -275,7 +296,7 @@
                 </label>
 
                 <select name="status"
-                        class="w-full rounded-lg border border-slate-700 bg-slate-800 px-4 py-3 text-white">
+                    class="w-full rounded-lg border border-slate-700 bg-slate-800 px-4 py-3 text-white">
 
                     <option value="Upcoming">Upcoming</option>
                     <option value="Live">Live</option>
@@ -290,15 +311,15 @@
             <div class="flex justify-end gap-3 pt-2">
 
                 <button type="button"
-                        onclick="closeCreateModal()"
-                        class="rounded-lg bg-slate-700 px-4 py-2 text-white hover:bg-slate-600">
+                    onclick="closeCreateModal()"
+                    class="rounded-lg bg-slate-700 px-4 py-2 text-white hover:bg-slate-600">
 
                     Cancel
 
                 </button>
 
                 <button type="submit"
-                        class="rounded-lg bg-indigo-600 px-4 py-2 text-white hover:bg-indigo-700">
+                    class="rounded-lg bg-indigo-600 px-4 py-2 text-white hover:bg-indigo-700">
 
                     Save
 
@@ -315,7 +336,7 @@
 <!-- EDIT MODAL -->
 
 <div id="editModal"
-     class="fixed inset-0 z-50 hidden items-center justify-center bg-black/60 p-4 backdrop-blur-sm">
+    class="fixed inset-0 z-50 hidden items-center justify-center bg-black/60 p-4 backdrop-blur-sm">
 
     <div class="w-full max-w-lg rounded-2xl border border-slate-700 bg-slate-900 p-6 text-white shadow-2xl">
 
@@ -324,8 +345,8 @@
         </h2>
 
         <form id="editForm"
-              method="POST"
-              class="space-y-4">
+            method="POST"
+            class="space-y-4">
 
             @csrf
             @method('PUT')
@@ -339,16 +360,16 @@
                 </label>
 
                 <select id="edit_tournament"
-                        name="tournament_id"
-                        class="w-full rounded-lg border border-slate-700 bg-slate-800 px-4 py-3 text-white">
+                    name="tournament_id"
+                    class="w-full rounded-lg border border-slate-700 bg-slate-800 px-4 py-3 text-white">
 
                     @foreach($tournaments as $tournament)
 
-                        <option value="{{ $tournament->id }}">
+                    <option value="{{ $tournament->id }}">
 
-                            {{ $tournament->name }}
+                        {{ $tournament->name }}
 
-                        </option>
+                    </option>
 
                     @endforeach
 
@@ -365,16 +386,16 @@
                 </label>
 
                 <select id="edit_team1"
-                        name="team1_id"
-                        class="w-full rounded-lg border border-slate-700 bg-slate-800 px-4 py-3 text-white">
+                    name="team1_id"
+                    class="w-full rounded-lg border border-slate-700 bg-slate-800 px-4 py-3 text-white">
 
                     @foreach($teams as $team)
 
-                        <option value="{{ $team->id }}">
+                    <option value="{{ $team->id }}">
 
-                            {{ $team->team_name }}
+                        {{ $team->team_name }}
 
-                        </option>
+                    </option>
 
                     @endforeach
 
@@ -391,16 +412,16 @@
                 </label>
 
                 <select id="edit_team2"
-                        name="team2_id"
-                        class="w-full rounded-lg border border-slate-700 bg-slate-800 px-4 py-3 text-white">
+                    name="team2_id"
+                    class="w-full rounded-lg border border-slate-700 bg-slate-800 px-4 py-3 text-white">
 
                     @foreach($teams as $team)
 
-                        <option value="{{ $team->id }}">
+                    <option value="{{ $team->id }}">
 
-                            {{ $team->team_name }}
+                        {{ $team->team_name }}
 
-                        </option>
+                    </option>
 
                     @endforeach
 
@@ -417,9 +438,9 @@
                 </label>
 
                 <input type="datetime-local"
-                       id="edit_match_date"
-                       name="match_date"
-                       class="w-full rounded-lg border border-slate-700 bg-slate-800 px-4 py-3 text-white">
+                    id="edit_match_date"
+                    name="match_date"
+                    class="w-full rounded-lg border border-slate-700 bg-slate-800 px-4 py-3 text-white">
 
             </div>
 
@@ -432,8 +453,8 @@
                 </label>
 
                 <select id="edit_status"
-                        name="status"
-                        class="w-full rounded-lg border border-slate-700 bg-slate-800 px-4 py-3 text-white">
+                    name="status"
+                    class="w-full rounded-lg border border-slate-700 bg-slate-800 px-4 py-3 text-white">
 
                     <option value="Upcoming">Upcoming</option>
                     <option value="Live">Live</option>
@@ -448,15 +469,15 @@
             <div class="flex justify-end gap-3 pt-2">
 
                 <button type="button"
-                        onclick="closeEditModal()"
-                        class="rounded-lg bg-slate-700 px-4 py-2 text-white hover:bg-slate-600">
+                    onclick="closeEditModal()"
+                    class="rounded-lg bg-slate-700 px-4 py-2 text-white hover:bg-slate-600">
 
                     Cancel
 
                 </button>
 
                 <button type="submit"
-                        class="rounded-lg bg-indigo-600 px-4 py-2 text-white hover:bg-indigo-700">
+                    class="rounded-lg bg-indigo-600 px-4 py-2 text-white hover:bg-indigo-700">
 
                     Update
 
@@ -473,55 +494,49 @@
 <!-- JAVASCRIPT -->
 
 <script>
-
-function openCreateModal()
-{
-    document.getElementById('createModal')
+    function openCreateModal() {
+        document.getElementById('createModal')
             .classList.remove('hidden');
 
-    document.getElementById('createModal')
+        document.getElementById('createModal')
             .classList.add('flex');
-}
+    }
 
-function closeCreateModal()
-{
-    document.getElementById('createModal')
+    function closeCreateModal() {
+        document.getElementById('createModal')
             .classList.add('hidden');
-}
+    }
 
-function openEditModal(id, tournament_id, team1_id, team2_id, match_date, status)
-{
-    document.getElementById('editForm')
+    function openEditModal(id, tournament_id, team1_id, team2_id, match_date, status) {
+        document.getElementById('editForm')
             .action = '/admin/matches/' + id;
 
-    document.getElementById('edit_tournament')
+        document.getElementById('edit_tournament')
             .value = tournament_id;
 
-    document.getElementById('edit_team1')
+        document.getElementById('edit_team1')
             .value = team1_id;
 
-    document.getElementById('edit_team2')
+        document.getElementById('edit_team2')
             .value = team2_id;
 
-    document.getElementById('edit_match_date')
+        document.getElementById('edit_match_date')
             .value = match_date;
 
-    document.getElementById('edit_status')
+        document.getElementById('edit_status')
             .value = status;
 
-    document.getElementById('editModal')
+        document.getElementById('editModal')
             .classList.remove('hidden');
 
-    document.getElementById('editModal')
+        document.getElementById('editModal')
             .classList.add('flex');
-}
+    }
 
-function closeEditModal()
-{
-    document.getElementById('editModal')
+    function closeEditModal() {
+        document.getElementById('editModal')
             .classList.add('hidden');
-}
-
+    }
 </script>
 
 @endsection

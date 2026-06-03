@@ -8,7 +8,7 @@ use App\Models\Matches_model;
 use App\Models\User;
 use Illuminate\Http\Request;
 
-class Admincontroller extends Controller
+class AdminController extends Controller
 {
     /**
      * Display a listing of the resource.

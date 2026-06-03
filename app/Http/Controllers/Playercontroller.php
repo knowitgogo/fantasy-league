@@ -6,7 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\Players_model;
 use App\Models\Teams_model;
 use App\Models\PlayerMatchPoints_model;
-class Playercontroller extends Controller
+class PlayerController extends Controller
 {
     /**
      * Display a listing of the resource.
