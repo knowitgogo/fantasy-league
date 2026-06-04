@@ -69,7 +69,7 @@
 
                     </a>
 
-                    <a href="{{ route('user.leaderboard', $match->id) }}"
+                    <a href="{{ route('user.leaderboard') }}"
                        class="rounded-xl bg-yellow-600 px-5 py-3 text-white transition hover:bg-yellow-700">
 
                         View Leaderboard
@@ -82,6 +82,10 @@
 
         @endforeach
 
+    </div>
+
+    <div class="mt-6">
+        {{ $matches->links() }}
     </div>
 
 </div>

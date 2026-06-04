@@ -13,7 +13,7 @@ class PlayerController extends Controller
      */
     public function index()
     {
-        $players = Players_model::with('team')->get();
+        $players = Players_model::with('team')->paginate(10);
 
         $teams = Teams_model::all();
 

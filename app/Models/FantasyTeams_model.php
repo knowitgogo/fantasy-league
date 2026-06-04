@@ -33,6 +33,6 @@ class FantasyTeams_model extends Model
             'player_id'
         );
     }
-
+    
     
 }

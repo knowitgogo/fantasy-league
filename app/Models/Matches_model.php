@@ -4,9 +4,11 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\SoftDeletes;
+
 class Matches_model extends Model
 {
-    use HasFactory;
+    use HasFactory, SoftDeletes;
     protected static function newFactory()
     {
         return \Database\Factories\MatchFactory::new();
@@ -17,7 +19,8 @@ class Matches_model extends Model
         'team1_id',
         'team2_id',
         'match_date',
-         'status',
+        'status',
+        'leaderboard_generated'
     ];
     public function tournament()
     {
@@ -45,7 +48,7 @@ class Matches_model extends Model
             Teams_model::class,
             'team1_id'
         );
-    }   
+    }
 
     public function team2()
     {

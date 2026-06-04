@@ -11,7 +11,7 @@ class UserManagementController extends Controller
         $users = User::where(
             'role',
             'user'
-        )->get();
+        )->paginate(10);
 
         return view('admin.usermanagement', compact('users'));
     }

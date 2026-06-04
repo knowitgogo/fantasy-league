@@ -1,7 +1,7 @@
 @extends('layouts.admin')
 
 @section('content')
-<x-app-layout>
+
 
 <div class="p-6">
 
@@ -114,6 +114,10 @@
 
         </table>
 
+    </div>
+
+    <div class="mt-6">
+        {{ $teams->links() }}
     </div>
 
 </div>
@@ -344,5 +348,5 @@ function closeEditModal()
 
 </script>
 
-</x-app-layout>
+
 @endsection

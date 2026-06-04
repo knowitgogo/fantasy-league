@@ -1,28 +1,24 @@
-@extends('layouts.user')
+@extends('layouts.admin')
 
 @section('content')
 
 <div class="p-6">
 
-    <!-- PAGE HEADER -->
-
     <div class="mb-8">
 
         <h1 class="text-3xl font-bold text-white">
 
-            Global Fantasy Leaderboard
+            Global Leaderboard
 
         </h1>
 
         <p class="mt-2 text-slate-400">
 
-            Rankings across all matches and tournaments
+            Overall rankings across all tournaments and matches
 
         </p>
 
     </div>
-
-    <!-- LEADERBOARD TABLE -->
 
     <div class="overflow-hidden rounded-2xl border border-slate-700 bg-slate-900">
 

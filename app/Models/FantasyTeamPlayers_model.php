@@ -10,7 +10,9 @@ class FantasyTeamPlayers_model extends Model
     protected $fillable = [
 
         'fantasy_team_id',
-        'player_id'
+        'player_id',
+        'is_captain',
+        'is_vice_captain'
 
     ];
     public function fantasyTeam()

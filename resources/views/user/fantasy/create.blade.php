@@ -28,18 +28,18 @@
 
     @if($errors->any())
 
-        <div class="mb-6 rounded-xl bg-red-600 p-4 text-white">
+    <div class="mb-6 rounded-xl bg-red-600 p-4 text-white">
 
-            {{ $errors->first() }}
+        {{ $errors->first() }}
 
-        </div>
+    </div>
 
     @endif
 
     <!-- FORM -->
 
     <form action="{{ route('fantasy.team.store', $match->id) }}"
-          method="POST">
+        method="POST">
 
         @csrf
 
@@ -54,9 +54,9 @@
             </label>
 
             <input type="text"
-                   name="team_name"
-                   placeholder="Enter your fantasy team name"
-                   class="w-full rounded-xl border border-slate-700 bg-slate-800 px-4 py-3 text-white focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500">
+                name="team_name"
+                placeholder="Enter your fantasy team name"
+                class="w-full rounded-xl border border-slate-700 bg-slate-800 px-4 py-3 text-white focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500">
 
         </div>
 
@@ -104,48 +104,48 @@
 
                     @foreach($players as $matchPlayer)
 
-                        @if($matchPlayer->player->team_id == $match->team1_id)
+                    @if($matchPlayer->player->team_id == $match->team1_id)
 
-                            <tr class="border-t border-slate-700 hover:bg-slate-800">
+                    <tr class="border-t border-slate-700 hover:bg-slate-800">
 
-                                <!-- CHECKBOX -->
+                        <!-- CHECKBOX -->
 
-                                <td class="p-4">
+                        <td class="p-4">
 
-                                    <input type="checkbox"
-                                           name="players[]"
-                                           value="{{ $matchPlayer->player->id }}"
-                                           class="h-5 w-5 rounded border-slate-600 bg-slate-800 text-indigo-600">
+                            <input type="checkbox"
+                                name="players[]"
+                                value="{{ $matchPlayer->player->id }}"
+                                class="h-5 w-5 rounded border-slate-600 bg-slate-800 text-indigo-600">
 
-                                </td>
+                        </td>
 
-                                <!-- PLAYER NAME -->
+                        <!-- PLAYER NAME -->
 
-                                <td class="p-4 font-medium">
+                        <td class="p-4 font-medium">
 
-                                    {{ $matchPlayer->player->player_name }}
+                            {{ $matchPlayer->player->player_name }}
 
-                                </td>
+                        </td>
 
-                                <!-- COUNTRY -->
+                        <!-- COUNTRY -->
 
-                                <td class="p-4 text-slate-400">
+                        <td class="p-4 text-slate-400">
 
-                                    {{ $matchPlayer->player->country }}
+                            {{ $matchPlayer->player->country }}
 
-                                </td>
+                        </td>
 
-                                <!-- PRICE -->
+                        <!-- PRICE -->
 
-                                <td class="p-4 text-green-400 font-semibold">
+                        <td class="p-4 text-green-400 font-semibold">
 
-                                    ₹{{ $matchPlayer->player->player_price }}
+                            ₹{{ $matchPlayer->player->player_price }}
 
-                                </td>
+                        </td>
 
-                            </tr>
+                    </tr>
 
-                        @endif
+                    @endif
 
                     @endforeach
 
@@ -199,48 +199,48 @@
 
                     @foreach($players as $matchPlayer)
 
-                        @if($matchPlayer->player->team_id == $match->team2_id)
+                    @if($matchPlayer->player->team_id == $match->team2_id)
 
-                            <tr class="border-t border-slate-700 hover:bg-slate-800">
+                    <tr class="border-t border-slate-700 hover:bg-slate-800">
 
-                                <!-- CHECKBOX -->
+                        <!-- CHECKBOX -->
 
-                                <td class="p-4">
+                        <td class="p-4">
 
-                                    <input type="checkbox"
-                                           name="players[]"
-                                           value="{{ $matchPlayer->player->id }}"
-                                           class="h-5 w-5 rounded border-slate-600 bg-slate-800 text-green-600">
+                            <input type="checkbox"
+                                name="players[]"
+                                value="{{ $matchPlayer->player->id }}"
+                                class="h-5 w-5 rounded border-slate-600 bg-slate-800 text-green-600">
 
-                                </td>
+                        </td>
 
-                                <!-- PLAYER NAME -->
+                        <!-- PLAYER NAME -->
 
-                                <td class="p-4 font-medium">
+                        <td class="p-4 font-medium">
 
-                                    {{ $matchPlayer->player->player_name }}
+                            {{ $matchPlayer->player->player_name }}
 
-                                </td>
+                        </td>
 
-                                <!-- COUNTRY -->
+                        <!-- COUNTRY -->
 
-                                <td class="p-4 text-slate-400">
+                        <td class="p-4 text-slate-400">
 
-                                    {{ $matchPlayer->player->country }}
+                            {{ $matchPlayer->player->country }}
 
-                                </td>
+                        </td>
 
-                                <!-- PRICE -->
+                        <!-- PRICE -->
 
-                                <td class="p-4 text-green-400 font-semibold">
+                        <td class="p-4 text-green-400 font-semibold">
 
-                                    ₹{{ $matchPlayer->player->player_price }}
+                            ₹{{ $matchPlayer->player->player_price }}
 
-                                </td>
+                        </td>
 
-                            </tr>
+                    </tr>
 
-                        @endif
+                    @endif
 
                     @endforeach
 
@@ -249,13 +249,102 @@
             </table>
 
         </div>
+        <!-- CAPTAIN & VICE CAPTAIN -->
+
+        <div class="mt-8 rounded-2xl border border-slate-700 bg-slate-900 p-6">
+
+            <h2 class="mb-6 text-xl font-bold text-white">
+
+                Captain & Vice Captain
+
+            </h2>
+
+            <div class="grid gap-6 md:grid-cols-2">
+
+                <div>
+
+                    <label class="mb-3 block text-white">
+
+                        Select Captain
+
+                    </label>
+
+                    <select name="captain_id"
+                        class="w-full rounded-xl border border-slate-700 bg-slate-800 px-4 py-3 text-white">
+
+                        <option value="">
+
+                            Choose Captain
+
+                        </option>
+
+                        @foreach($players as $matchPlayer)
+
+                        <option value="{{ $matchPlayer->player->id }}">
+
+                            {{ $matchPlayer->player->player_name }}
+
+                        </option>
+
+                        @endforeach
+
+                    </select>
+
+                    <p class="mt-2 text-sm text-slate-400">
+
+                        Captain gets 2x points
+
+                    </p>
+
+                </div>
+
+                <div>
+
+                    <label class="mb-3 block text-white">
+
+                        Select Vice Captain
+
+                    </label>
+
+                    <select name="vice_captain_id"
+                        class="w-full rounded-xl border border-slate-700 bg-slate-800 px-4 py-3 text-white">
+
+                        <option value="">
+
+                            Choose Vice Captain
+
+                        </option>
+
+                        @foreach($players as $matchPlayer)
+
+                        <option value="{{ $matchPlayer->player->id }}">
+
+                            {{ $matchPlayer->player->player_name }}
+
+                        </option>
+
+                        @endforeach
+
+                    </select>
+
+                    <p class="mt-2 text-sm text-slate-400">
+
+                        Vice Captain gets 1.5x points
+
+                    </p>
+
+                </div>
+
+            </div>
+
+        </div>
 
         <!-- SAVE BUTTON -->
 
         <div class="mt-8 flex justify-end">
 
             <button type="submit"
-                    class="rounded-2xl bg-indigo-600 px-8 py-3 text-white transition hover:bg-indigo-700">
+                class="rounded-2xl bg-indigo-600 px-8 py-3 text-white transition hover:bg-indigo-700">
 
                 Create Fantasy Team
 

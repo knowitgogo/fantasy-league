@@ -13,6 +13,8 @@ use App\Models\FantasyTeamPlayers_model;
 
 class FantasyTeamController extends Controller
 {
+
+
     public function create($matchId)
     {
         $match = Matches_model::with([
@@ -30,6 +32,17 @@ class FantasyTeamController extends Controller
 
             ->get();
 
+
+
+
+        if ($match->status != 'Upcoming') {
+            return redirect()->back()
+                ->withErrors([
+                    'match' => 'Team creation is closed for this match.'
+                ]);
+        }
+
+        $match = Matches_model::findOrFail($matchId);
         return view(
 
             'user.fantasy.create',
@@ -47,12 +60,43 @@ class FantasyTeamController extends Controller
 
             'team_name' => 'required',
 
-            'players' => 'required|array|min:1'
+            'players' => 'required|array|size:11',
+
+            'captain' => 'required',
+
+            'vice_captain' => 'required|different:captain'
 
         ]);
 
-        // CREATE FANTASY TEAM
+        if (
+            !in_array($request->captain, $request->players)
+            ||
+            !in_array($request->vice_captain, $request->players)
+        ) {
+            return back()->withErrors([
 
+                'captain' => 'Captain and Vice Captain must be selected from your chosen players.'
+
+            ]);
+        }
+
+        // CREATE FANTASY TEAM
+        $alreadyExists = FantasyTeams_model::where(
+            'user_id',
+            auth::id()
+        )
+            ->where(
+                'match_id',
+                $matchId
+            )
+            ->exists();
+
+        if ($alreadyExists) {
+            return redirect()->back()
+                ->withErrors([
+                    'team' => 'You have already created a team for this match.'
+                ]);
+        }
         $fantasyTeam = FantasyTeams_model::create([
 
             'user_id' => Auth::id(),
@@ -70,7 +114,11 @@ class FantasyTeamController extends Controller
 
                 'fantasy_team_id' => $fantasyTeam->id,
 
-                'player_id' => $playerId
+                'player_id' => $playerId,
+
+                'is_captain' => $playerId == $request->captain,
+
+                'is_vice_captain' => $playerId == $request->vice_captain
 
             ]);
         }
@@ -105,6 +153,26 @@ class FantasyTeamController extends Controller
             'user.fantasy.myteams',
 
             compact('fantasyTeams')
+        );
+    }
+
+
+    public function show($id)
+    {
+        $team = FantasyTeams_model::with([
+
+            'match.team1',
+            'match.team2',
+
+            'players.player'
+
+        ])->findOrFail($id);
+
+        return view(
+
+            'user.fantasy.show',
+
+            compact('team')
         );
     }
 }

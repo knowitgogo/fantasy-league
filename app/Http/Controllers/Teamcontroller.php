@@ -13,7 +13,7 @@ class TeamController extends Controller
     public function index()
     {
         //
-        $teams = Teams_model::with('tournament')->get();
+        $teams = Teams_model::with('tournament')->paginate(10);
 
         $tournaments = Tournament_model::all();
 

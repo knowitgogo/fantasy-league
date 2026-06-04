@@ -50,16 +50,35 @@ class PlayerscoreController extends Controller
     {
         $request->validate([
 
-            'match_id' => 'required',
-            'player_id' => 'required',
-            'fantasy_points' => 'required',
+            'match_id' => 'required|exists:matches,id',
+
+            'player_id' => 'required|exists:players,id',
+
+            'fantasy_points' => 'required|integer|min:0',
 
         ]);
+
+        $match = Matches_model::findOrFail($request->match_id);
+
+        $player = Players_model::findOrFail($request->player_id);
+
+        if (
+            $player->team_id != $match->team1_id &&
+            $player->team_id != $match->team2_id
+        ) {
+            return back()->withErrors([
+
+                'player_id' => 'Selected player does not belong to this match.'
+
+            ]);
+        }
 
         Playerscore_model::create([
 
             'match_id' => $request->match_id,
+
             'player_id' => $request->player_id,
+
             'fantasy_points' => $request->fantasy_points,
 
         ]);
@@ -91,13 +110,28 @@ class PlayerscoreController extends Controller
     {
         $request->validate([
 
-            'match_id' => 'required|exists:matchess,id',
+            'match_id' => 'required|exists:matches,id',
 
             'player_id' => 'required|exists:players,id',
 
             'fantasy_points' => 'required|integer|min:0'
 
         ]);
+
+        $match = Matches_model::findOrFail($request->match_id);
+
+        $player = Players_model::findOrFail($request->player_id);
+
+        if (
+            $player->team_id != $match->team1_id &&
+            $player->team_id != $match->team2_id
+        ) {
+            return back()->withErrors([
+
+                'player_id' => 'Selected player does not belong to this match.'
+
+            ]);
+        }
 
         $playerScore = Playerscore_model::findOrFail($id);
 
@@ -172,7 +206,18 @@ class PlayerscoreController extends Controller
 
         ]);
 
+        $match = Matches_model::findOrFail($matchId);
+
         foreach ($request->scores as $playerId => $score) {
+            $player = Players_model::findOrFail($playerId);
+
+            if (
+                $player->team_id != $match->team1_id &&
+                $player->team_id != $match->team2_id
+            ) {
+                continue;
+            }
+
             Playerscore_model::updateOrCreate(
 
                 [

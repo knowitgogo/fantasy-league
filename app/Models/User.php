@@ -4,12 +4,13 @@ namespace App\Models;
 
 use Database\Factories\UserFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
 class User extends Authenticatable
 {
-    use HasFactory, Notifiable;
+    use HasFactory, Notifiable, SoftDeletes;
     protected static function newFactory()
     {
         return \Database\Factories\UserFactory::new();
@@ -36,6 +37,7 @@ class User extends Authenticatable
         'email',
         'password',
         'wallet_balance',
+        'fantasy_points',
         'role'
 
     ];

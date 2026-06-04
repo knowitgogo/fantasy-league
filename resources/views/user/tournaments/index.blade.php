@@ -68,6 +68,10 @@
 
     </div>
 
+    <div class="mt-6">
+        {{ $tournaments->links() }}
+    </div>
+
 </div>
 
 @endsection

@@ -1,6 +1,8 @@
 <?php
 
 namespace App\Http\Controllers;
+
+use App\Models\Teams_model;
 use App\Models\Tournament_model;
 use Illuminate\Http\Request;
 
@@ -11,7 +13,7 @@ class TournamentController extends Controller
      */
     public function index()
     {
-        $tournaments = Tournament_model::all();
+        $tournaments = Tournament_model::paginate(10);
 
         return view(
             'admin.tournaments.index',
@@ -49,15 +51,33 @@ class TournamentController extends Controller
         ]);
 
         return redirect()->route('tournaments.index')
-                        ->with('success', 'Tournament Created Successfully');
+            ->with('success', 'Tournament Created Successfully');
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show($id)
     {
-        //
+        $tournament = Tournament_model::with([
+
+            'matches.team1',
+            'matches.team2'
+
+        ])->findOrFail($id);
+
+        $teams = Teams_model::select(
+            'id',
+            'team_name'
+        )->get();
+
+        return view(
+            'admin.tournaments.show',
+            compact(
+                'tournament',
+                'teams'
+            )
+        );
     }
 
     /**
@@ -85,7 +105,7 @@ class TournamentController extends Controller
         ]);
 
         return redirect()->back()
-                        ->with('success', 'Tournament Updated');
+            ->with('success', 'Tournament Updated');
     }
 
     /**
@@ -98,6 +118,6 @@ class TournamentController extends Controller
         $tournament->delete();
 
         return redirect()->back()
-                        ->with('success', 'Tournament Deleted');
+            ->with('success', 'Tournament Deleted');
     }
 }

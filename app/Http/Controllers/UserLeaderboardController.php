@@ -2,26 +2,19 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Leaderboards_model;
-use App\Models\Matches_model;
+use App\Models\User;
 
 class UserLeaderboardController extends Controller
 {
-    public function index($matchId)
+    public function index()
     {
-        $match = Matches_model::with([
-
-            'team1',
-            'team2'
-
-        ])->findOrFail($matchId);
-
-        $leaderboards = Leaderboards_model::with('user')
-
-            ->where('match_id', $matchId)
-
-            ->orderBy('rank')
-
+        $leaderboards = User::where(
+                'role',
+                'user'
+            )
+            ->orderByDesc(
+                'fantasy_points'
+            )
             ->get();
 
         return view(
@@ -29,7 +22,6 @@ class UserLeaderboardController extends Controller
             'user.leaderboards.index',
 
             compact(
-                'match',
                 'leaderboards'
             )
         );

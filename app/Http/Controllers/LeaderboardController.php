@@ -14,6 +14,18 @@ class LeaderboardController extends Controller
 {
     public function generate($matchId)
     {
+        $match = Matches_model::findOrFail($matchId);
+
+        // PREVENT DUPLICATE GENERATION
+
+        if ($match->leaderboard_generated) {
+            return redirect()->back()
+                ->with(
+                    'error',
+                    'Leaderboard already generated for this match.'
+                );
+        }
+
         // CLEAR OLD LEADERBOARD
 
         Leaderboards_model::where(
@@ -30,10 +42,7 @@ class LeaderboardController extends Controller
 
         $leaderboard = [];
 
-        // CALCULATE USER TOTAL POINTS
-
-        foreach ($fantasyTeams as $team)
-        {
+        foreach ($fantasyTeams as $team) {
             $selectedPlayers = FantasyTeamPlayers_model::where(
                 'fantasy_team_id',
                 $team->id
@@ -41,23 +50,22 @@ class LeaderboardController extends Controller
 
             $totalPoints = 0;
 
-            foreach ($selectedPlayers as $selectedPlayer)
-            {
+            foreach ($selectedPlayers as $selectedPlayer) {
                 $score = Playerscore_model::where(
-
                     'match_id',
                     $matchId
-
                 )->where(
-
                     'player_id',
                     $selectedPlayer->player_id
-
                 )->first();
 
-                if ($score)
-                {
+                if ($score) {
                     $totalPoints += $score->fantasy_points;
+                    if ($selectedPlayer->is_captain) {
+                        $totalPoints += $score->fantasy_points; // DOUBLE POINTS
+                    } elseif ($selectedPlayer->is_vice_captain) {
+                        $totalPoints += $score->fantasy_points / 2; // HALF POINTS
+                    }
                 }
             }
 
@@ -72,20 +80,20 @@ class LeaderboardController extends Controller
             ];
         }
 
-        // SORT HIGHEST POINTS FIRST
+        // SORT HIGHEST TO LOWEST
 
         usort($leaderboard, function ($a, $b) {
 
             return $b['total_points'] <=> $a['total_points'];
-
         });
 
-        // SAVE RANKS
+        // SAVE MATCH LEADERBOARD
+        // UPDATE GLOBAL POINTS
+        // UPDATE WALLET
 
         $rank = 1;
 
-        foreach ($leaderboard as $data)
-        {
+        foreach ($leaderboard as $data) {
             Leaderboards_model::create([
 
                 'match_id' => $data['match_id'],
@@ -98,20 +106,19 @@ class LeaderboardController extends Controller
 
             ]);
 
-            // UPDATE USER WALLET
-
             $user = User::find($data['user_id']);
 
-            if ($rank == 1)
-            {
+            // GLOBAL FANTASY POINTS
+
+            $user->fantasy_points += $data['total_points'];
+
+            // REWARDS
+
+            if ($rank == 1) {
                 $user->wallet_balance += 100;
-            }
-            elseif ($rank == 2)
-            {
+            } elseif ($rank == 2) {
                 $user->wallet_balance += 50;
-            }
-            elseif ($rank == 3)
-            {
+            } elseif ($rank == 3) {
                 $user->wallet_balance += 20;
             }
 
@@ -120,11 +127,17 @@ class LeaderboardController extends Controller
             $rank++;
         }
 
+        // MARK MATCH AS GENERATED
+
+        $match->leaderboard_generated = true;
+
+        $match->save();
+
         return redirect()->back()
-                        ->with(
-                            'success',
-                            'Leaderboard Generated Successfully'
-                        );
+            ->with(
+                'success',
+                'Leaderboard Generated Successfully'
+            );
     }
 
     public function index($matchId)
@@ -148,6 +161,24 @@ class LeaderboardController extends Controller
                 'leaderboards',
                 'match'
             )
+        );
+    }
+
+
+    public function globalLeaderboard()
+    {
+        $leaderboards = User::where(
+            'role',
+            'user'
+        )
+            ->orderByDesc(
+                'fantasy_points'
+            )
+            ->get();
+
+        return view(
+            'admin.leaderboard.global',
+            compact('leaderboards')
         );
     }
 }

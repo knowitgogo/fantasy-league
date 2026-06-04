@@ -14,42 +14,42 @@ class MatchController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
-    {
-        $matches = Matches_model::with([
+    // public function index()
+    // {
+    //     // $matches = Matches_model::with([
 
-            'tournament',
-            'team1',
-            'team2'
+    //     //     'tournament',
+    //     //     'team1',
+    //     //     'team2'
 
-        ])->get();
+    //     // ])->get();
 
-        $tournaments = Tournament_model::select(
+    //     // $tournaments = Tournament_model::select(
 
-            'id',
-            'name'
+    //     //     'id',
+    //     //     'name'
 
-        )->get();
+    //     // )->get();
 
-        $teams = Teams_model::select(
+    //     // $teams = Teams_model::select(
 
-            'id',
-            'team_name'
+    //     //     'id',
+    //     //     'team_name'
 
-        )->get();
+    //     // )->get();
 
-        return view(
+    //     // return view(
 
-            'admin.matches.index',
+    //     //     'admin.matches.index',
 
-            compact(
-                'matches',
-                'tournaments',
-                'teams'
-            )
+    //     //     compact(
+    //     //         'matches',
+    //     //         'tournaments',
+    //     //         'teams'
+    //     //     )
 
-        );
-    }
+    //     // );
+    // }
 
     /**
      * Show the form for creating a new resource.
@@ -99,6 +99,52 @@ class MatchController extends Controller
             'match_date' => $request->match_date,
 
             'status' => $request->status,
+
+        ]);
+
+        return redirect()->back()
+            ->with(
+                'success',
+                'Match Created Successfully'
+            );
+    }
+
+
+    public function storeTournamentMatch(
+        Request $request,
+        $tournamentId
+    ) {
+        $request->validate([
+
+            'team1_id' => 'required|exists:teams,id',
+
+            'team2_id' => 'required|exists:teams,id',
+
+            'match_date' => 'required|date',
+
+            'status' => 'required|in:Upcoming,Completed,Live'
+
+        ]);
+
+        if ($request->team1_id == $request->team2_id) {
+            return back()->withErrors([
+
+                'team2_id' => 'Both teams cannot be same.'
+
+            ]);
+        }
+
+        Matches_model::create([
+
+            'tournament_id' => $tournamentId,
+
+            'team1_id' => $request->team1_id,
+
+            'team2_id' => $request->team2_id,
+
+            'match_date' => $request->match_date,
+
+            'status' => $request->status
 
         ]);
 

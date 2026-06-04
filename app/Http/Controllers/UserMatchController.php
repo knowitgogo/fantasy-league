@@ -18,7 +18,7 @@ class UserMatchController extends Controller
             'tournament_id',
             $id
 
-        )->get();
+        )->paginate(10);
 
         return view(
 

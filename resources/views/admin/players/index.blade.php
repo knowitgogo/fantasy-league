@@ -141,6 +141,10 @@
 
     </div>
 
+    <div class="mt-6">
+        {{ $players->links() }}
+    </div>
+
 </div>
 
 <!-- CREATE MODAL -->

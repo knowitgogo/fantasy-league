@@ -4,10 +4,11 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Tournament_model extends Model
 {
-    use HasFactory;
+    use HasFactory, SoftDeletes;
     protected static function newFactory()
     {
         return \Database\Factories\TournamentFactory::new();
@@ -38,4 +39,6 @@ class Tournament_model extends Model
             'tournament_id'
         );
     }
+
+    
 }

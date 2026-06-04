@@ -14,6 +14,12 @@ use App\Http\Controllers\UserTournamentController;
 use App\Http\Controllers\UserMatchController;
 use App\Http\Controllers\UserLeaderboardController;
 use App\Http\Controllers\FantasyTeamController;
+use App\Http\Controllers\UserDashboardController;
+use App\Http\Controllers\RecycleBinController;
+
+
+
+
 
 Route::get('/', function () {
     return view('welcome');
@@ -47,7 +53,7 @@ Route::middleware(['auth','admin'])->prefix('admin')->group(function () {
     Route::resource('tournaments', TournamentController::class);
     Route::resource('teams', TeamController::class);
     Route::resource('players', PlayerController::class);
-    Route::resource('matches', MatchController::class);
+    //Route::resource('matches', MatchController::class);
     Route::resource('player-scores', PlayerScoreController::class);
 });
 
@@ -60,7 +66,23 @@ Route::post(
     'matches/{match}/scores',
     [PlayerScoreController::class, 'saveScores']
 )->name('matches.scores.save');
+Route::post(
 
+    'tournaments/{tournament}/matches',
+
+    [MatchController::class, 'storeTournamentMatch']
+
+)->name('tournaments.matches.store');
+
+Route::get(
+    'matches/{match}/scores',
+    [PlayerScoreController::class, 'manageScores']
+)->name('matches.scores');
+
+Route::post(
+    'matches/{match}/scores',
+    [PlayerScoreController::class, 'saveScores']
+)->name('matches.scores.save');
 
 
 Route::get('/user/dashboard', function () {
@@ -113,7 +135,21 @@ Route::post(
 )->name('matches.players.save');
 
 
+Route::get(
 
+    '/admin/global-leaderboard',
+
+    [LeaderboardController::class, 'globalLeaderboard']
+
+)->middleware(['auth', 'admin'])
+ ->name('leaderboard.global');
+
+
+ Route::get(
+    '/user/dashboard',
+    [UserDashboardController::class, 'index']
+)->middleware('auth')
+ ->name('user.dashboard');
 
 // user side
 Route::get(
@@ -139,11 +175,12 @@ Route::get(
 
 Route::get(
 
-    '/user/leaderboard/{matchId}',
+    '/user/leaderboard',
 
     [UserLeaderboardController::class, 'index']
 
 )->name('user.leaderboard');
+
 
 Route::get(
 
@@ -169,3 +206,23 @@ Route::get(
     [FantasyTeamController::class, 'myTeams']
 
 )->name('fantasy.myteams');
+
+Route::get(
+    '/user/my-team/{teamId}',
+    [FantasyTeamController::class, 'show']
+)->name('fantasy.team.show');
+
+
+
+
+
+
+
+
+
+
+// recycle
+Route::get(
+    '/recycle-bin',
+    [RecycleBinController::class, 'index']
+)->name('recycle.bin');

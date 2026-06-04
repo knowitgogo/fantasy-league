@@ -8,7 +8,7 @@ class UserTournamentController extends Controller
 {
     public function index()
     {
-        $tournaments = Tournament_model::all();
+        $tournaments = Tournament_model::paginate(10);
 
         return view(
             'user.tournaments.index',
