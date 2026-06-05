@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\Players_model;
 use App\Models\Teams_model;
 use App\Models\PlayerMatchPoints_model;
+
 class PlayerController extends Controller
 {
     /**
@@ -13,7 +14,8 @@ class PlayerController extends Controller
      */
     public function index()
     {
-        $players = Players_model::with('team')->paginate(10);
+        $players = Players_model::with('teams')
+            ->paginate(10);
 
         $teams = Teams_model::all();
 
@@ -48,17 +50,15 @@ class PlayerController extends Controller
 
         Players_model::create([
 
-            'team_id' => $request->team_id,
             'player_name' => $request->player_name,
             'player_price' => $request->player_price,
             'age' => $request->age,
             'country' => $request->country,
-            'team_name' => $team->team_name,
 
         ]);
 
         return redirect()->back()
-                        ->with('success', 'Player Added Successfully');
+            ->with('success', 'Player Added Successfully');
     }
 
     /**
@@ -88,15 +88,15 @@ class PlayerController extends Controller
 
         $player->update([
 
-            'team_id' => $request->team_id,
             'player_name' => $request->player_name,
             'player_price' => $request->player_price,
-            'team_name' => $team->team_name,
+            'age' => $request->age,
+            'country' => $request->country,
 
         ]);
 
         return redirect()->back()
-                        ->with('success', 'Player Updated Successfully');
+            ->with('success', 'Player Updated Successfully');
     }
 
     /**
@@ -109,6 +109,6 @@ class PlayerController extends Controller
         $player->delete();
 
         return redirect()->back()
-                        ->with('success', 'Player Deleted Successfully');
+            ->with('success', 'Player Deleted Successfully');
     }
 }

@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Teams_model;
 use App\Models\Tournament_model;
+use App\Models\Players_model;
+
 class TeamController extends Controller
 {
     /**
@@ -12,14 +14,20 @@ class TeamController extends Controller
      */
     public function index()
     {
-        //
-        $teams = Teams_model::with('tournament')->paginate(10);
+        $teams = Teams_model::with('players')
+            ->paginate(10);
+
+        $players = Players_model::all();
 
         $tournaments = Tournament_model::all();
 
         return view(
             'admin.teams.index',
-            compact('teams', 'tournaments')
+            compact(
+                'teams',
+                'players',
+                'tournaments'
+            )
         );
     }
 
@@ -37,21 +45,23 @@ class TeamController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-
             'name' => 'required',
-            'tournament_id' => 'required',
-
+            'players' => 'required|array|min:1'
         ]);
 
-        Teams_model::create([
+        $team = Teams_model::create([
 
-            'team_name' => $request->name,
-            'tournament_id' => $request->tournament_id,
-
+            'team_name' => $request->name
         ]);
+
+        if ($request->players) {
+            $team->players()->sync(
+                $request->players
+            );
+        }
 
         return redirect()->back()
-                        ->with('success', 'Team Created Successfully');
+            ->with('success', 'Team Created Successfully');
     }
 
     /**
@@ -59,7 +69,15 @@ class TeamController extends Controller
      */
     public function show(string $id)
     {
-        //
+        $team = Teams_model::with([
+            'players',
+            'tournaments'
+        ])->findOrFail($id);
+
+        return view(
+            'admin.teams.show',
+            compact('team')
+        );
     }
 
     /**
@@ -80,12 +98,15 @@ class TeamController extends Controller
         $team->update([
 
             'team_name' => $request->name,
-            'tournament_id' => $request->tournament_id,
 
         ]);
 
+        $team->players()->sync(
+            $request->players ?? []
+        );
+
         return redirect()->back()
-                        ->with('success', 'Team Updated Successfully');
+            ->with('success', 'Team Updated Successfully');
     }
 
     /**
@@ -98,6 +119,6 @@ class TeamController extends Controller
         $team->delete();
 
         return redirect()->back()
-                        ->with('success', 'Team Deleted Successfully');
+            ->with('success', 'Team Deleted Successfully');
     }
 }

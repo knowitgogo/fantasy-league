@@ -28,6 +28,31 @@
 
         </p>
 
+        <div class="mt-6 rounded-2xl border border-slate-700 bg-slate-900 p-6">
+
+            <h2 class="mb-4 text-xl font-bold text-white">
+
+                Participating Teams
+
+            </h2>
+
+            <div class="flex flex-wrap gap-3">
+
+                @foreach($tournament->teams as $team)
+
+                <span
+                    class="rounded-lg bg-indigo-600 px-4 py-2 text-white">
+
+                    {{ $team->team_name }}
+
+                </span>
+
+                @endforeach
+
+            </div>
+
+        </div>
+
     </div>
 
     <!-- SUCCESS MESSAGE -->
@@ -63,6 +88,7 @@
             Create Match
 
         </h2>
+        
 
         <form action="{{ route('tournaments.matches.store', $tournament->id) }}"
             method="POST">
@@ -247,9 +273,9 @@
 
                     <td class="p-4">
 
-                        {{ $match->team1->team_name }}
+                        {{ $match->team1?->team_name ?? 'Unknown Team' }}
                         vs
-                        {{ $match->team2->team_name }}
+                        {{ $match->team2?->team_name ?? 'Unknown Team' }}
 
                     </td>
 
@@ -290,12 +316,12 @@
 
                             </a>
 
-                            <a href="{{ route('leaderboard.index', $match->id) }}"
+                            <!-- <a href="{{ route('leaderboard.index', $match->id) }}"
                                 class="rounded-lg bg-purple-600 px-3 py-2 text-sm text-white">
 
                                 View Leaderboard
 
-                            </a>
+                            </a> -->
 
                             <form action="/admin/matches/{{ $match->id }}"
                                 method="POST"

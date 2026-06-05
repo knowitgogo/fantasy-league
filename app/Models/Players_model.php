@@ -33,4 +33,14 @@ class Players_model extends Model
             'team_id'
         );
     }
+
+    public function teams()
+    {
+        return $this->belongsToMany(
+            Teams_model::class,
+            'team_players',
+            'player_id',
+            'team_id'
+        );
+    }
 }

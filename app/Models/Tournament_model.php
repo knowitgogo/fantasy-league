@@ -24,7 +24,7 @@ class Tournament_model extends Model
 
     ];
 
-    public function teams()
+    public function legacyteams()
     {
         return $this->hasMany(
             Teams_model::class,
@@ -32,6 +32,17 @@ class Tournament_model extends Model
         );
     }
 
+
+
+    public function teams()
+    {
+        return $this->belongsToMany(
+            Teams_model::class,
+            'tournament_teams',
+            'tournament_id',
+            'team_id'
+        );
+    }
     public function matches()
     {
         return $this->hasMany(
@@ -39,6 +50,4 @@ class Tournament_model extends Model
             'tournament_id'
         );
     }
-
-    
 }

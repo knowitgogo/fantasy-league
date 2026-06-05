@@ -170,28 +170,15 @@ class PlayerscoreController extends Controller
             'team2'
         ])->findOrFail($matchId);
 
-        // TEAM 1 PLAYERS
-
-        $team1Players = Players_model::where(
-            'team_id',
-            $match->team1_id
-        )->get();
-
-        // TEAM 2 PLAYERS
-
-        $team2Players = Players_model::where(
-            'team_id',
-            $match->team2_id
-        )->get();
+        $players = \App\Models\MatchPlayers_model::with('player')
+            ->where('match_id', $matchId)
+            ->get();
 
         return view(
-
             'admin.playerscores.manage',
-
             compact(
                 'match',
-                'team1Players',
-                'team2Players'
+                'players'
             )
         );
     }
@@ -209,12 +196,17 @@ class PlayerscoreController extends Controller
         $match = Matches_model::findOrFail($matchId);
 
         foreach ($request->scores as $playerId => $score) {
-            $player = Players_model::findOrFail($playerId);
+            $isPlaying = \App\Models\MatchPlayers_model::where(
+                'match_id',
+                $matchId
+            )
+                ->where(
+                    'player_id',
+                    $playerId
+                )
+                ->exists();
 
-            if (
-                $player->team_id != $match->team1_id &&
-                $player->team_id != $match->team2_id
-            ) {
+            if (!$isPlaying) {
                 continue;
             }
 

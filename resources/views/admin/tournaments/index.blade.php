@@ -2,120 +2,128 @@
 
 @section('content')
 
-    <div class="min-h-screen bg-slate-950 px-6 py-8 text-slate-300">
-        <div class="mx-auto max-w-7xl">
-            <div class="mb-6 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-                <div>
-                    <p class="text-sm font-medium text-slate-400">Admin</p>
-                    <h1 class="mt-1 text-2xl font-semibold text-white">
-                        Tournaments
-                    </h1>
-                </div>
-
-                <button onclick="openCreateModal()"
-                    class="bg-indigo-600 text-white px-4 py-2 rounded-lg">
-
-                    Add Tournament
-
-                </button>
+<div class="min-h-screen bg-slate-950 px-6 py-8 text-slate-300">
+    <div class="mx-auto max-w-7xl">
+        <div class="mb-6 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+            <div>
+                <p class="text-sm font-medium text-slate-400">Admin</p>
+                <h1 class="mt-1 text-2xl font-semibold text-white">
+                    Tournaments
+                </h1>
             </div>
 
-            @if(session('success'))
-            <div class="mb-5 rounded-lg border border-slate-700 bg-slate-900 px-4 py-3 text-sm font-medium text-white">
-                {{ session('success') }}
-            </div>
-            @endif
+            <button onclick="openCreateModal()"
+                class="bg-indigo-600 text-white px-4 py-2 rounded-lg">
 
-            <div class="overflow-hidden rounded-lg border border-slate-700 bg-slate-900 shadow-sm">
-                <div class="overflow-x-auto">
-                    <table class="w-full min-w-[760px] divide-y divide-slate-700">
-                        <thead class="bg-slate-800">
-                            <tr>
-                                <th class="px-5 py-3 text-left text-xs font-medium uppercase text-slate-400">Name</th>
-                                <th class="px-5 py-3 text-left text-xs font-medium uppercase text-slate-400">Start Date</th>
-                                <th class="px-5 py-3 text-left text-xs font-medium uppercase text-slate-400">End Date</th>
-                                <th class="px-5 py-3 text-left text-xs font-medium uppercase text-slate-400">Status</th>
-                                <th class="px-5 py-3 text-left text-xs font-medium uppercase text-slate-400">Actions</th>
-                            </tr>
-                        </thead>
+                Add Tournament
 
-                        <tbody class="divide-y divide-slate-700">
-                            @foreach($tournaments as $tournament)
-                            <tr class="transition hover:bg-slate-800">
-                                <td class="px-5 py-4 text-sm font-medium text-white">
-                                    {{ $tournament->name }}
-                                </td>
+            </button>
+        </div>
 
-                                <td class="px-5 py-4 text-sm text-slate-400">
-                                    {{ $tournament->start_date }}
-                                </td>
+        @if(session('success'))
+        <div class="mb-5 rounded-lg border border-slate-700 bg-slate-900 px-4 py-3 text-sm font-medium text-white">
+            {{ session('success') }}
+        </div>
+        @endif
 
-                                <td class="px-5 py-4 text-sm text-slate-400">
-                                    {{ $tournament->end_date }}
-                                </td>
+        <div class="overflow-hidden rounded-lg border border-slate-700 bg-slate-900 shadow-sm">
+            <div class="overflow-x-auto">
+                <table class="w-full min-w-[760px] divide-y divide-slate-700">
+                    <thead class="bg-slate-800">
+                        <tr>
+                            <th class="px-5 py-3 text-left text-xs font-medium uppercase text-slate-400">Name</th>
+                            <th class="px-5 py-3 text-left text-xs font-medium uppercase text-slate-400">Start Date</th>
+                            <th class="px-5 py-3 text-left text-xs font-medium uppercase text-slate-400">End Date</th>
+                            <th class="px-5 py-3 text-left text-xs font-medium uppercase text-slate-400">Status</th>
+                            <th class="px-5 py-3 text-left text-xs font-medium uppercase text-slate-400">Teams</th>
+                            <th class="px-5 py-3 text-left text-xs font-medium uppercase text-slate-400">view</th>
+                            <th class="px-5 py-3 text-left text-xs font-medium uppercase text-slate-400">Actions</th>
+                        </tr>
+                    </thead>
 
-                                <td class="px-5 py-4 text-sm text-slate-300">
-                                    <span class="inline-flex rounded-lg border border-slate-700 bg-slate-800 px-2.5 py-1 text-xs font-medium text-slate-300">
-                                        {{ $tournament->status }}
-                                    </span>
-                                </td>
+                    <tbody class="divide-y divide-slate-700">
+                        @foreach($tournaments as $tournament)
+                        <tr class="transition hover:bg-slate-800">
+                            <td class="px-5 py-4 text-sm font-medium text-white">
+                                {{ $tournament->name }}
+                            </td>
 
-                                <td>
+                            <td class="px-5 py-4 text-sm text-slate-400">
+                                {{ $tournament->start_date }}
+                            </td>
 
-                                    <a href="{{ route('tournaments.show', $tournament->id) }}"
-                                        class="rounded-lg bg-indigo-600 px-4 py-2 text-white">
+                            <td class="px-5 py-4 text-sm text-slate-400">
+                                {{ $tournament->end_date }}
+                            </td>
 
-                                        View Matches
+                            <td class="px-5 py-4 text-sm text-slate-300">
+                                <span class="inline-flex rounded-lg border border-slate-700 bg-slate-800 px-2.5 py-1 text-xs font-medium text-slate-300">
+                                    {{ $tournament->status }}
+                                </span>
 
-                                    </a>
+                            
+                            </td>
 
-                                </td>
 
-                                <td class="px-5 py-4">
-                                    <div class="flex items-center gap-2">
-                                        <button
-                                            onclick="openEditModal(
+                            <td class="px-5 py-4 text-sm text-slate-300">
+                                {{ $tournament->teams()->count() }}
+                            </td>
+                            <td>
+
+                                <a href="{{ route('tournaments.show', $tournament->id) }}"
+                                    class="rounded-lg bg-indigo-600 px-4 py-2 text-white">
+
+                                    View Matches
+
+                                </a>
+
+                            </td>
+
+                            <td class="px-5 py-4">
+                                <div class="flex items-center gap-2">
+                                    <button
+                                        onclick="openEditModal(
                                                     '{{ $tournament->id }}',
                                                     '{{ $tournament->name }}',
                                                     '{{ $tournament->start_date }}',
                                                     '{{ $tournament->end_date }}',
                                                     '{{ $tournament->status }}'
                                                 )"
-                                            class="bg-yellow-500 text-white px-3 py-1 rounded">
+                                        class="bg-yellow-500 text-white px-3 py-1 rounded">
 
-                                            Edit
+                                        Edit
+
+                                    </button>
+
+                                    <form action="{{ route('tournaments.destroy', $tournament->id) }}"
+                                        method="POST"
+                                        onsubmit="return confirm('Delete this tournament?')">
+
+                                        @csrf
+                                        @method('DELETE')
+
+                                        <button type="submit"
+                                            class="bg-red-600 text-white px-3 py-1 rounded">
+
+                                            Delete
 
                                         </button>
 
-                                        <form action="{{ route('tournaments.destroy', $tournament->id) }}"
-                                            method="POST"
-                                            onsubmit="return confirm('Delete this tournament?')">
-
-                                            @csrf
-                                            @method('DELETE')
-
-                                            <button type="submit"
-                                                class="bg-red-600 text-white px-3 py-1 rounded">
-
-                                                Delete
-
-                                            </button>
-
-                                        </form>
-                                    </div>
-                                </td>
-                            </tr>
-                            @endforeach
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-
-            <div class="mt-6">
-                {{ $tournaments->links() }}
+                                    </form>
+                                </div>
+                            </td>
+                        </tr>
+                        @endforeach
+                    </tbody>
+                </table>
             </div>
         </div>
+
+        <div class="mt-6">
+            {{ $tournaments->links() }}
+        </div>
     </div>
+</div>
 
 <!-- CREATE MODAL -->
 
@@ -186,6 +194,33 @@
                 </select>
 
             </div>
+            <div>
+
+                <label class="mb-2 block font-semibold text-slate-300">
+
+                    Select Teams
+
+                </label>
+
+                <div class="max-h-60 overflow-y-auto rounded-lg border border-slate-700 p-3">
+
+                    @foreach($teams as $team)
+
+                    <label class="mb-2 flex items-center gap-2">
+
+                        <input type="checkbox"
+                            name="teams[]"
+                            value="{{ $team->id }}">
+
+                        {{ $team->team_name }}
+
+                    </label>
+
+                    @endforeach
+
+                </div>
+
+            </div>
 
             <div class="flex justify-end gap-3 pt-2">
 
@@ -239,6 +274,34 @@
                     id="edit_name"
                     name="name"
                     class="w-full rounded-lg border border-slate-700 bg-slate-800 px-4 py-3 text-white placeholder:text-slate-400 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500">
+
+            </div>
+
+            <div>
+
+                <label class="mb-2 block font-semibold text-slate-300">
+
+                    Teams
+
+                </label>
+
+                <div class="max-h-60 overflow-y-auto rounded-lg border border-slate-700 p-3">
+
+                    @foreach($teams as $team)
+
+                    <label class="mb-2 flex items-center gap-2">
+
+                        <input type="checkbox"
+                            name="teams[]"
+                            value="{{ $team->id }}">
+
+                        {{ $team->team_name }}
+
+                    </label>
+
+                    @endforeach
+
+                </div>
 
             </div>
 

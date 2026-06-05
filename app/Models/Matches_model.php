@@ -47,7 +47,7 @@ class Matches_model extends Model
         return $this->belongsTo(
             Teams_model::class,
             'team1_id'
-        );
+        )->withTrashed();
     }
 
     public function team2()
@@ -55,6 +55,6 @@ class Matches_model extends Model
         return $this->belongsTo(
             Teams_model::class,
             'team2_id'
-        );
+        )->withTrashed();
     }
 }

@@ -88,6 +88,26 @@ class MatchController extends Controller
             ]);
         }
 
+        $tournament = Tournament_model::findOrFail(
+            $request->tournament_id
+        );
+
+        $allowedTeamIds = $tournament
+            ->teams()
+            ->pluck('teams.id')
+            ->toArray();
+
+        if (
+            !in_array($request->team1_id, $allowedTeamIds)
+            ||
+            !in_array($request->team2_id, $allowedTeamIds)
+        ) {
+            return back()->withErrors([
+                'team1_id' =>
+                'Selected teams do not belong to this tournament.'
+            ]);
+        }
+
         Matches_model::create([
 
             'tournament_id' => $request->tournament_id,
@@ -110,10 +130,9 @@ class MatchController extends Controller
     }
 
 
-    public function storeTournamentMatch(
-        Request $request,
-        $tournamentId
-    ) {
+    public function storeTournamentMatch(Request $request, $tournamentId)
+    {
+        
         $request->validate([
 
             'team1_id' => 'required|exists:teams,id',
@@ -125,6 +144,27 @@ class MatchController extends Controller
             'status' => 'required|in:Upcoming,Completed,Live'
 
         ]);
+
+        $tournament = Tournament_model::findOrFail(
+            $tournamentId
+        );
+        
+
+        $allowedTeamIds = $tournament
+            ->teams()
+            ->pluck('teams.id')
+            ->toArray();
+
+        if (
+            !in_array($request->team1_id, $allowedTeamIds)
+            ||
+            !in_array($request->team2_id, $allowedTeamIds)
+        ) {
+            return back()->withErrors([
+                'team1_id' =>
+                'Selected teams do not belong to this tournament.'
+            ]);
+        }
 
         if ($request->team1_id == $request->team2_id) {
             return back()->withErrors([
@@ -237,17 +277,15 @@ class MatchController extends Controller
 
         // TEAM 1 PLAYERS
 
-        $team1Players = Players_model::where(
-            'team_id',
-            $match->team1_id
-        )->get();
+        $team1Players = $match
+            ->team1
+            ->players;
 
         // TEAM 2 PLAYERS
 
-        $team2Players = Players_model::where(
-            'team_id',
-            $match->team2_id
-        )->get();
+        $team2Players = $match
+            ->team2
+            ->players;
 
         // ALREADY SELECTED PLAYERS
 

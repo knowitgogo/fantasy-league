@@ -102,9 +102,9 @@
 
                 <tbody>
 
-                    @foreach($players as $matchPlayer)
+                    @foreach($team1Players as $matchPlayer)
 
-                    @if($matchPlayer->player->team_id == $match->team1_id)
+
 
                     <tr class="border-t border-slate-700 hover:bg-slate-800">
 
@@ -145,7 +145,7 @@
 
                     </tr>
 
-                    @endif
+
 
                     @endforeach
 
@@ -197,9 +197,8 @@
 
                 <tbody>
 
-                    @foreach($players as $matchPlayer)
+                    @foreach($team2Players as $matchPlayer)
 
-                    @if($matchPlayer->player->team_id == $match->team2_id)
 
                     <tr class="border-t border-slate-700 hover:bg-slate-800">
 
@@ -240,7 +239,7 @@
 
                     </tr>
 
-                    @endif
+
 
                     @endforeach
 
@@ -269,24 +268,29 @@
 
                     </label>
 
-                    <select name="captain_id"
+                    <select name="captain"
                         class="w-full rounded-xl border border-slate-700 bg-slate-800 px-4 py-3 text-white">
 
                         <option value="">
-
                             Choose Captain
-
                         </option>
 
-                        @foreach($players as $matchPlayer)
+                        @foreach($team1Players as $matchPlayer)
 
                         <option value="{{ $matchPlayer->player->id }}">
-
                             {{ $matchPlayer->player->player_name }}
-
                         </option>
 
                         @endforeach
+
+                        @foreach($team2Players as $matchPlayer)
+
+                        <option value="{{ $matchPlayer->player->id }}">
+                            {{ $matchPlayer->player->player_name }}
+                        </option>
+
+                        @endforeach
+
 
                     </select>
 
@@ -306,21 +310,25 @@
 
                     </label>
 
-                    <select name="vice_captain_id"
+                    <select name="vice_captain"
                         class="w-full rounded-xl border border-slate-700 bg-slate-800 px-4 py-3 text-white">
 
                         <option value="">
-
                             Choose Vice Captain
-
                         </option>
 
-                        @foreach($players as $matchPlayer)
+                        @foreach($team1Players as $matchPlayer)
 
                         <option value="{{ $matchPlayer->player->id }}">
-
                             {{ $matchPlayer->player->player_name }}
+                        </option>
 
+                        @endforeach
+
+                        @foreach($team2Players as $matchPlayer)
+
+                        <option value="{{ $matchPlayer->player->id }}">
+                            {{ $matchPlayer->player->player_name }}
                         </option>
 
                         @endforeach

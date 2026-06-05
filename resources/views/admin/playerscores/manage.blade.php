@@ -8,8 +8,6 @@ use App\Models\Playerscore_model;
 
 <div class="p-6">
 
-    <!-- PAGE HEADER -->
-
     <div class="mb-6">
 
         <h1 class="text-3xl font-bold text-white">
@@ -28,8 +26,6 @@ use App\Models\Playerscore_model;
 
     </div>
 
-    <!-- SUCCESS MESSAGE -->
-
     @if(session('success'))
 
         <div class="mb-4 rounded-lg bg-green-600 p-4 text-white">
@@ -40,22 +36,18 @@ use App\Models\Playerscore_model;
 
     @endif
 
-    <!-- FORM -->
-
     <form action="{{ route('matches.scores.save', $match->id) }}"
           method="POST">
 
         @csrf
 
-        <!-- TEAM 1 PLAYERS -->
-
-        <div class="mb-8 overflow-hidden rounded-2xl border border-slate-700 bg-slate-900">
+        <div class="overflow-hidden rounded-2xl border border-slate-700 bg-slate-900">
 
             <div class="bg-indigo-600 px-6 py-4">
 
                 <h2 class="text-xl font-bold text-white">
 
-                    {{ $match->team1->team_name }} Players
+                    Playing XI Players
 
                 </h2>
 
@@ -68,15 +60,21 @@ use App\Models\Playerscore_model;
                     <tr>
 
                         <th class="p-4 text-left">
+
                             Player
+
                         </th>
 
                         <th class="p-4 text-left">
+
                             Existing Score
+
                         </th>
 
                         <th class="p-4 text-left">
+
                             Update Score
+
                         </th>
 
                     </tr>
@@ -85,9 +83,11 @@ use App\Models\Playerscore_model;
 
                 <tbody>
 
-                    @foreach($team1Players as $player)
+                    @foreach($players as $matchPlayer)
 
                         @php
+
+                            $player = $matchPlayer->player;
 
                             $existingScore = Playerscore_model::where(
                                 'match_id',
@@ -101,15 +101,11 @@ use App\Models\Playerscore_model;
 
                         <tr class="border-t border-slate-700 hover:bg-slate-800">
 
-                            <!-- PLAYER -->
-
                             <td class="p-4 font-medium">
 
                                 {{ $player->player_name }}
 
                             </td>
-
-                            <!-- EXISTING SCORE -->
 
                             <td class="p-4 text-green-400 font-bold">
 
@@ -117,14 +113,13 @@ use App\Models\Playerscore_model;
 
                             </td>
 
-                            <!-- UPDATE SCORE -->
-
                             <td class="p-4">
 
-                                <input type="number"
-                                       name="scores[{{ $player->id }}]"
-                                       value="{{ $existingScore->fantasy_points ?? 0 }}"
-                                       class="w-32 rounded-lg border border-slate-700 bg-slate-800 px-4 py-2 text-white focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500">
+                                <input
+                                    type="number"
+                                    name="scores[{{ $player->id }}]"
+                                    value="{{ $existingScore->fantasy_points ?? 0 }}"
+                                    class="w-32 rounded-lg border border-slate-700 bg-slate-800 px-4 py-2 text-white focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500">
 
                             </td>
 
@@ -137,100 +132,6 @@ use App\Models\Playerscore_model;
             </table>
 
         </div>
-
-
-        <!-- TEAM 2 PLAYERS -->
-
-        <div class="overflow-hidden rounded-2xl border border-slate-700 bg-slate-900">
-
-            <div class="bg-green-600 px-6 py-4">
-
-                <h2 class="text-xl font-bold text-white">
-
-                    {{ $match->team2->team_name }} Players
-
-                </h2>
-
-            </div>
-
-            <table class="w-full text-white">
-
-                <thead class="bg-slate-800">
-
-                    <tr>
-
-                        <th class="p-4 text-left">
-                            Player
-                        </th>
-
-                        <th class="p-4 text-left">
-                            Existing Score
-                        </th>
-
-                        <th class="p-4 text-left">
-                            Update Score
-                        </th>
-
-                    </tr>
-
-                </thead>
-
-                <tbody>
-
-                    @foreach($team2Players as $player)
-
-                        @php
-
-                            $existingScore = Playerscore_model::where(
-                                'match_id',
-                                $match->id
-                            )->where(
-                                'player_id',
-                                $player->id
-                            )->first();
-
-                        @endphp
-
-                        <tr class="border-t border-slate-700 hover:bg-slate-800">
-
-                            <!-- PLAYER -->
-
-                            <td class="p-4 font-medium">
-
-                                {{ $player->player_name }}
-
-                            </td>
-
-                            <!-- EXISTING SCORE -->
-
-                            <td class="p-4 text-green-400 font-bold">
-
-                                {{ $existingScore->fantasy_points ?? 0 }}
-
-                            </td>
-
-                            <!-- UPDATE SCORE -->
-
-                            <td class="p-4">
-
-                                <input type="number"
-                                       name="scores[{{ $player->id }}]"
-                                       value="{{ $existingScore->fantasy_points ?? 0 }}"
-                                       class="w-32 rounded-lg border border-slate-700 bg-slate-800 px-4 py-2 text-white focus:border-green-500 focus:ring-2 focus:ring-green-500">
-
-                            </td>
-
-                        </tr>
-
-                    @endforeach
-
-                </tbody>
-
-            </table>
-
-        </div>
-
-        <!-- SAVE BUTTON -->
 
         <div class="mt-6 flex justify-end">
 

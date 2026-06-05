@@ -18,22 +18,9 @@ class FantasyTeamController extends Controller
     public function create($matchId)
     {
         $match = Matches_model::with([
-
-            'team1',
-            'team2'
-
+            'team1.players',
+            'team2.players'
         ])->findOrFail($matchId);
-
-        // PLAYING XI ONLY
-
-        $players = MatchPlayers_model::with('player')
-
-            ->where('match_id', $matchId)
-
-            ->get();
-
-
-
 
         if ($match->status != 'Upcoming') {
             return redirect()->back()
@@ -42,18 +29,31 @@ class FantasyTeamController extends Controller
                 ]);
         }
 
-        $match = Matches_model::findOrFail($matchId);
+        $team1Players = MatchPlayers_model::with('player')
+            ->where('match_id', $matchId)
+            ->whereIn(
+                'player_id',
+                $match->team1->players->pluck('id')
+            )
+            ->get();
+
+        $team2Players = MatchPlayers_model::with('player')
+            ->where('match_id', $matchId)
+            ->whereIn(
+                'player_id',
+                $match->team2->players->pluck('id')
+            )
+            ->get();
+
         return view(
-
             'user.fantasy.create',
-
             compact(
                 'match',
-                'players'
+                'team1Players',
+                'team2Players'
             )
         );
     }
-
     public function store(Request $request, $matchId)
     {
         $request->validate([

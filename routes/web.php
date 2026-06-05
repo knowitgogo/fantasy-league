@@ -66,13 +66,19 @@ Route::post(
     'matches/{match}/scores',
     [PlayerScoreController::class, 'saveScores']
 )->name('matches.scores.save');
-Route::post(
 
-    'tournaments/{tournament}/matches',
+Route::middleware(['auth','admin'])
+    ->prefix('admin')
+    ->group(function () {
 
-    [MatchController::class, 'storeTournamentMatch']
+        Route::resource('tournaments', TournamentController::class);
 
-)->name('tournaments.matches.store');
+        Route::post(
+            'tournaments/{tournament}/matches',
+            [MatchController::class, 'storeTournamentMatch']
+        )->name('tournaments.matches.store');
+
+    });
 
 Route::get(
     'matches/{match}/scores',
@@ -115,6 +121,10 @@ Route::get(
 
 )->name('leaderboard.index');
 
+Route::get(
+    '/teams/{team}',
+    [TeamController::class, 'show']
+)->name('teams.show');
 
 // managing players
 Route::get(
@@ -226,3 +236,16 @@ Route::get(
     '/recycle-bin',
     [RecycleBinController::class, 'index']
 )->name('recycle.bin');
+
+
+
+
+
+
+
+
+
+
+
+
+

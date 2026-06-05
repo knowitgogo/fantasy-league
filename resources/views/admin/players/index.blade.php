@@ -13,7 +13,7 @@
         </h1>
 
         <button onclick="openCreateModal()"
-                class="bg-indigo-600 hover:bg-indigo-700 text-white px-5 py-2 rounded-lg">
+            class="bg-indigo-600 hover:bg-indigo-700 text-white px-5 py-2 rounded-lg">
 
             Add Player
 
@@ -25,11 +25,11 @@
 
     @if(session('success'))
 
-        <div class="bg-green-500 text-white p-3 rounded-lg mb-4">
+    <div class="bg-green-500 text-white p-3 rounded-lg mb-4">
 
-            {{ session('success') }}
+        {{ session('success') }}
 
-        </div>
+    </div>
 
     @endif
 
@@ -44,10 +44,10 @@
                 <tr>
 
                     <th class="p-4 text-left">Player Name</th>
-                    <th class="p-4 text-left">Team</th>
                     <th class="p-4 text-left">Price</th>
                     <th class="p-4 text-left">Age</th>
                     <th class="p-4 text-left">Country</th>
+                    <!-- <th>Teams</th> -->
                     <th class="p-4 text-left">Actions</th>
 
                 </tr>
@@ -66,11 +66,7 @@
 
                     </td>
 
-                    <td class="p-4">
 
-                        {{ $player->team->team_name }}
-
-                    </td>
 
 
                     <td class="p-4">
@@ -91,6 +87,19 @@
 
                     </td>
 
+                    <!-- <td>
+
+                        @foreach($player->teams as $team)
+
+                        <span class="px-2 py-1 rounded bg-slate-800 text-xs">
+
+                            {{ $team->team_name }}
+
+                        </span>
+
+                        @endforeach
+
+                    </td> -->
                     <td class="p-4 flex gap-2">
 
                         <!-- EDIT -->
@@ -99,10 +108,6 @@
                             onclick="openEditModal(
                                 '{{ $player->id }}',
                                 '{{ $player->player_name }}',
-                                '{{ $player->team_id }}',
-                                '{{ $player->age }}',
-                                '{{ $player->country }}',
-
                                 '{{ $player->player_price }}'
                             )"
                             class="bg-yellow-500 hover:bg-yellow-600 text-white px-3 py-1 rounded">
@@ -114,14 +119,14 @@
                         <!-- DELETE -->
 
                         <form action="{{ route('players.destroy', $player->id) }}"
-                              method="POST"
-                              onsubmit="return confirm('Delete this player?')">
+                            method="POST"
+                            onsubmit="return confirm('Delete this player?')">
 
                             @csrf
                             @method('DELETE')
 
                             <button type="submit"
-                                    class="bg-red-600 hover:bg-red-700 text-white px-3 py-1 rounded">
+                                class="bg-red-600 hover:bg-red-700 text-white px-3 py-1 rounded">
 
                                 Delete
 
@@ -150,7 +155,7 @@
 <!-- CREATE MODAL -->
 
 <div id="createModal"
-     class="fixed inset-0 z-50 hidden items-center justify-center bg-black/60 p-4 backdrop-blur-sm">
+    class="fixed inset-0 z-50 hidden items-center justify-center bg-black/60 p-4 backdrop-blur-sm">
 
     <div class="w-full max-w-lg rounded-2xl border border-slate-700 bg-slate-900 p-6 text-white shadow-2xl">
 
@@ -159,8 +164,8 @@
         </h2>
 
         <form action="{{ route('players.store') }}"
-              method="POST"
-              class="space-y-4">
+            method="POST"
+            class="space-y-4">
 
             @csrf
 
@@ -173,39 +178,12 @@
                 </label>
 
                 <input type="text"
-                       name="player_name"
-                       class="w-full rounded-lg border border-slate-700 bg-slate-800 px-4 py-3 text-white placeholder:text-slate-400 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500">
+                    name="player_name"
+                    class="w-full rounded-lg border border-slate-700 bg-slate-800 px-4 py-3 text-white placeholder:text-slate-400 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500">
 
             </div>
 
-            <!-- TEAM -->
 
-            <div>
-
-                <label class="mb-2 block font-semibold text-slate-300">
-                    Team
-                </label>
-
-                <select name="team_id"
-                        class="w-full rounded-lg border border-slate-700 bg-slate-800 px-4 py-3 text-white placeholder:text-slate-400 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500">
-
-                    <option value="">
-                        Select Team
-                    </option>
-
-                    @foreach($teams as $team)
-
-                        <option value="{{ $team->id }}">
-
-                            {{ $team->team_name }}
-
-                        </option>
-
-                    @endforeach
-
-                </select>
-
-            </div>
 
             <!-- AGE -->
 
@@ -216,8 +194,8 @@
                 </label>
 
                 <input type="number"
-                       name="age"
-                       class="w-full rounded-lg border border-slate-700 bg-slate-800 px-4 py-3 text-white placeholder:text-slate-400 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500">
+                    name="age"
+                    class="w-full rounded-lg border border-slate-700 bg-slate-800 px-4 py-3 text-white placeholder:text-slate-400 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500">
 
             </div>
 
@@ -230,8 +208,8 @@
                 </label>
 
                 <input type="text"
-                       name="country"
-                       class="w-full rounded-lg border border-slate-700 bg-slate-800 px-4 py-3 text-white placeholder:text-slate-400 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500">
+                    name="country"
+                    class="w-full rounded-lg border border-slate-700 bg-slate-800 px-4 py-3 text-white placeholder:text-slate-400 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500">
 
             </div>
 
@@ -256,15 +234,15 @@
             <div class="flex justify-end gap-3 pt-2">
 
                 <button type="button"
-                        onclick="closeCreateModal()"
-                        class="rounded-lg bg-slate-700 px-4 py-2 text-white transition hover:bg-slate-600">
+                    onclick="closeCreateModal()"
+                    class="rounded-lg bg-slate-700 px-4 py-2 text-white transition hover:bg-slate-600">
 
                     Cancel
 
                 </button>
 
                 <button type="submit"
-                        class="rounded-lg bg-indigo-600 px-4 py-2 text-white transition hover:bg-indigo-700">
+                    class="rounded-lg bg-indigo-600 px-4 py-2 text-white transition hover:bg-indigo-700">
 
                     Save
 
@@ -281,7 +259,7 @@
 <!-- EDIT MODAL -->
 
 <div id="editModal"
-     class="fixed inset-0 z-50 hidden items-center justify-center bg-black/60 p-4 backdrop-blur-sm">
+    class="fixed inset-0 z-50 hidden items-center justify-center bg-black/60 p-4 backdrop-blur-sm">
 
     <div class="w-full max-w-lg rounded-2xl border border-slate-700 bg-slate-900 p-6 text-white shadow-2xl">
 
@@ -290,8 +268,8 @@
         </h2>
 
         <form id="editForm"
-              method="POST"
-              class="space-y-4">
+            method="POST"
+            class="space-y-4">
 
             @csrf
             @method('PUT')
@@ -305,39 +283,15 @@
                 </label>
 
                 <input type="text"
-                       id="edit_player_name"
-                       name="player_name"
-                       class="w-full rounded-lg border border-slate-700 bg-slate-800 px-4 py-3 text-white placeholder:text-slate-400 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500">
+                    id="edit_player_name"
+                    name="player_name"
+                    class="w-full rounded-lg border border-slate-700 bg-slate-800 px-4 py-3 text-white placeholder:text-slate-400 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500">
 
             </div>
 
-            <!-- TEAM -->
 
-            <div>
 
-                <label class="mb-2 block font-semibold text-slate-300">
-                    Team
-                </label>
 
-                <select id="edit_team"
-                        name="team_id"
-                        class="w-full rounded-lg border border-slate-700 bg-slate-800 px-4 py-3 text-white placeholder:text-slate-400 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500">
-
-                    @foreach($teams as $team)
-
-                        <option value="{{ $team->id }}">
-
-                            {{ $team->team_name }}
-
-                        </option>
-
-                    @endforeach
-
-                </select>
-
-            </div>
-
-            
 
             <!-- PRICE -->
 
@@ -348,10 +302,10 @@
                 </label>
 
                 <input type="number"
-                       step="0.1"
-                       id="edit_player_price"
-                       name="player_price"
-                       class="w-full rounded-lg border border-slate-700 bg-slate-800 px-4 py-3 text-white placeholder:text-slate-400 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500">
+                    step="0.1"
+                    id="edit_player_price"
+                    name="player_price"
+                    class="w-full rounded-lg border border-slate-700 bg-slate-800 px-4 py-3 text-white placeholder:text-slate-400 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500">
 
             </div>
 
@@ -360,15 +314,15 @@
             <div class="flex justify-end gap-3 pt-2">
 
                 <button type="button"
-                        onclick="closeEditModal()"
-                        class="rounded-lg bg-slate-700 px-4 py-2 text-white transition hover:bg-slate-600">
+                    onclick="closeEditModal()"
+                    class="rounded-lg bg-slate-700 px-4 py-2 text-white transition hover:bg-slate-600">
 
                     Cancel
 
                 </button>
 
                 <button type="submit"
-                        class="rounded-lg bg-indigo-600 px-4 py-2 text-white transition hover:bg-indigo-700">
+                    class="rounded-lg bg-indigo-600 px-4 py-2 text-white transition hover:bg-indigo-700">
 
                     Update
 
@@ -385,49 +339,40 @@
 <!-- JAVASCRIPT -->
 
 <script>
-
-function openCreateModal()
-{
-    document.getElementById('createModal')
+    function openCreateModal() {
+        document.getElementById('createModal')
             .classList.remove('hidden');
 
-    document.getElementById('createModal')
+        document.getElementById('createModal')
             .classList.add('flex');
-}
+    }
 
-function closeCreateModal()
-{
-    document.getElementById('createModal')
+    function closeCreateModal() {
+        document.getElementById('createModal')
             .classList.add('hidden');
-}
+    }
 
-function openEditModal(id, player_name, team_id, price)
-{
-    document.getElementById('editForm')
+    function openEditModal(id, player_name, price) {
+        document.getElementById('editForm')
             .action = '/admin/players/' + id;
 
-    document.getElementById('edit_player_name')
+        document.getElementById('edit_player_name')
             .value = player_name;
 
-    document.getElementById('edit_team')
-            .value = team_id;
-
-    document.getElementById('edit_player_price')
+        document.getElementById('edit_player_price')
             .value = price;
 
-    document.getElementById('editModal')
+        document.getElementById('editModal')
             .classList.remove('hidden');
 
-    document.getElementById('editModal')
+        document.getElementById('editModal')
             .classList.add('flex');
-}
+    }
 
-function closeEditModal()
-{
-    document.getElementById('editModal')
+    function closeEditModal() {
+        document.getElementById('editModal')
             .classList.add('hidden');
-}
-
+    }
 </script>
 
 @endsection

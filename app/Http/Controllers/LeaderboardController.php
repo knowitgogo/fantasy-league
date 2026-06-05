@@ -64,7 +64,7 @@ class LeaderboardController extends Controller
                     if ($selectedPlayer->is_captain) {
                         $totalPoints += $score->fantasy_points; // DOUBLE POINTS
                     } elseif ($selectedPlayer->is_vice_captain) {
-                        $totalPoints += $score->fantasy_points / 2; // HALF POINTS
+                        $totalPoints += floor($score->fantasy_points) / 2; // HALF POINTS
                     }
                 }
             }

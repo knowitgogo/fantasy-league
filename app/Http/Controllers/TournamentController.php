@@ -15,9 +15,14 @@ class TournamentController extends Controller
     {
         $tournaments = Tournament_model::paginate(10);
 
+        $teams = Teams_model::all();
+
         return view(
             'admin.tournaments.index',
-            compact('tournaments')
+            compact(
+                'tournaments',
+                'teams'
+            )
         );
     }
 
@@ -39,16 +44,21 @@ class TournamentController extends Controller
             'start_date' => 'required',
             'end_date' => 'required',
             'status' => 'required',
+            'teams' => 'array'
         ]);
 
-        Tournament_model::create([
-
+        $tournament = Tournament_model::create([
             'name' => $request->name,
             'start_date' => $request->start_date,
             'end_date' => $request->end_date,
             'status' => $request->status,
-
         ]);
+
+        if ($request->teams) {
+            $tournament->teams()->sync(
+                $request->teams
+            );
+        }
 
         return redirect()->route('tournaments.index')
             ->with('success', 'Tournament Created Successfully');
@@ -60,16 +70,12 @@ class TournamentController extends Controller
     public function show($id)
     {
         $tournament = Tournament_model::with([
-
+            'teams',
             'matches.team1',
             'matches.team2'
-
         ])->findOrFail($id);
 
-        $teams = Teams_model::select(
-            'id',
-            'team_name'
-        )->get();
+        $teams = $tournament->teams;
 
         return view(
             'admin.tournaments.show',
@@ -103,6 +109,10 @@ class TournamentController extends Controller
             'status' => $request->status,
 
         ]);
+
+        $tournament->teams()->sync(
+            $request->teams ?? []
+        );
 
         return redirect()->back()
             ->with('success', 'Tournament Updated');
