@@ -9,6 +9,8 @@ return [
     'players' => 'Players',
     'matches' => 'Matches',
     'leaderboard' => 'Leaderboard',
+    'users' => 'Users',
+    'global_leaderboard' => 'Global Leaderboard',
     'logout' => 'Logout',
 
     // Tournament

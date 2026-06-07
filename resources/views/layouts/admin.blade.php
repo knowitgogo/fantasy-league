@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="{{ app()->getLocale() }}">
 
 <head>
 
@@ -165,6 +165,7 @@
 
                         </div>
 
+                        <!-- Current Locale: {{ app()->getLocale() }} -->
                         <a href="{{ route('lang.switch', 'nl') }}">
                             NL
                         </a>
@@ -208,4 +209,7 @@
 
 </body>
 
+<div style="background:red;color:white;padding:10px;">
+    TESTING 123
+</div>
 </html>
