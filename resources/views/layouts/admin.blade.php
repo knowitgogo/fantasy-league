@@ -51,42 +51,42 @@
                 <a href="{{ route('admin.dashboard') }}"
                     class="group flex items-center rounded-xl px-3 py-3 text-sm font-medium text-slate-400 transition hover:bg-indigo-600 hover:text-white">
 
-                    Dashboard
+                    {{ __('messages.dashboard') }}
 
                 </a>
 
                 <a href="{{ route('tournaments.index') }}"
                     class="group flex items-center rounded-xl px-3 py-3 text-sm font-medium text-slate-400 transition hover:bg-indigo-600 hover:text-white">
 
-                    Tournaments
+                    {{ __('messages.tournaments') }}
 
                 </a>
 
                 <a href="{{ route('teams.index') }}"
                     class="group flex items-center rounded-xl px-3 py-3 text-sm font-medium text-slate-400 transition hover:bg-indigo-600 hover:text-white">
 
-                    Teams
+                    {{ __('messages.teams') }}
 
                 </a>
 
                 <a href="{{ route('players.index') }}"
                     class="group flex items-center rounded-xl px-3 py-3 text-sm font-medium text-slate-400 transition hover:bg-indigo-600 hover:text-white">
 
-                    Players
+                    {{ __('messages.players') }}
 
                 </a>
 
                 <a href="{{ route('admin.users') }}"
                     class="group flex items-center rounded-xl px-3 py-3 text-sm font-medium text-slate-400 transition hover:bg-indigo-600 hover:text-white">
 
-                    Users
+                    {{ __('messages.users') }}
 
                 </a>
 
                 <a href="{{ route('leaderboard.global') }}"
                     class="group flex items-center rounded-xl px-3 py-3 text-sm font-medium text-slate-400 transition hover:bg-indigo-600 hover:text-white">
 
-                    Global Leaderboard
+                    {{ __('messages.global_leaderboard') }}
 
                 </a>
 
@@ -165,6 +165,15 @@
 
                         </div>
 
+                        <a href="{{ route('lang.switch', 'nl') }}">
+                            NL
+                        </a>
+
+                        
+                        <a href="{{ route('lang.switch', 'en') }}">
+                            EN
+                        </a>
+
                         <form method="POST"
                             action="{{ route('logout') }}">
 
@@ -173,7 +182,7 @@
                             <button type="submit"
                                 class="rounded-lg border border-slate-700 bg-slate-900 px-4 py-2 text-sm text-slate-300 transition hover:bg-slate-800 hover:text-white">
 
-                                Logout
+                                {{ __('messages.logout') }}
 
                             </button>
 

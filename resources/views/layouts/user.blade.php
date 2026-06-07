@@ -122,6 +122,19 @@
                             My Teams
 
                         </a>
+                        <a href="{{ route('lang.switch', 'en') }}"
+                        class="px-3 py-2 bg-blue-600 rounded text-white">
+
+                            EN
+
+                        </a>
+
+                        <a href="{{ route('lang.switch', 'nl') }}"
+                        class="px-3 py-2 bg-orange-600 rounded text-white">
+
+                            NL
+
+                        </a>
 
                         <form method="POST"
                             action="{{ route('logout') }}">

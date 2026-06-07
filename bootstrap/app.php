@@ -11,11 +11,21 @@ return Application::configure(basePath: dirname(__DIR__))
         commands: __DIR__.'/../routes/console.php',
         health: '/up',
     )
-    ->withMiddleware(function (Middleware $middleware): void {
-        $middleware->alias([
-            'admin' => AdminMiddleware::class,
-        ]);
-    })
+    
+
+    ->withMiddleware(function ($middleware) {
+
+    $middleware->alias([
+        'admin' => \App\Http\Middleware\AdminMiddleware::class,
+    ]);
+
+    $middleware->append(
+        \App\Http\Middleware\SetLanguage::class
+    );
+
+})
+
+    
     ->withExceptions(function (Exceptions $exceptions): void {
         //
     })->create();
