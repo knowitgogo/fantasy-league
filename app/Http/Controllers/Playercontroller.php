@@ -99,6 +99,18 @@ class PlayerController extends Controller
             ->with('success', 'Player Updated Successfully');
     }
 
+
+    //searching players
+    public function search(Request $request)
+    {
+        $players = Players_model::where(
+            'player_name',
+            'LIKE',
+            '%' . $request->keyword . '%'
+        )->get();
+
+        return response()->json($players);
+    }
     /**
      * Remove the specified resource from storage.
      */

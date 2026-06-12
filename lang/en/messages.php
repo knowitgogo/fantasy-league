@@ -43,4 +43,35 @@ return [
     'edit' => 'Edit',
     'update' => 'Update',
     'cancel' => 'Cancel',
+
+
+    'total_users' => 'Total Users',
+
+    'active_users' => 'Active Users',
+
+    'live_upcoming' => 'Live & Upcoming',
+
+    'registered_teams' => 'Registered Teams',
+
+    'in_database' => 'In Database',
+
+    'managed_through_tournaments' => 'Managed Through Tournaments',
+
+    'recent_matches' => 'Recent Matches',
+
+    'recent_matches_description' => 'View recently created and updated matches.',
+
+    'control_center' => 'Control Center',
+
+    'welcome' => 'Welcome',
+
+    'fantasy_admin' => 'Fantasy Admin',
+
+    'administrator' => 'Administrator',
+
+    'recycle_bin' => 'Recycle Bin',
+
+    'global_leaderboard' => 'Global Leaderboard',
+
+    'users' => 'Users',
 ];

@@ -34,6 +34,16 @@
     @endif
 
     <!-- TABLE -->
+    <div class="mb-4">
+
+        <input
+            type="text"
+            id="searchPlayer"
+            placeholder="Search Player"
+            class="border p-2 rounded">
+
+    </div>
+    <!-- <div id="searchResults"></div> -->
 
     <div class="overflow-x-auto bg-slate-900 rounded-2xl border border-slate-700">
 
@@ -54,11 +64,11 @@
 
             </thead>
 
-            <tbody>
+            <tbody id="playersTable">
 
                 @foreach($players as $player)
 
-                <tr class="border-t border-slate-700 hover:bg-slate-800 transition">
+                <tr class=" border-t border-slate-700 hover:bg-slate-800 transition">
 
                     <td class="p-4">
 
@@ -337,7 +347,90 @@
 </div>
 
 <!-- JAVASCRIPT -->
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
 
+<script>
+    $("#searchPlayer").keyup(function() {
+
+        let keyword = $(this).val();
+
+        $.ajax({
+
+            url: "{{ route('players.search') }}",
+
+            type: "GET",
+
+            data: {
+                keyword: keyword
+            },
+
+            success: function(players) {
+
+                let rows = "";
+
+                players.forEach(function(player) {
+
+                    rows += `
+                    <tr class="border-t border-slate-700">
+
+                        <td class="p-4">
+                            ${player.player_name}
+                        </td>
+
+                        <td class="p-4">
+                            ${player.player_price}
+                        </td>
+
+                        <td class="p-4">
+                            ${player.age}
+                        </td>
+
+                        <td class="p-4">
+                            ${player.country}
+                        </td>
+
+                        <td class="p-4 flex gap-2">
+                           
+
+                        <button
+                            onclick="openEditModal(
+                                '${player.id}',
+                                '${player.player_name}',
+                                '${player.player_price}'
+                            )"
+                            class="bg-yellow-500 hover:bg-yellow-600 text-white px-3 py-1 rounded">
+
+                            Edit
+
+                        </button>
+
+                        <form action="/admin/players/${player.id}"
+                            method="POST"
+                            onsubmit="return confirm('Delete this player?')">
+
+                            @csrf
+                            @method('DELETE')
+
+                            <button type="submit"
+                                class="bg-red-600 hover:bg-red-700 text-white px-3 py-1 rounded">
+
+                                Delete
+
+                            </button>
+                        </td>
+
+                    </tr>
+                `;
+                });
+
+                $("#playersTable").html(rows);
+
+            }
+
+        });
+
+    });
+</script>
 <script>
     function openCreateModal() {
         document.getElementById('createModal')

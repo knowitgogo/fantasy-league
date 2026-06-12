@@ -1,4 +1,5 @@
 <?php
+
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
@@ -27,12 +28,11 @@ Route::get('/', function () {
 
 Route::get('/dashboard', function () {
 
-    if(Auth::user()->role == 'admin'){
+    if (Auth::user()->role == 'admin') {
         return redirect()->route('admin.dashboard');
     }
 
     return redirect()->route('user.dashboard');
-
 })->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::middleware('auth')->group(function () {
@@ -40,15 +40,16 @@ Route::middleware('auth')->group(function () {
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
-Route::get('/admin/dashboard',
+Route::get(
+    '/admin/dashboard',
     [AdminController::class, 'index']
-)->middleware(['auth','admin'])
- ->name('admin.dashboard');
+)->middleware(['auth', 'admin'])
+    ->name('admin.dashboard');
 
-require __DIR__.'/auth.php';
+require __DIR__ . '/auth.php';
 
 
-Route::middleware(['auth','admin'])->prefix('admin')->group(function () {
+Route::middleware(['auth', 'admin'])->prefix('admin')->group(function () {
 
     Route::resource('tournaments', TournamentController::class);
     Route::resource('teams', TeamController::class);
@@ -67,7 +68,7 @@ Route::post(
     [PlayerScoreController::class, 'saveScores']
 )->name('matches.scores.save');
 
-Route::middleware(['auth','admin'])
+Route::middleware(['auth', 'admin'])
     ->prefix('admin')
     ->group(function () {
 
@@ -77,7 +78,6 @@ Route::middleware(['auth','admin'])
             'tournaments/{tournament}/matches',
             [MatchController::class, 'storeTournamentMatch']
         )->name('tournaments.matches.store');
-
     });
 
 Route::get(
@@ -94,17 +94,17 @@ Route::post(
 Route::get('/user/dashboard', function () {
     return view('user.dashboard');
 })->middleware('auth')
- ->name('user.dashboard');
+    ->name('user.dashboard');
 
 
 Route::get(
     '/admin/users',
     [UserManagementController::class, 'index']
-)->middleware(['auth','admin'])
- ->name('admin.users');
+)->middleware(['auth', 'admin'])
+    ->name('admin.users');
 
 
- Route::get(
+Route::get(
 
     '/leaderboard/generate/{matchId}',
 
@@ -152,14 +152,14 @@ Route::get(
     [LeaderboardController::class, 'globalLeaderboard']
 
 )->middleware(['auth', 'admin'])
- ->name('leaderboard.global');
+    ->name('leaderboard.global');
 
 
- Route::get(
+Route::get(
     '/user/dashboard',
     [UserDashboardController::class, 'index']
 )->middleware('auth')
- ->name('user.dashboard');
+    ->name('user.dashboard');
 
 // user side
 Route::get(
@@ -175,7 +175,7 @@ Route::get(
 
 
 
- Route::get(
+Route::get(
 
     '/user/tournament/{id}/matches',
 
@@ -227,7 +227,11 @@ Route::get(
 
 
 
-
+//searching player route
+Route::get(
+    '/search-player',
+    [PlayerController::class, 'search']
+)->name('players.search');
 
 
 
@@ -248,7 +252,6 @@ Route::get('/lang/{locale}', function ($locale) {
     }
 
     return redirect()->back();
-
 })->name('lang.switch');
 
 

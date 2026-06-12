@@ -18,7 +18,7 @@
 
             <h1 class="mt-1 text-3xl font-bold text-white">
 
-                Dashboard
+                {{ __('messages.dashboard') }}
 
             </h1>
 
@@ -50,7 +50,7 @@
 
                 <p class="text-sm text-slate-400">
 
-                    Total Users
+                    {{ __('messages.total_users') }}
 
                 </p>
 
@@ -72,7 +72,7 @@
 
             <p class="mt-2 text-sm text-slate-400">
 
-                Active users
+                {{ __('messages.active_users') }}
 
             </p>
 
@@ -87,7 +87,7 @@
 
                 <p class="text-sm text-slate-400">
 
-                    Tournaments
+                    {{ __('messages.tournaments') }}
 
                 </p>
 
@@ -101,7 +101,7 @@
 
             <p class="mt-2 text-sm text-slate-400">
 
-                Live & Upcoming
+                {{ __('messages.live_upcoming') }}
 
             </p>
 
@@ -116,7 +116,7 @@
 
                 <p class="text-sm text-slate-400">
 
-                    Teams
+                    {{ __('messages.teams') }}
 
                 </p>
 
@@ -130,7 +130,7 @@
 
             <p class="mt-2 text-sm text-slate-400">
 
-                Registered Teams
+                {{ __('messages.registered_teams') }}
 
             </p>
 
@@ -145,7 +145,7 @@
 
                 <p class="text-sm text-slate-400">
 
-                    Players
+                    {{ __('messages.players') }}
 
                 </p>
 
@@ -159,7 +159,7 @@
 
             <p class="mt-2 text-sm text-slate-400">
 
-                In Database
+                {{ __('messages.in_database') }}
 
             </p>
 
@@ -174,7 +174,7 @@
 
                 <p class="text-sm text-slate-400">
 
-                    Matches
+                    {{ __('messages.matches') }}
 
                 </p>
 
@@ -188,7 +188,7 @@
 
             <p class="mt-2 text-sm text-slate-400">
 
-                Managed Through Tournaments
+                {{ __('messages.managed_through_tournaments') }}
 
             </p>
 
@@ -202,7 +202,7 @@
 
         <h2 class="mb-6 text-2xl font-bold text-white">
 
-            Recent Matches
+            {{ __('messages.recent_matches') }}
 
         </h2>
 
@@ -210,7 +210,7 @@
 
             <p class="text-slate-400">
 
-                Recent matches will appear here.
+                {{ __('messages.recent_matches_description') }}
 
             </p>
 

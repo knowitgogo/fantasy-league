@@ -41,4 +41,35 @@ return [
     'edit' => 'Bewerken',
     'update' => 'Bijwerken',
     'cancel' => 'Annuleren',
+
+
+    'total_users' => 'Totaal Gebruikers',
+
+    'active_users' => 'Actieve Gebruikers',
+
+    'live_upcoming' => 'Live & Aankomende',
+
+    'registered_teams' => 'Geregistreerde Teams',
+
+    'in_database' => 'In Database',
+
+    'managed_through_tournaments' => 'Beheerd via Toernooien',
+
+    'recent_matches' => 'Recente Wedstrijden',
+
+    'recent_matches_description' => 'Bekijk recent aangemaakte en bijgewerkte wedstrijden.',
+
+    'control_center' => 'Controlecentrum',
+
+    'welcome' => 'Welkom',
+
+    'fantasy_admin' => 'Fantasy Beheer',
+
+    'administrator' => 'Beheerder',
+
+    'recycle_bin' => 'Prullenbak',
+
+    'global_leaderboard' => 'Algemeen Klassement',
+
+    'users' => 'Gebruikers',
 ];

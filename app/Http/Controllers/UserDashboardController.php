@@ -73,5 +73,15 @@ class UserDashboardController extends Controller
                 'liveMatches'
             )
         );
+
+        // return response()->json([
+        //     'myTeams' => $myTeams,
+        //     'matchesJoined' => $matchesJoined,
+        //     'upcomingMatch' => $upcomingMatch,
+        //     'rank' => $rank,
+        //     'upcomingMatches' => $upcomingMatches,
+        //     'liveMatches' => $liveMatches,
+        // ]);
     }
+    
 }
