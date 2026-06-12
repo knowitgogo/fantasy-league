@@ -5,6 +5,7 @@ namespace Database\Seeders;
 use App\Models\User;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\DB;
 
 class DatabaseSeeder extends Seeder
 {
@@ -15,25 +16,28 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        User::create([
+        \App\Models\User::create([
+
             'name' => 'Admin',
+
             'email' => 'admin@gmail.com',
+
             'password' => bcrypt('password'),
-            'role' => 'admin',
+
+            'wallet_balance' => 0,
+
+            'role' => 'admin'
+
         ]);
 
-        User::create([
-            'name' => 'Manager',
-            'email' => 'manager@gmail.com',
-            'password' => bcrypt('password'),
-            'role' => 'manager',
-        ]);
+        \App\Models\User::factory(10)->create();
 
-        User::create([
-            'name' => 'User',
-            'email' => 'user@gmail.com',
-            'password' => bcrypt('password'),
-            'role' => 'user',
-        ]);
+        \App\Models\Tournament_model::factory(3)->create();
+
+        \App\Models\Teams_model::factory(5)->create();
+
+        \App\Models\Players_model::factory(30)->create();
+
+        \App\Models\Matches_model::factory(10)->create();
     }
 }

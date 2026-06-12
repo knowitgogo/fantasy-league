@@ -32,6 +32,7 @@ class AuthenticatedSessionController extends Controller
         if ($user && $user->role === 'admin') {
             return redirect()->intended(route('admin.dashboard', absolute: false));
         }
+        session(['locale' => 'en']);
 
         return redirect()->intended(route('dashboard', absolute: false));
     }
