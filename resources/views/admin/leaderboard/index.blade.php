@@ -8,14 +8,14 @@
 
         <h1 class="text-3xl font-bold text-white">
 
-            Match Leaderboard
+            {{ __('Match Leaderboard') }}
 
         </h1>
 
         <p class="mt-2 text-slate-400">
 
             {{ $match->team1->team_name }}
-            vs
+            {{ __('vs') }}
             {{ $match->team2->team_name }}
 
         </p>
@@ -31,19 +31,19 @@
                 <tr>
 
                     <th class="p-4 text-left">
-                        Rank
+                    {{ __('Rank') }}
                     </th>
 
                     <th class="p-4 text-left">
-                        User
+                    {{ __('User') }}
                     </th>
 
                     <th class="p-4 text-left">
-                        Fantasy Points
+                    {{ __('Fantasy Points') }}
                     </th>
 
                     <th class="p-4 text-left">
-                        Wallet Balance
+                    {{ __('Wallet Balance') }}
                     </th>
 
                 </tr>
@@ -89,7 +89,7 @@
                         <td colspan="4"
                             class="p-6 text-center text-slate-400">
 
-                            No leaderboard data available.
+                        {{ __('No leaderboard data available.') }}
 
                         </td>
 

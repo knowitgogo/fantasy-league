@@ -6,6 +6,7 @@ use App\Models\Matches_model;
 use App\Models\FantasyTeams_model;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
+use App\Enums\MatchStatus;
 
 class UserDashboardController extends Controller
 {
@@ -24,13 +25,32 @@ class UserDashboardController extends Controller
         )->distinct('match_id')
             ->count();
 
-        $upcomingMatch = Matches_model::with([
+        // $upcomingMatch = Matches_model::with([
+        //     'team1',
+        //     'team2'
+        // ])
+        //     ->where('status', 'Upcoming')
+        //     ->orderBy('match_date')
+        //     ->first();
+        // $upcomingMatches = Matches_model::with([
+        //     'team1',
+        //     'team2'
+        // ])
+        //     ->where('status', 'Upcoming')
+        //     ->orderBy('match_date')
+        //     ->take(5)
+        //     ->get();
+
+        $upcomingMatches = Matches_model::with([
             'team1',
             'team2'
         ])
-            ->where('status', 'Upcoming')
+            ->where('status', MatchStatus::UPCOMING->value)
             ->orderBy('match_date')
-            ->first();
+            ->take(5)
+            ->get();
+
+        $upcomingMatch = $upcomingMatches->first();
 
         $leaderboard = User::where(
             'role',
@@ -45,20 +65,11 @@ class UserDashboardController extends Controller
                 return $item->id == $user->id;
             }) + 1;
 
-        $upcomingMatches = Matches_model::with([
-            'team1',
-            'team2'
-        ])
-            ->where('status', 'Upcoming')
-            ->orderBy('match_date')
-            ->take(5)
-            ->get();
-
         $liveMatches = Matches_model::with([
             'team1',
             'team2'
         ])
-            ->where('status', 'Live')
+            ->where('status', MatchStatus::LIVE->value)
             ->orderBy('match_date')
             ->get();
 

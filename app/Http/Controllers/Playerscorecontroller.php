@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\Playerscore_model;
 use App\Models\Matches_model;
 use App\Models\Players_model;
+use App\Models\MatchPlayers_model;
 
 class PlayerscoreController extends Controller
 {
@@ -58,17 +59,36 @@ class PlayerscoreController extends Controller
 
         ]);
 
-        $match = Matches_model::findOrFail($request->match_id);
+        // $match = Matches_model::findOrFail($request->match_id);
 
-        $player = Players_model::findOrFail($request->player_id);
+        // $player = Players_model::findOrFail($request->player_id);
 
-        if (
-            $player->team_id != $match->team1_id &&
-            $player->team_id != $match->team2_id
-        ) {
+        // if (
+        //     $player->team_id != $match->team1_id &&
+        //     $player->team_id != $match->team2_id
+        // ) {
+        //     return back()->withErrors([
+
+        //         'player_id' => 'Selected player does not belong to this match.'
+
+        //     ]);
+        // }
+        $isPlaying = MatchPlayers_model::where(
+            'match_id',
+            $request->match_id
+        )
+        ->where(
+            'player_id',
+            $request->player_id
+        )
+        ->exists();
+
+        if (!$isPlaying) {
+
             return back()->withErrors([
 
-                'player_id' => 'Selected player does not belong to this match.'
+                'player_id' =>
+                __('Selected player is not part of this match.')
 
             ]);
         }
@@ -84,7 +104,7 @@ class PlayerscoreController extends Controller
         ]);
 
         return redirect()->back()
-            ->with('success', 'Player Score Added');
+            ->with('success', __('Player Score Added'));
     }
 
     /**
@@ -118,17 +138,36 @@ class PlayerscoreController extends Controller
 
         ]);
 
-        $match = Matches_model::findOrFail($request->match_id);
+        // $match = Matches_model::findOrFail($request->match_id);
 
-        $player = Players_model::findOrFail($request->player_id);
+        // $player = Players_model::findOrFail($request->player_id);
 
-        if (
-            $player->team_id != $match->team1_id &&
-            $player->team_id != $match->team2_id
-        ) {
+        // if (
+        //     $player->team_id != $match->team1_id &&
+        //     $player->team_id != $match->team2_id
+        // ) {
+        //     return back()->withErrors([
+
+        //         'player_id' => 'Selected player does not belong to this match.'
+
+        //     ]);
+        // }
+        $isPlaying = MatchPlayers_model::where(
+            'match_id',
+            $request->match_id
+        )
+        ->where(
+            'player_id',
+            $request->player_id
+        )
+        ->exists();
+
+        if (!$isPlaying) {
+
             return back()->withErrors([
 
-                'player_id' => 'Selected player does not belong to this match.'
+                'player_id' =>
+                __('Selected player is not part of this match.')
 
             ]);
         }
@@ -146,7 +185,7 @@ class PlayerscoreController extends Controller
         ]);
 
         return redirect()->back()
-            ->with('success', 'Player Score Updated');
+            ->with('success', __('Player Score Updated'));
     }
 
     /**
@@ -159,7 +198,7 @@ class PlayerscoreController extends Controller
         $playerScore->delete();
 
         return redirect()->back()
-            ->with('success', 'Player Score Deleted');
+            ->with('success', __('Player Score Deleted'));
     }
 
 
@@ -225,6 +264,6 @@ class PlayerscoreController extends Controller
         }
 
         return redirect()->back()
-            ->with('success', 'Scores Updated Successfully');
+            ->with('success', __('Scores Updated Successfully'));
     }
 }

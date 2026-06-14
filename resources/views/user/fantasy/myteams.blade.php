@@ -10,13 +10,13 @@
 
         <h1 class="text-3xl font-bold text-white">
 
-            My Fantasy Teams
+            {{ __('My Fantasy Teams') }}
 
         </h1>
 
         <p class="mt-2 text-slate-400">
 
-            View all your created fantasy teams
+            {{ __('View all your created fantasy teams') }}
 
         </p>
 
@@ -40,12 +40,12 @@
 
                 <p class="mt-2 text-slate-400">
 
-                    Match:
+                    {{ __('Match') }}:
 
                     <span class="text-indigo-400">
 
                         {{ $team->match->team1->team_name }}
-                        vs
+                        {{ __('vs') }}
                         {{ $team->match->team2->team_name }}
 
                     </span>
@@ -57,14 +57,14 @@
             <a href="{{ route('fantasy.team.show', $team->id) }}"
                 class="rounded-lg bg-indigo-600 px-4 py-2 text-white">
     
-                View Team
+                {{ __('View Team') }}
     
             </a>
             <div class="mt-6">
 
                 <span class="rounded-full bg-green-600/20 px-4 py-2 text-sm font-semibold text-green-400">
 
-                    Team Created Successfully
+                    {{ __('Team Created Successfully') }}
 
                 </span>
 
@@ -78,7 +78,7 @@
 
         <div class="rounded-2xl border border-slate-700 bg-slate-900 p-8 text-center text-slate-400">
 
-            No fantasy teams created yet.
+            {{ __('No fantasy teams created yet.') }}
 
         </div>
 

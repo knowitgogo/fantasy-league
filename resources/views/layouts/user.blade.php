@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="{{ app()->getLocale() === 'nl' ? 'nl-NL' : 'en' }}">
 
 <head>
 
@@ -8,7 +8,7 @@
     <meta name="viewport"
         content="width=device-width, initial-scale=1.0">
 
-    <title>Fantasy User Panel</title>
+    <title>{{ __('Fantasy User Panel') }}</title>
 
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 
@@ -28,7 +28,7 @@
 
                 <h1 class="text-2xl font-bold text-indigo-500">
 
-                    Fantasy League
+                    {{ __('Fantasy League') }}
 
                 </h1>
 
@@ -41,35 +41,35 @@
                 <a href="{{ route('user.dashboard') }}"
                     class="text-slate-300 transition hover:text-white">
 
-                    Dashboard
+                    {{ __('Dashboard') }}
 
                 </a>
 
                 <a href="{{ route('user.tournaments') }}"
                     class="text-slate-300 transition hover:text-white">
 
-                    Matches
+                    {{ __('Matches') }}
 
                 </a>
 
                 <a href="{{ route('fantasy.myteams') }}"
                     class="text-slate-300 transition hover:text-white">
 
-                    My Teams
+                    {{ __('My Teams') }}
 
                 </a>
 
                 <a href="#"
                     class="text-slate-300 transition hover:text-white">
 
-                    Leaderboard
+                    {{ __('Leaderboard') }}
 
                 </a>
 
                 <a href="#"
                     class="text-slate-300 transition hover:text-white">
 
-                    Profile
+                    {{ __('Profile') }}
 
                 </a>
 
@@ -112,29 +112,19 @@
                         <a href="{{ route('profile.edit') }}"
                             class="block px-4 py-3 text-sm text-slate-300 hover:bg-slate-800">
 
-                            My Profile
+                            {{ __('My Profile') }}
 
                         </a>
 
                         <a href="{{ route('fantasy.myteams') }}"
                             class="block px-4 py-3 text-sm text-slate-300 hover:bg-slate-800">
 
-                            My Teams
+                            {{ __('My Teams') }}
 
                         </a>
-                        <a href="{{ route('lang.switch', 'en') }}"
-                        class="px-3 py-2 bg-blue-600 rounded text-white">
-
-                            EN
-
-                        </a>
-
-                        <a href="{{ route('lang.switch', 'nl') }}"
-                        class="px-3 py-2 bg-orange-600 rounded text-white">
-
-                            NL
-
-                        </a>
+                        <div class="px-3 py-2">
+                            <x-language-switcher />
+                        </div>
 
                         <form method="POST"
                             action="{{ route('logout') }}">
@@ -144,7 +134,7 @@
                             <button type="submit"
                                 class="w-full px-4 py-3 text-left text-sm text-red-400 hover:bg-slate-800">
 
-                                Logout
+                                {{ __('Logout') }}
 
                             </button>
 

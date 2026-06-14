@@ -9,13 +9,13 @@
     <div class="flex justify-between items-center mb-6">
 
         <h1 class="text-3xl font-bold text-white">
-            Players
+            {{ __('Players') }}
         </h1>
 
         <button onclick="openCreateModal()"
             class="bg-indigo-600 hover:bg-indigo-700 text-white px-5 py-2 rounded-lg">
 
-            Add Player
+            {{ __('Add Player') }}
 
         </button>
 
@@ -39,7 +39,7 @@
         <input
             type="text"
             id="searchPlayer"
-            placeholder="Search Player"
+            placeholder="{{ __('Search Player') }}"
             class="border p-2 rounded">
 
     </div>
@@ -53,12 +53,12 @@
 
                 <tr>
 
-                    <th class="p-4 text-left">Player Name</th>
-                    <th class="p-4 text-left">Price</th>
-                    <th class="p-4 text-left">Age</th>
-                    <th class="p-4 text-left">Country</th>
+                    <th class="p-4 text-left">{{ __('Player Name') }}</th>
+                    <th class="p-4 text-left">{{ __('Price') }}</th>
+                    <th class="p-4 text-left">{{ __('Age') }}</th>
+                    <th class="p-4 text-left">{{ __('Country') }}</th>
                     <!-- <th>Teams</th> -->
-                    <th class="p-4 text-left">Actions</th>
+                    <th class="p-4 text-left">{{ __('Actions') }}</th>
 
                 </tr>
 
@@ -122,7 +122,7 @@
                             )"
                             class="bg-yellow-500 hover:bg-yellow-600 text-white px-3 py-1 rounded">
 
-                            Edit
+                            {{ __('Edit') }}
 
                         </button>
 
@@ -130,7 +130,8 @@
 
                         <form action="{{ route('players.destroy', $player->id) }}"
                             method="POST"
-                            onsubmit="return confirm('Delete this player?')">
+                            data-confirm="{{ __('Delete this player?') }}"
+                            onsubmit="return confirm(this.dataset.confirm)">
 
                             @csrf
                             @method('DELETE')
@@ -138,7 +139,7 @@
                             <button type="submit"
                                 class="bg-red-600 hover:bg-red-700 text-white px-3 py-1 rounded">
 
-                                Delete
+                                {{ __('Delete') }}
 
                             </button>
 
@@ -170,7 +171,7 @@
     <div class="w-full max-w-lg rounded-2xl border border-slate-700 bg-slate-900 p-6 text-white shadow-2xl">
 
         <h2 class="mb-6 text-2xl font-bold text-white">
-            Create Player
+            {{ __('Create Player') }}
         </h2>
 
         <form action="{{ route('players.store') }}"
@@ -184,7 +185,7 @@
             <div>
 
                 <label class="mb-2 block font-semibold text-slate-300">
-                    Player Name
+                    {{ __('Player Name') }}
                 </label>
 
                 <input type="text"
@@ -200,7 +201,7 @@
             <div>
 
                 <label class="mb-2 block font-semibold text-slate-300">
-                    Age
+                    {{ __('Age') }}
                 </label>
 
                 <input type="number"
@@ -214,7 +215,7 @@
             <div>
 
                 <label class="mb-2 block font-semibold text-slate-300">
-                    Country
+                    {{ __('Country') }}
                 </label>
 
                 <input type="text"
@@ -228,13 +229,13 @@
             <div>
 
                 <label class="mb-2 block font-semibold text-slate-300">
-                    Player Price
+                    {{ __('Player Price') }}
                 </label>
 
                 <input type="number"
                     step="0.1"
                     name="player_price"
-                    placeholder="Enter player price"
+                    placeholder="{{ __('Enter player price') }}"
                     class="w-full rounded-lg border border-slate-700 bg-slate-800 px-4 py-3 text-white placeholder:text-slate-400 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500">
 
             </div>
@@ -247,14 +248,14 @@
                     onclick="closeCreateModal()"
                     class="rounded-lg bg-slate-700 px-4 py-2 text-white transition hover:bg-slate-600">
 
-                    Cancel
+                    {{ __('Cancel') }}
 
                 </button>
 
                 <button type="submit"
                     class="rounded-lg bg-indigo-600 px-4 py-2 text-white transition hover:bg-indigo-700">
 
-                    Save
+                    {{ __('Save') }}
 
                 </button>
 
@@ -274,7 +275,7 @@
     <div class="w-full max-w-lg rounded-2xl border border-slate-700 bg-slate-900 p-6 text-white shadow-2xl">
 
         <h2 class="mb-6 text-2xl font-bold text-white">
-            Edit Player
+            {{ __('Edit Player') }}
         </h2>
 
         <form id="editForm"
@@ -289,7 +290,7 @@
             <div>
 
                 <label class="mb-2 block font-semibold text-slate-300">
-                    Player Name
+                    {{ __('Player Name') }}
                 </label>
 
                 <input type="text"
@@ -308,7 +309,7 @@
             <div>
 
                 <label class="mb-2 block font-semibold text-slate-300">
-                    Price
+                    {{ __('Price') }}
                 </label>
 
                 <input type="number"
@@ -327,14 +328,14 @@
                     onclick="closeEditModal()"
                     class="rounded-lg bg-slate-700 px-4 py-2 text-white transition hover:bg-slate-600">
 
-                    Cancel
+                    {{ __('Cancel') }}
 
                 </button>
 
                 <button type="submit"
                     class="rounded-lg bg-indigo-600 px-4 py-2 text-white transition hover:bg-indigo-700">
 
-                    Update
+                    {{ __('Update') }}
 
                 </button>
 
@@ -406,7 +407,8 @@
 
                         <form action="/admin/players/${player.id}"
                             method="POST"
-                            onsubmit="return confirm('Delete this player?')">
+                            data-confirm="{{ __('Delete this player?') }}"
+                            onsubmit="return confirm(this.dataset.confirm)">
 
                             @csrf
                             @method('DELETE')
@@ -414,7 +416,7 @@
                             <button type="submit"
                                 class="bg-red-600 hover:bg-red-700 text-white px-3 py-1 rounded">
 
-                                Delete
+                                {{ __('Delete') }}
 
                             </button>
                         </td>

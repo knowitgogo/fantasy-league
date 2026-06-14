@@ -10,14 +10,14 @@
 
         <h1 class="text-3xl font-bold text-white">
 
-            Manage Playing XI
+            {{ __('Manage Playing XI') }}
 
         </h1>
 
         <p class="mt-2 text-slate-400">
 
             {{ $match->team1->team_name }}
-            vs
+            {{ __('vs') }}
             {{ $match->team2->team_name }}
 
         </p>
@@ -74,19 +74,19 @@
                     <tr>
 
                         <th class="p-4 text-left">
-                            Select
+                            {{ __('Select') }}
                         </th>
 
                         <th class="p-4 text-left">
-                            Player
+                            {{ __('Player') }}
                         </th>
 
                         <th class="p-4 text-left">
-                            Country
+                            {{ __('Country') }}
                         </th>
 
                         <th class="p-4 text-left">
-                            Age
+                            {{ __('Age') }}
                         </th>
 
                     </tr>
@@ -163,19 +163,19 @@
                     <tr>
 
                         <th class="p-4 text-left">
-                            Select
+                            {{ __('Select') }}
                         </th>
 
                         <th class="p-4 text-left">
-                            Player
+                            {{ __('Player') }}
                         </th>
 
                         <th class="p-4 text-left">
-                            Country
+                            {{ __('Country') }}
                         </th>
 
                         <th class="p-4 text-left">
-                            Age
+                            {{ __('Age') }}
                         </th>
 
                     </tr>
@@ -237,7 +237,7 @@
             <button type="submit"
                     class="rounded-xl bg-indigo-600 px-6 py-3 text-white transition hover:bg-indigo-700">
 
-                Save Players
+                {{ __('Save Players') }}
 
             </button>
 

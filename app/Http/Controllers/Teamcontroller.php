@@ -61,7 +61,7 @@ class TeamController extends Controller
         }
 
         return redirect()->back()
-            ->with('success', 'Team Created Successfully');
+            ->with('success', __('Team Created Successfully'));
     }
 
     /**
@@ -106,7 +106,7 @@ class TeamController extends Controller
         );
 
         return redirect()->back()
-            ->with('success', 'Team Updated Successfully');
+            ->with('success', __('Team Updated Successfully'));
     }
 
     /**
@@ -119,6 +119,6 @@ class TeamController extends Controller
         $team->delete();
 
         return redirect()->back()
-            ->with('success', 'Team Deleted Successfully');
+            ->with('success', __('Team Deleted Successfully'));
     }
 }

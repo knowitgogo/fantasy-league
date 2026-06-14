@@ -41,12 +41,12 @@ class PlayerController extends Controller
         $request->validate([
 
             'player_name' => 'required',
-            'team_id' => 'required',
+            // 'team_id' => 'required',
             'player_price' => 'required',
 
         ]);
 
-        $team = Teams_model::find($request->team_id);
+        //$team = Teams_model::find($request->team_id);
 
         Players_model::create([
 
@@ -58,7 +58,7 @@ class PlayerController extends Controller
         ]);
 
         return redirect()->back()
-            ->with('success', 'Player Added Successfully');
+            ->with('success', __('Player Added Successfully'));
     }
 
     /**
@@ -84,7 +84,7 @@ class PlayerController extends Controller
     {
         $player = Players_model::findOrFail($id);
 
-        $team = Teams_model::find($request->team_id);
+        //its not used $team = Teams_model::find($request->team_id);
 
         $player->update([
 
@@ -96,7 +96,7 @@ class PlayerController extends Controller
         ]);
 
         return redirect()->back()
-            ->with('success', 'Player Updated Successfully');
+            ->with('success', __('Player Updated Successfully'));
     }
 
 
@@ -121,6 +121,6 @@ class PlayerController extends Controller
         $player->delete();
 
         return redirect()->back()
-            ->with('success', 'Player Deleted Successfully');
+            ->with('success', __('Player Deleted Successfully'));
     }
 }

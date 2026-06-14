@@ -10,13 +10,13 @@
     <div class="flex justify-between items-center mb-6">
 
         <h1 class="text-3xl font-bold text-white">
-            Teams
+            {{ __('Teams') }}
         </h1>
 
         <button onclick="openCreateModal()"
             class="bg-indigo-600 hover:bg-indigo-700 text-white px-5 py-2 rounded-lg">
 
-            Add Team
+            {{ __('Add Team') }}
 
         </button>
 
@@ -44,9 +44,9 @@
 
                 <tr>
 
-                    <th class="p-4 text-left">Team Name</th>
-                    <th class="p-4 text-left">Players</th>
-                    <th class="p-4 text-left">Actions</th>
+                    <th class="p-4 text-left">{{ __('Team Name') }}</th>
+                    <th class="p-4 text-left">{{ __('Players') }}</th>
+                    <th class="p-4 text-left">{{ __('Actions') }}</th>
                 </tr>
 
             </thead>
@@ -91,7 +91,8 @@
 
                         <form action="{{ route('teams.destroy', $team->id) }}"
                             method="POST"
-                            onsubmit="return confirm('Delete this team?')">
+                            data-confirm="{{ __('Delete this team?') }}"
+                            onsubmit="return confirm(this.dataset.confirm)">
 
                             @csrf
                             @method('DELETE')
@@ -99,7 +100,7 @@
                             <button type="submit"
                                 class="bg-red-600 hover:bg-red-700 text-white px-3 py-1 rounded">
 
-                                Delete
+                                {{ __('Delete') }}
 
                             </button>
 
@@ -131,7 +132,7 @@
     <div class="w-full max-w-lg rounded-2xl border border-slate-700 bg-slate-900 p-6 text-white shadow-2xl">
 
         <h2 class="mb-6 text-2xl font-bold text-white">
-            Create Team
+            {{ __('Create Team') }}
         </h2>
 
         <form action="{{ route('teams.store') }}"
@@ -146,7 +147,7 @@
 
                 <label class="mb-2 block font-semibold text-slate-300">
 
-                    Team Name
+                    {{ __('Team Name') }}
 
                 </label>
 
@@ -158,7 +159,7 @@
 
                     <label class="mb-2 block font-semibold text-slate-300">
 
-                        Select Players
+                        {{ __('Select Players') }}
 
                     </label>
 
@@ -193,14 +194,14 @@
                     onclick="closeCreateModal()"
                     class="rounded-lg bg-slate-700 px-4 py-2 text-white transition hover:bg-slate-600">
 
-                    Cancel
+                    {{ __('Cancel') }}
 
                 </button>
 
                 <button type="submit"
                     class="rounded-lg bg-indigo-600 px-4 py-2 text-white transition hover:bg-indigo-700">
 
-                    Save
+                    {{ __('Save') }}
 
                 </button>
 
@@ -220,7 +221,7 @@
     <div class="w-full max-w-lg rounded-2xl border border-slate-700 bg-slate-900 p-6 text-white shadow-2xl">
 
         <h2 class="mb-6 text-2xl font-bold text-white">
-            Edit Team
+            {{ __('Edit Team') }}
         </h2>
 
         <form id="editForm"
@@ -236,7 +237,7 @@
 
                 <label class="mb-2 block font-semibold text-slate-300">
 
-                    Team Name
+                    {{ __('Team Name') }}
 
                 </label>
 
@@ -251,7 +252,7 @@
 
                 <label class="mb-2 block font-semibold text-slate-300">
 
-                    Players
+                    {{ __('Players') }}
 
                 </label>
 
@@ -285,14 +286,14 @@
                     onclick="closeEditModal()"
                     class="rounded-lg bg-slate-700 px-4 py-2 text-white transition hover:bg-slate-600">
 
-                    Cancel
+                    {{ __('Cancel') }}
 
                 </button>
 
                 <button type="submit"
                     class="rounded-lg bg-indigo-600 px-4 py-2 text-white transition hover:bg-indigo-700">
 
-                    Update
+                    {{ __('Update') }}
 
                 </button>
 

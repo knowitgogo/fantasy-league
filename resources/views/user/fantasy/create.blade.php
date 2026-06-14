@@ -10,14 +10,14 @@
 
         <h1 class="text-3xl font-bold text-white">
 
-            Create Fantasy Team
+            {{ __('Create Fantasy Team') }}
 
         </h1>
 
         <p class="mt-2 text-slate-400">
 
             {{ $match->team1->team_name }}
-            vs
+            {{ __('vs') }}
             {{ $match->team2->team_name }}
 
         </p>
@@ -49,13 +49,13 @@
 
             <label class="mb-3 block text-lg font-semibold text-white">
 
-                Fantasy Team Name
+                {{ __('Fantasy Team Name') }}
 
             </label>
 
             <input type="text"
                 name="team_name"
-                placeholder="Enter your fantasy team name"
+                placeholder="{{ __('Enter your fantasy team name') }}"
                 class="w-full rounded-xl border border-slate-700 bg-slate-800 px-4 py-3 text-white focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500">
 
         </div>
@@ -81,19 +81,19 @@
                     <tr>
 
                         <th class="p-4 text-left">
-                            Select
+                            {{ __('Select') }}
                         </th>
 
                         <th class="p-4 text-left">
-                            Player
+                            {{ __('Player') }}
                         </th>
 
                         <th class="p-4 text-left">
-                            Country
+                            {{ __('Country') }}
                         </th>
 
                         <th class="p-4 text-left">
-                            Price
+                            {{ __('Price') }}
                         </th>
 
                     </tr>
@@ -176,19 +176,19 @@
                     <tr>
 
                         <th class="p-4 text-left">
-                            Select
+                            {{ __('Select') }}
                         </th>
 
                         <th class="p-4 text-left">
-                            Player
+                            {{ __('Player') }}
                         </th>
 
                         <th class="p-4 text-left">
-                            Country
+                            {{ __('Country') }}
                         </th>
 
                         <th class="p-4 text-left">
-                            Price
+                            {{ __('Price') }}
                         </th>
 
                     </tr>
@@ -254,7 +254,7 @@
 
             <h2 class="mb-6 text-xl font-bold text-white">
 
-                Captain & Vice Captain
+                {{ __('Captain & Vice Captain') }}
 
             </h2>
 
@@ -264,7 +264,7 @@
 
                     <label class="mb-3 block text-white">
 
-                        Select Captain
+                        {{ __('Select Captain') }}
 
                     </label>
 
@@ -272,7 +272,7 @@
                         class="w-full rounded-xl border border-slate-700 bg-slate-800 px-4 py-3 text-white">
 
                         <option value="">
-                            Choose Captain
+                            {{ __('Choose Captain') }}
                         </option>
 
                         @foreach($team1Players as $matchPlayer)
@@ -296,7 +296,7 @@
 
                     <p class="mt-2 text-sm text-slate-400">
 
-                        Captain gets 2x points
+                        {{ __('Captain gets 2x points') }}
 
                     </p>
 
@@ -306,7 +306,7 @@
 
                     <label class="mb-3 block text-white">
 
-                        Select Vice Captain
+                        {{ __('Select Vice Captain') }}
 
                     </label>
 
@@ -314,7 +314,7 @@
                         class="w-full rounded-xl border border-slate-700 bg-slate-800 px-4 py-3 text-white">
 
                         <option value="">
-                            Choose Vice Captain
+                            {{ __('Choose Vice Captain') }}
                         </option>
 
                         @foreach($team1Players as $matchPlayer)
@@ -337,7 +337,7 @@
 
                     <p class="mt-2 text-sm text-slate-400">
 
-                        Vice Captain gets 1.5x points
+                        {{ __('Vice Captain gets 1.5x points') }}
 
                     </p>
 
@@ -354,7 +354,7 @@
             <button type="submit"
                 class="rounded-2xl bg-indigo-600 px-8 py-3 text-white transition hover:bg-indigo-700">
 
-                Create Fantasy Team
+                {{ __('Create Fantasy Team') }}
 
             </button>
 

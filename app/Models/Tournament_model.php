@@ -24,13 +24,13 @@ class Tournament_model extends Model
 
     ];
 
-    public function legacyteams()
-    {
-        return $this->hasMany(
-            Teams_model::class,
-            'tournament_id'
-        );
-    }
+    // public function legacyteams()
+    // {
+    //     return $this->hasMany(
+    //         Teams_model::class,
+    //         'tournament_id'
+    //     );
+    // }
 
 
 

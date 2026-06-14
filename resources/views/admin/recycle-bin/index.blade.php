@@ -6,7 +6,7 @@
 
     <h1 class="mb-8 text-3xl font-bold text-white">
 
-        Recycle Bin
+        {{ __('Recycle Bin') }}
 
     </h1>
 
@@ -16,7 +16,7 @@
 
         <h2 class="mb-4 text-xl font-bold text-red-400">
 
-            Deleted Tournaments
+            {{ __('Deleted Tournaments') }}
 
         </h2>
 
@@ -32,7 +32,7 @@
 
             <p class="text-slate-400">
 
-                No deleted tournaments
+                {{ __('No deleted tournaments') }}
 
             </p>
 
@@ -50,7 +50,7 @@
 
         <h2 class="mb-4 text-xl font-bold text-red-400">
 
-            Deleted Matches
+            {{ __('Deleted Matches') }}
 
         </h2>
 
@@ -59,7 +59,7 @@
             <div class="mb-2 rounded-lg bg-slate-800 p-3">
 
                 {{ $match->team1->team_name }}
-                vs
+                {{ __('vs') }}
                 {{ $match->team2->team_name }}
 
             </div>
@@ -68,7 +68,7 @@
 
             <p class="text-slate-400">
 
-                No deleted matches
+                {{ __('No deleted matches') }}
 
             </p>
 
@@ -86,7 +86,7 @@
 
         <h2 class="mb-4 text-xl font-bold text-red-400">
 
-            Deleted Teams
+            {{ __('Deleted Teams') }}
 
         </h2>
 
@@ -102,7 +102,7 @@
 
             <p class="text-slate-400">
 
-                No deleted teams
+                {{ __('No deleted teams') }}
 
             </p>
 
@@ -120,7 +120,7 @@
 
         <h2 class="mb-4 text-xl font-bold text-red-400">
 
-            Deleted Players
+            {{ __('Deleted Players') }}
 
         </h2>
 
@@ -136,7 +136,7 @@
 
             <p class="text-slate-400">
 
-                No deleted players
+                {{ __('No deleted players') }}
 
             </p>
 
@@ -154,7 +154,7 @@
 
         <h2 class="mb-4 text-xl font-bold text-red-400">
 
-            Deleted Users
+            {{ __('Deleted Users') }}
 
         </h2>
 
@@ -170,7 +170,7 @@
 
             <p class="text-slate-400">
 
-                No deleted users
+                {{ __('No deleted users') }}
 
             </p>
 

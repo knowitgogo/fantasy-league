@@ -83,7 +83,7 @@ class MatchController extends Controller
         if ($request->team1_id == $request->team2_id) {
             return back()->withErrors([
 
-                'team2_id' => 'Both teams cannot be same.'
+                'team2_id' => __('Both teams cannot be the same.')
 
             ]);
         }
@@ -104,7 +104,7 @@ class MatchController extends Controller
         ) {
             return back()->withErrors([
                 'team1_id' =>
-                'Selected teams do not belong to this tournament.'
+                __('Selected teams do not belong to this tournament.')
             ]);
         }
 
@@ -125,7 +125,7 @@ class MatchController extends Controller
         return redirect()->back()
             ->with(
                 'success',
-                'Match Created Successfully'
+                __('Match Created Successfully')
             );
     }
 
@@ -162,14 +162,14 @@ class MatchController extends Controller
         ) {
             return back()->withErrors([
                 'team1_id' =>
-                'Selected teams do not belong to this tournament.'
+                __('Selected teams do not belong to this tournament.')
             ]);
         }
 
         if ($request->team1_id == $request->team2_id) {
             return back()->withErrors([
 
-                'team2_id' => 'Both teams cannot be same.'
+                'team2_id' => __('Both teams cannot be the same.')
 
             ]);
         }
@@ -191,7 +191,7 @@ class MatchController extends Controller
         return redirect()->back()
             ->with(
                 'success',
-                'Match Created Successfully'
+                __('Match Created Successfully')
             );
     }
 
@@ -235,7 +235,7 @@ class MatchController extends Controller
         if ($request->team1_id == $request->team2_id) {
             return back()->withErrors([
 
-                'team2_id' => 'Both teams cannot be same.'
+                'team2_id' => __('Both teams cannot be the same.')
 
             ]);
         }
@@ -259,7 +259,7 @@ class MatchController extends Controller
         return redirect()->back()
             ->with(
                 'success',
-                'Match Updated Successfully'
+                __('Match Updated Successfully')
             );
     }
 
@@ -334,7 +334,7 @@ class MatchController extends Controller
         return redirect()->back()
             ->with(
                 'success',
-                'Playing players Updated Successfully'
+                __('Playing players updated successfully')
             );
     }
     public function destroy(string $id)
@@ -346,7 +346,7 @@ class MatchController extends Controller
         return redirect()->back()
             ->with(
                 'success',
-                'Match Deleted Successfully'
+                __('Match Deleted Successfully')
             );
     }
 }

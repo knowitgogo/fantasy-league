@@ -242,27 +242,8 @@ Route::get(
 )->name('recycle.bin');
 
 
-//language switcher
-Route::get('/lang/{locale}', function ($locale) {
-
-    if (in_array($locale, ['en', 'nl'])) {
-
-        session()->put('locale', $locale);
-        session()->save();
-    }
+Route::get('/lang/{locale}', function (string $locale) {
+    session()->put('locale', $locale);
 
     return redirect()->back();
-})->name('lang.switch');
-
-
-
-
-Route::get('/test-lang', function () {
-
-    session()->put('locale', 'nl');
-
-    return [
-        'locale' => session('locale'),
-        'session_id' => session()->getId(),
-    ];
-});
+})->whereIn('locale', ['en', 'nl'])->name('lang.switch');

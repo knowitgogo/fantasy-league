@@ -71,7 +71,4 @@ return [
 
     'recycle_bin' => 'Recycle Bin',
 
-    'global_leaderboard' => 'Global Leaderboard',
-
-    'users' => 'Users',
 ];

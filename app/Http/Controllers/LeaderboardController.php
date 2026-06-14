@@ -22,7 +22,7 @@ class LeaderboardController extends Controller
             return redirect()->back()
                 ->with(
                     'error',
-                    'Leaderboard already generated for this match.'
+                    __('Leaderboard already generated for this match.')
                 );
         }
 
@@ -136,7 +136,7 @@ class LeaderboardController extends Controller
         return redirect()->back()
             ->with(
                 'success',
-                'Leaderboard Generated Successfully'
+                __('Leaderboard Generated Successfully')
             );
     }
 

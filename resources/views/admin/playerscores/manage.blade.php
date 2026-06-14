@@ -12,14 +12,14 @@ use App\Models\Playerscore_model;
 
         <h1 class="text-3xl font-bold text-white">
 
-            Update Match Scores
+            {{ __('Update Match Scores') }}
 
         </h1>
 
         <p class="mt-2 text-slate-400">
 
             {{ $match->team1->team_name }}
-            vs
+            {{ __('vs') }}
             {{ $match->team2->team_name }}
 
         </p>
@@ -47,7 +47,7 @@ use App\Models\Playerscore_model;
 
                 <h2 class="text-xl font-bold text-white">
 
-                    Playing XI Players
+                    {{ __('Playing XI Players') }}
 
                 </h2>
 
@@ -61,19 +61,19 @@ use App\Models\Playerscore_model;
 
                         <th class="p-4 text-left">
 
-                            Player
+                            {{ __('Player') }}
 
                         </th>
 
                         <th class="p-4 text-left">
 
-                            Existing Score
+                            {{ __('Existing Score') }}
 
                         </th>
 
                         <th class="p-4 text-left">
 
-                            Update Score
+                            {{ __('Update Score') }}
 
                         </th>
 
@@ -138,7 +138,7 @@ use App\Models\Playerscore_model;
             <button type="submit"
                     class="rounded-xl bg-indigo-600 px-6 py-3 text-white transition hover:bg-indigo-700">
 
-                Save Scores
+                {{ __('Save Scores') }}
 
             </button>
 

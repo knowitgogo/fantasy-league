@@ -28,7 +28,7 @@
 
                         <p class="text-xs text-slate-400">
 
-                            Play • Score • Win
+                            {{ __('Play, Score, Win') }}
 
                         </p>
 
@@ -43,28 +43,28 @@
                     <a href="{{ route('user.dashboard') }}"
                         class="rounded-xl bg-indigo-600 px-4 py-2 text-sm font-semibold text-white">
 
-                        Dashboard
+                        {{ __('Dashboard') }}
 
                     </a>
 
                     <a href="{{ route('user.tournaments') }}"
                         class="rounded-xl px-4 py-2 text-sm font-semibold text-slate-300 transition hover:bg-slate-800 hover:text-white">
 
-                        Tournaments
+                        {{ __('Tournaments') }}
 
                     </a>
 
                     <a href="{{ route('fantasy.myteams') }}"
                         class="rounded-xl px-4 py-2 text-sm font-semibold text-slate-300 transition hover:bg-slate-800 hover:text-white">
 
-                        My Teams
+                        {{ __('My Teams') }}
 
                     </a>
 
                     <a href="{{ route('user.leaderboard') }}"
                         class="rounded-xl px-4 py-2 text-sm font-semibold text-slate-300 transition hover:bg-slate-800 hover:text-white">
 
-                        Leaderboard
+                        {{ __('Leaderboard') }}
 
                     </a>
 
@@ -73,7 +73,7 @@
                     <a href="{{ route('profile.edit') }}"
                         class="rounded-xl px-4 py-2 text-sm font-semibold text-slate-300 transition hover:bg-slate-800 hover:text-white">
 
-                        Profile
+                        {{ __('Profile') }}
 
                     </a>
 
@@ -89,7 +89,7 @@
 
                         <p class="text-xs text-slate-400">
 
-                            Wallet Balance
+                            {{ __('Wallet Balance') }}
 
                         </p>
 
@@ -132,21 +132,21 @@
                             <a href="{{ route('profile.edit') }}"
                                 class="block px-4 py-3 text-sm text-slate-300 hover:bg-slate-800">
 
-                                My Profile
+                                {{ __('My Profile') }}
 
                             </a>
 
                             <a href="{{ route('fantasy.myteams') }}"
                                 class="block px-4 py-3 text-sm text-slate-300 hover:bg-slate-800">
 
-                                My Teams
+                                {{ __('My Teams') }}
 
                             </a>
 
                             <a href="{{ route('user.leaderboard') }}"
                                 class="block px-4 py-3 text-sm text-slate-300 hover:bg-slate-800">
 
-                                Leaderboard
+                                {{ __('Leaderboard') }}
 
                             </a>
 
@@ -158,7 +158,7 @@
                                 <button type="submit"
                                     class="w-full px-4 py-3 text-left text-sm text-red-400 hover:bg-slate-800">
 
-                                    Logout
+                                    {{ __('Logout') }}
 
                                 </button>
 
@@ -192,22 +192,19 @@
 
                             <p class="text-sm font-semibold uppercase tracking-wider text-indigo-400">
 
-                                Fantasy Matches Live
+                                {{ __('Fantasy Matches Live') }}
 
                             </p>
 
                             <h1 class="mt-4 text-4xl font-extrabold leading-tight text-white lg:text-5xl">
 
-                                Welcome Back,
-                                {{ auth()->user()->name }}
+                                {{ __('Welcome Back, :name', ['name' => auth()->user()->name]) }}
 
                             </h1>
 
                             <p class="mt-5 max-w-2xl text-base leading-7 text-slate-300">
 
-                                Create your dream fantasy team, join contests,
-                                earn fantasy points, climb leaderboards and
-                                win rewards after every match.
+                                {{ __('Create your dream fantasy team, join contests, earn fantasy points, climb leaderboards and win rewards after every match.') }}
 
                             </p>
 
@@ -216,14 +213,14 @@
                                 <a href="{{ route('user.tournaments') }}"
                                     class="rounded-2xl bg-indigo-600 px-6 py-3 text-sm font-semibold text-white transition hover:bg-indigo-700">
 
-                                    Explore Tournaments
+                                    {{ __('Explore Tournaments') }}
 
                                 </a>
 
                                 <a href="{{ route('fantasy.myteams') }}"
                                     class="rounded-2xl border border-slate-700 bg-slate-900 px-6 py-3 text-sm font-semibold text-slate-300 transition hover:border-indigo-600 hover:text-white">
 
-                                    My Fantasy Teams
+                                    {{ __('My Fantasy Teams') }}
 
                                 </a>
 
@@ -241,14 +238,14 @@
 
                                     <p class="text-sm text-slate-400">
 
-                                        Upcoming Match
+                                        {{ __('Upcoming Match') }}
 
                                     </p>
 
                                     <h2 class="mt-1 text-2xl font-bold text-white">
 
-                                        {{ $upcomingMatch?->team1?->team_name ?? 'No Upcoming Match' }}
-                                        vs
+                                        {{ $upcomingMatch?->team1?->team_name ?? __('No Upcoming Match') }}
+                                        {{ __('vs') }}
                                         {{ $upcomingMatch?->team2?->team_name ?? '' }}
 
                                     </h2>
@@ -257,7 +254,7 @@
 
                                 <span class="rounded-full bg-indigo-600/20 px-4 py-1 text-xs font-semibold text-indigo-300">
 
-                                    Live Contest
+                                    {{ __('Live Contest') }}
 
                                 </span>
 
@@ -275,7 +272,7 @@
 
                                     <p class="mt-1 text-xs text-slate-400">
 
-                                        Hours
+                                        {{ __('Hours') }}
 
                                     </p>
 
@@ -291,7 +288,7 @@
 
                                     <p class="mt-1 text-xs text-slate-400">
 
-                                        Minutes
+                                        {{ __('Minutes') }}
 
                                     </p>
 
@@ -307,7 +304,7 @@
 
                                     <p class="mt-1 text-xs text-slate-400">
 
-                                        Seconds
+                                        {{ __('Seconds') }}
 
                                     </p>
 
@@ -331,7 +328,7 @@
 
                         <p class="text-sm text-slate-400">
 
-                            My Fantasy Teams
+                            {{ __('My Fantasy Teams') }}
 
                         </p>
 
@@ -343,7 +340,7 @@
 
                         <p class="mt-2 text-sm text-slate-500">
 
-                            Total created teams
+                            {{ __('Total created teams') }}
 
                         </p>
 
@@ -355,7 +352,7 @@
 
                         <p class="text-sm text-slate-400">
 
-                            Matches Joined
+                            {{ __('Matches Joined') }}
 
                         </p>
 
@@ -367,7 +364,7 @@
 
                         <p class="mt-2 text-sm text-slate-500">
 
-                            Active fantasy contests
+                            {{ __('Active fantasy contests') }}
 
                         </p>
 
@@ -379,7 +376,7 @@
 
                         <p class="text-sm text-slate-400">
 
-                            Fantasy Points
+                            {{ __('Fantasy Points') }}
 
                         </p>
 
@@ -391,7 +388,7 @@
 
                         <p class="mt-2 text-sm text-slate-500">
 
-                            Overall season points
+                            {{ __('Overall season points') }}
 
                         </p>
 
@@ -403,7 +400,7 @@
 
                         <p class="text-sm text-slate-400">
 
-                            Current Rank
+                            {{ __('Current Rank') }}
 
                         </p>
 
@@ -415,7 +412,7 @@
 
                         <p class="mt-2 text-sm text-slate-500">
 
-                            Global leaderboard rank
+                            {{ __('Global leaderboard rank') }}
 
                         </p>
 
@@ -424,7 +421,7 @@
                     <div class="mt-10">
 
                         <h2 class="mb-4 text-2xl font-bold text-white">
-                            Upcoming Matches
+                            {{ __('Upcoming Matches') }}
                         </h2>
 
                         <div class="grid gap-4 md:grid-cols-2">
@@ -436,7 +433,7 @@
                                 <h3 class="text-lg font-bold text-white">
 
                                     {{ $match->team1->team_name }}
-                                    vs
+                                    {{ __('vs') }}
                                     {{ $match->team2->team_name }}
 
                                 </h3>
@@ -453,7 +450,7 @@
 
                             <div class="rounded-2xl border border-slate-800 bg-slate-900 p-5">
 
-                                No Upcoming Matches
+                                {{ __('No Upcoming Matches') }}
 
                             </div>
 
@@ -466,7 +463,7 @@
                     <div class="mt-10">
 
                         <h2 class="mb-4 text-2xl font-bold text-red-400">
-                            Live Matches
+                            {{ __('Live Matches') }}
                         </h2>
 
                         <div class="grid gap-4 md:grid-cols-2">
@@ -478,14 +475,14 @@
                                 <h3 class="text-lg font-bold text-white">
 
                                     {{ $match->team1->team_name }}
-                                    vs
+                                    {{ __('vs') }}
                                     {{ $match->team2->team_name }}
 
                                 </h3>
 
                                 <p class="mt-2 text-red-400">
 
-                                    LIVE
+                                    {{ __('LIVE') }}
 
                                 </p>
 
@@ -495,7 +492,7 @@
 
                             <div class="rounded-2xl border border-slate-800 bg-slate-900 p-5">
 
-                                No Live Matches
+                                {{ __('No Live Matches') }}
 
                             </div>
 

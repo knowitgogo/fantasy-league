@@ -9,13 +9,13 @@
     <div class="mb-6 flex items-center justify-between">
 
         <h1 class="text-3xl font-bold text-white">
-            Matches
+            {{ __('Matches') }}
         </h1>
 
         <button onclick="openCreateModal()"
             class="rounded-lg bg-indigo-600 px-5 py-2 text-white hover:bg-indigo-700">
 
-            Add Match
+            {{ __('Add Match') }}
 
         </button>
 
@@ -43,12 +43,12 @@
 
                 <tr>
 
-                    <th class="p-4 text-left">Tournament</th>
-                    <th class="p-4 text-left">Team 1</th>
-                    <th class="p-4 text-left">Team 2</th>
-                    <th class="p-4 text-left">Date</th>
-                    <th class="p-4 text-left">Status</th>
-                    <th class="p-4 text-left">Actions</th>
+                    <th class="p-4 text-left">{{ __('Tournament') }}</th>
+                    <th class="p-4 text-left">{{ __('Team 1') }}</th>
+                    <th class="p-4 text-left">{{ __('Team 2') }}</th>
+                    <th class="p-4 text-left">{{ __('Date') }}</th>
+                    <th class="p-4 text-left">{{ __('Status') }}</th>
+                    <th class="p-4 text-left">{{ __('Actions') }}</th>
 
                 </tr>
 
@@ -86,7 +86,7 @@
 
                     <td class="p-4">
 
-                        {{ $match->status }}
+                        {{ __($match->status) }}
 
                     </td>
 
@@ -105,7 +105,7 @@
                             )"
                             class="rounded bg-yellow-500 px-3 py-1 text-white hover:bg-yellow-600">
 
-                            Edit
+                            {{ __('Edit') }}
 
                         </button>
 
@@ -114,13 +114,14 @@
                         <a href="{{ route('matches.players.manage', $match->id) }}"
                             class="rounded-lg bg-green-600 px-4 py-2 text-white hover:bg-green-700">
 
-                            Manage Playing 
+                            {{ __('Manage Playing') }}
 
                         </a>
 
                         <form action="{{ route('matches.destroy', $match->id) }}"
                             method="POST"
-                            onsubmit="return confirm('Delete this match?')">
+                            data-confirm="{{ __('Delete this match?') }}"
+                            onsubmit="return confirm(this.dataset.confirm)">
 
                             @csrf
                             @method('DELETE')
@@ -128,7 +129,7 @@
                             <button type="submit"
                                 class="rounded bg-red-600 px-3 py-1 text-white hover:bg-red-700">
 
-                                Delete
+                                {{ __('Delete') }}
 
                             </button>
 
@@ -137,21 +138,21 @@
                         <a href="{{ route('matches.scores', $match->id) }}"
                             class="rounded bg-green-600 px-3 py-1 text-white hover:bg-green-700">
 
-                            Update Scores
+                            {{ __('Update Scores') }}
 
                         </a>
 
                         <a href="{{ route('leaderboard.generate', $match->id) }}"
                             class="rounded-lg bg-yellow-600 px-4 py-2 text-white hover:bg-yellow-700">
 
-                            Generate Leaderboard
+                            {{ __('Generate Leaderboard') }}
 
                         </a>
 
                         <a href="{{ route('leaderboard.index', $match->id) }}"
                             class="rounded-lg bg-indigo-600 px-4 py-2 text-white hover:bg-indigo-700">
 
-                            View Leaderboard
+                            {{ __('View Leaderboard') }}
 
                         </a>
 
@@ -177,7 +178,7 @@
     <div class="w-full max-w-lg rounded-2xl border border-slate-700 bg-slate-900 p-6 text-white shadow-2xl">
 
         <h2 class="mb-6 text-2xl font-bold">
-            Create Match
+            {{ __('Create Match') }}
         </h2>
 
         <form action="{{ route('matches.store') }}"
@@ -191,14 +192,14 @@
             <div>
 
                 <label class="mb-2 block font-semibold text-slate-300">
-                    Tournament
+                    {{ __('Tournament') }}
                 </label>
 
                 <select name="tournament_id"
                     class="w-full rounded-lg border border-slate-700 bg-slate-800 px-4 py-3 text-white">
 
                     <option value="">
-                        Select Tournament
+                        {{ __('Select Tournament') }}
                     </option>
 
                     @foreach($tournaments as $tournament)
@@ -220,14 +221,14 @@
             <div>
 
                 <label class="mb-2 block font-semibold text-slate-300">
-                    Team 1
+                    {{ __('Team 1') }}
                 </label>
 
                 <select name="team1_id"
                     class="w-full rounded-lg border border-slate-700 bg-slate-800 px-4 py-3 text-white">
 
                     <option value="">
-                        Select Team
+                        {{ __('Select Team') }}
                     </option>
 
                     @foreach($teams as $team)
@@ -249,14 +250,14 @@
             <div>
 
                 <label class="mb-2 block font-semibold text-slate-300">
-                    Team 2
+                    {{ __('Team 2') }}
                 </label>
 
                 <select name="team2_id"
                     class="w-full rounded-lg border border-slate-700 bg-slate-800 px-4 py-3 text-white">
 
                     <option value="">
-                        Select Team
+                        {{ __('Select Team') }}
                     </option>
 
                     @foreach($teams as $team)
@@ -278,7 +279,7 @@
             <div>
 
                 <label class="mb-2 block font-semibold text-slate-300">
-                    Match Date
+                    {{ __('Match Date') }}
                 </label>
 
                 <input type="datetime-local"
@@ -292,15 +293,15 @@
             <div>
 
                 <label class="mb-2 block font-semibold text-slate-300">
-                    Status
+                    {{ __('Status') }}
                 </label>
 
                 <select name="status"
                     class="w-full rounded-lg border border-slate-700 bg-slate-800 px-4 py-3 text-white">
 
-                    <option value="Upcoming">Upcoming</option>
-                    <option value="Live">Live</option>
-                    <option value="Completed">Completed</option>
+                    <option value="Upcoming">{{ __('Upcoming') }}</option>
+                    <option value="Live">{{ __('Live') }}</option>
+                    <option value="Completed">{{ __('Completed') }}</option>
 
                 </select>
 
@@ -314,14 +315,14 @@
                     onclick="closeCreateModal()"
                     class="rounded-lg bg-slate-700 px-4 py-2 text-white hover:bg-slate-600">
 
-                    Cancel
+                    {{ __('Cancel') }}
 
                 </button>
 
                 <button type="submit"
                     class="rounded-lg bg-indigo-600 px-4 py-2 text-white hover:bg-indigo-700">
 
-                    Save
+                    {{ __('Save') }}
 
                 </button>
 
@@ -341,7 +342,7 @@
     <div class="w-full max-w-lg rounded-2xl border border-slate-700 bg-slate-900 p-6 text-white shadow-2xl">
 
         <h2 class="mb-6 text-2xl font-bold">
-            Edit Match
+            {{ __('Edit Match') }}
         </h2>
 
         <form id="editForm"
@@ -356,7 +357,7 @@
             <div>
 
                 <label class="mb-2 block font-semibold text-slate-300">
-                    Tournament
+                    {{ __('Tournament') }}
                 </label>
 
                 <select id="edit_tournament"
@@ -382,7 +383,7 @@
             <div>
 
                 <label class="mb-2 block font-semibold text-slate-300">
-                    Team 1
+                    {{ __('Team 1') }}
                 </label>
 
                 <select id="edit_team1"
@@ -408,7 +409,7 @@
             <div>
 
                 <label class="mb-2 block font-semibold text-slate-300">
-                    Team 2
+                    {{ __('Team 2') }}
                 </label>
 
                 <select id="edit_team2"
@@ -434,7 +435,7 @@
             <div>
 
                 <label class="mb-2 block font-semibold text-slate-300">
-                    Match Date
+                    {{ __('Match Date') }}
                 </label>
 
                 <input type="datetime-local"
@@ -449,16 +450,16 @@
             <div>
 
                 <label class="mb-2 block font-semibold text-slate-300">
-                    Status
+                    {{ __('Status') }}
                 </label>
 
                 <select id="edit_status"
                     name="status"
                     class="w-full rounded-lg border border-slate-700 bg-slate-800 px-4 py-3 text-white">
 
-                    <option value="Upcoming">Upcoming</option>
-                    <option value="Live">Live</option>
-                    <option value="Completed">Completed</option>
+                    <option value="Upcoming">{{ __('Upcoming') }}</option>
+                    <option value="Live">{{ __('Live') }}</option>
+                    <option value="Completed">{{ __('Completed') }}</option>
 
                 </select>
 
@@ -472,14 +473,14 @@
                     onclick="closeEditModal()"
                     class="rounded-lg bg-slate-700 px-4 py-2 text-white hover:bg-slate-600">
 
-                    Cancel
+                    {{ __('Cancel') }}
 
                 </button>
 
                 <button type="submit"
                     class="rounded-lg bg-indigo-600 px-4 py-2 text-white hover:bg-indigo-700">
 
-                    Update
+                    {{ __('Update') }}
 
                 </button>
 

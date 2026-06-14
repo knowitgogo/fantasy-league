@@ -69,7 +69,4 @@ return [
 
     'recycle_bin' => 'Prullenbak',
 
-    'global_leaderboard' => 'Algemeen Klassement',
-
-    'users' => 'Gebruikers',
 ];

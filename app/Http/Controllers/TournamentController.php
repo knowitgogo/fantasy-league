@@ -61,7 +61,7 @@ class TournamentController extends Controller
         }
 
         return redirect()->route('tournaments.index')
-            ->with('success', 'Tournament Created Successfully');
+            ->with('success', __('Tournament Created Successfully'));
     }
 
     /**
@@ -115,7 +115,7 @@ class TournamentController extends Controller
         );
 
         return redirect()->back()
-            ->with('success', 'Tournament Updated');
+            ->with('success', __('Tournament Updated'));
     }
 
     /**
@@ -128,6 +128,6 @@ class TournamentController extends Controller
         $tournament->delete();
 
         return redirect()->back()
-            ->with('success', 'Tournament Deleted');
+            ->with('success', __('Tournament Deleted'));
     }
 }

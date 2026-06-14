@@ -10,13 +10,13 @@
 
         <h1 class="text-3xl font-bold text-white">
 
-            Tournaments
+            {{ __('Tournaments') }}
 
         </h1>
 
         <p class="mt-2 text-slate-400">
 
-            Select a tournament to view matches
+            {{ __('Select a tournament to view matches') }}
 
         </p>
 
@@ -40,10 +40,10 @@
 
                     <p class="mt-2 text-slate-400">
 
-                        Status:
+                        {{ __('Status') }}:
                         <span class="text-green-400">
 
-                            {{ $tournament->status }}
+                            {{ __(ucfirst($tournament->status)) }}
 
                         </span>
 
@@ -56,7 +56,7 @@
                     <a href="{{ route('user.matches', $tournament->id) }}"
                        class="inline-flex rounded-xl bg-indigo-600 px-5 py-3 text-white transition hover:bg-indigo-700">
 
-                        View Matches
+                        {{ __('View Matches') }}
 
                     </a>
 

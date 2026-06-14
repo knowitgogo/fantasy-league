@@ -12,7 +12,7 @@
 
             <p class="text-xs font-semibold uppercase tracking-wider text-slate-400">
 
-                Control Center
+                {{ __('Control Center') }}
 
             </p>
 
@@ -26,7 +26,7 @@
 
         <div class="rounded-xl border border-slate-700 bg-slate-900 px-4 py-3 text-sm text-slate-300">
 
-            Welcome,
+            {{ __('Welcome') }},
             <span class="font-semibold text-white">
 
                 {{ auth()->user()->name }}

@@ -16,12 +16,12 @@ class Teams_model extends Model
     protected $table = 'teams';
     protected $fillable = [
         'team_name',
-        'tournament_id'
+        // 'tournament_id'
     ];
-    public function tournament()
-    {
-        return $this->belongsTo(Tournament_model::class, 'tournament_id');
-    }
+    // public function tournament()
+    // {
+    //     return $this->belongsTo(Tournament_model::class, 'tournament_id');
+    // }
 
     public function tournaments()
     {
@@ -33,10 +33,10 @@ class Teams_model extends Model
         );
     }
 
-    public function legacyplayers()
-    {
-        return $this->hasMany(Players_model::class, 'team_id');
-    }
+    // public function legacyplayers()
+    // {
+    //     return $this->hasMany(Players_model::class, 'team_id');
+    // }
 
     public function players()
     {

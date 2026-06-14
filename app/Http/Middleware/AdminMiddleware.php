@@ -16,7 +16,7 @@ class AdminMiddleware
         $user = $request->user();
 
         if (! $user || $user->role !== 'admin') {
-            abort(403, 'Unauthorized access to admin area.');
+            abort(403, __('Unauthorized access to admin area.'));
         }
 
         return $next($request);

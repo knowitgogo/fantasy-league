@@ -10,7 +10,12 @@ class SetLanguage
 {
     public function handle(Request $request, Closure $next)
     {
-        $locale = session('locale', 'en');
+        $supportedLocales = ['en', 'nl'];
+        $locale = session('locale', config('app.locale'));
+
+        if (! in_array($locale, $supportedLocales, true)) {
+            $locale = config('app.fallback_locale', 'en');
+        }
 
         App::setLocale($locale);
 

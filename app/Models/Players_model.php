@@ -17,22 +17,22 @@ class Players_model extends Model
 
     protected $fillable = [
 
-        'team_id',
+        
         'player_name',
         'player_price',
         'age',
         'country',
-        'team_name'
+        
 
     ];
 
-    public function team()
-    {
-        return $this->belongsTo(
-            Teams_model::class,
-            'team_id'
-        );
-    }
+    // public function team()
+    // {
+    //     return $this->belongsTo(
+    //         Teams_model::class,
+    //         'team_id'
+    //     );
+    // }
 
     public function teams()
     {

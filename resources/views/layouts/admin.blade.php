@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="{{ app()->getLocale() }}">
+<html lang="{{ app()->getLocale() === 'nl' ? 'nl-NL' : 'en' }}">
 
 <head>
 
@@ -8,7 +8,7 @@
     <meta name="viewport"
         content="width=device-width, initial-scale=1.0">
 
-    <title>Fantasy Admin</title>
+    <title>{{ __('Fantasy Admin') }}</title>
 
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 
@@ -32,13 +32,13 @@
 
                     <h1 class="text-base font-semibold text-white">
 
-                        Fantasy Admin
+                        {{ __('Fantasy Admin') }}
 
                     </h1>
 
                     <p class="text-xs text-slate-400">
 
-                        Control Panel
+                        {{ __('Control Panel') }}
 
                     </p>
 
@@ -116,7 +116,7 @@
 
                             <p class="text-xs text-slate-400">
 
-                                Administrator
+                                {{ __('Administrator') }}
 
                             </p>
 
@@ -127,7 +127,7 @@
                     <a href="{{ route('recycle.bin') }}"
                         class="group flex items-center rounded-lg px-3 py-2.5 text-sm font-medium text-slate-400 hover:bg-slate-800 hover:text-white">
 
-                        Recycle Bin
+                        {{ __('Recycle Bin') }}
 
                     </a>
 
@@ -147,7 +147,7 @@
 
                     <h2 class="text-xl font-semibold text-white">
 
-                        Fantasy League Admin
+                        {{ __('Fantasy League Admin') }}
 
                     </h2>
 
@@ -155,7 +155,7 @@
 
                         <div class="hidden sm:block text-sm text-slate-400">
 
-                            Welcome,
+                            {{ __('Welcome') }},
 
                             <span class="font-medium text-white">
 
@@ -165,15 +165,7 @@
 
                         </div>
 
-                        <!-- Current Locale: {{ app()->getLocale() }} -->
-                        <a href="{{ route('lang.switch', 'nl') }}">
-                            NL
-                        </a>
-
-                        
-                        <a href="{{ route('lang.switch', 'en') }}">
-                            EN
-                        </a>
+                        <x-language-switcher />
 
                         <form method="POST"
                             action="{{ route('logout') }}">

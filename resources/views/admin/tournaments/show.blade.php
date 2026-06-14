@@ -16,7 +16,7 @@
 
         <p class="mt-2 text-slate-400">
 
-            Status: {{ $tournament->status }}
+            {{ __('Status') }}: {{ __($tournament->status) }}
 
         </p>
 
@@ -32,7 +32,7 @@
 
             <h2 class="mb-4 text-xl font-bold text-white">
 
-                Participating Teams
+                {{ __('Participating Teams') }}
 
             </h2>
 
@@ -85,7 +85,7 @@
 
         <h2 class="mb-6 text-xl font-bold text-white">
 
-            Create Match
+            {{ __('Create Match') }}
 
         </h2>
         
@@ -112,7 +112,7 @@
 
                         <option value="">
 
-                            Select Team
+                            {{ __('Select Team') }}
 
                         </option>
 
@@ -145,7 +145,7 @@
 
                         <option value="">
 
-                            Select Team
+                            {{ __('Select Team') }}
 
                         </option>
 
@@ -169,7 +169,7 @@
 
                     <label class="mb-2 block text-sm text-slate-300">
 
-                        Match Date
+                        {{ __('Match Date') }}
 
                     </label>
 
@@ -185,7 +185,7 @@
 
                     <label class="mb-2 block text-sm text-slate-300">
 
-                        Status
+                        {{ __('Status') }}
 
                     </label>
 
@@ -194,19 +194,19 @@
 
                         <option value="Upcoming">
 
-                            Upcoming
+                            {{ __('Upcoming') }}
 
                         </option>
 
                         <option value="Live">
 
-                            Live
+                            {{ __('Live') }}
 
                         </option>
 
                         <option value="Completed">
 
-                            Completed
+                            {{ __('Completed') }}
 
                         </option>
 
@@ -219,7 +219,7 @@
             <button type="submit"
                 class="mt-6 rounded-lg bg-indigo-600 px-5 py-3 text-white hover:bg-indigo-700">
 
-                Create Match
+                {{ __('Create Match') }}
 
             </button>
 
@@ -239,25 +239,25 @@
 
                     <th class="p-4 text-left">
 
-                        Match
+                        {{ __('Match') }}
 
                     </th>
 
                     <th class="p-4 text-left">
 
-                        Date
+                        {{ __('Date') }}
 
                     </th>
 
                     <th class="p-4 text-left">
 
-                        Status
+                        {{ __('Status') }}
 
                     </th>
 
                     <th class="p-4 text-left">
 
-                        Actions
+                        {{ __('Actions') }}
 
                     </th>
 
@@ -273,9 +273,9 @@
 
                     <td class="p-4">
 
-                        {{ $match->team1?->team_name ?? 'Unknown Team' }}
-                        vs
-                        {{ $match->team2?->team_name ?? 'Unknown Team' }}
+                        {{ $match->team1?->team_name ?? __('Unknown Team') }}
+                        {{ __('vs') }}
+                        {{ $match->team2?->team_name ?? __('Unknown Team') }}
 
                     </td>
 
@@ -287,7 +287,7 @@
 
                     <td class="p-4">
 
-                        {{ $match->status }}
+                        {{ __($match->status) }}
 
                     </td>
 
@@ -298,34 +298,35 @@
                             <a href="{{ route('matches.players.manage', $match->id) }}"
                                 class="rounded-lg bg-green-600 px-3 py-2 text-sm text-white">
 
-                                Playing XI
+                                {{ __('Playing XI') }}
 
                             </a>
 
                             <a href="{{ route('matches.scores', $match->id) }}"
                                 class="rounded-lg bg-blue-600 px-3 py-2 text-sm text-white">
 
-                                Update Scores
+                                {{ __('Update Scores') }}
 
                             </a>
 
                             <a href="{{ route('leaderboard.generate', $match->id) }}"
                                 class="rounded-lg bg-yellow-600 px-3 py-2 text-sm text-white">
 
-                                Generate Leaderboard
+                                {{ __('Generate Leaderboard') }}
 
                             </a>
 
                             <!-- <a href="{{ route('leaderboard.index', $match->id) }}"
                                 class="rounded-lg bg-purple-600 px-3 py-2 text-sm text-white">
 
-                                View Leaderboard
+                                {{ __('View Leaderboard') }}
 
                             </a> -->
 
                             <form action="/admin/matches/{{ $match->id }}"
                                 method="POST"
-                                onsubmit="return confirm('Delete this match?')">
+                                data-confirm="{{ __('Delete this match?') }}"
+                                onsubmit="return confirm(this.dataset.confirm)">
 
                                 @csrf
                                 @method('DELETE')
@@ -333,7 +334,7 @@
                                 <button type="submit"
                                     class="rounded-lg bg-red-600 px-3 py-2 text-sm text-white">
 
-                                    Delete
+                                    {{ __('Delete') }}
 
                                 </button>
 
@@ -352,7 +353,7 @@
                     <td colspan="4"
                         class="p-6 text-center text-slate-400">
 
-                        No Matches Found
+                        {{ __('No Matches Found') }}
 
                     </td>
 

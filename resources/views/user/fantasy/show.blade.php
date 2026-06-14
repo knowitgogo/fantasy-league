@@ -15,7 +15,7 @@
         <p class="mt-2 text-slate-400">
 
             {{ $team->match->team1->team_name }}
-            vs
+            {{ __('vs') }}
             {{ $team->match->team2->team_name }}
 
         </p>
@@ -31,15 +31,15 @@
                 <tr>
 
                     <th class="p-4 text-left">
-                        Player
+                        {{ __('Player') }}
                     </th>
 
                     <th class="p-4 text-left">
-                        Team
+                        {{ __('Team') }}
                     </th>
 
                     <th class="p-4 text-left">
-                        Role
+                        {{ __('Role') }}
                     </th>
 
                 </tr>
@@ -53,14 +53,14 @@
                     <tr class="border-t border-slate-700">
 
                         <td class="p-4">
-
+                            {{ __('N/A') }}
                             {{ $player->player->player_name }}
 
                         </td>
 
                         <td class="p-4">
-
-                            {{ $player->player->team_name }}
+                            {{ __('N/A') }}
+                            <!-- {{ $player->player->team_name }} -->
 
                         </td>
 
@@ -70,7 +70,7 @@
 
                                 <span class="rounded-lg bg-yellow-600 px-3 py-1 text-sm">
 
-                                    Captain
+                                    {{ __('Captain') }}
 
                                 </span>
 
@@ -78,13 +78,13 @@
 
                                 <span class="rounded-lg bg-green-600 px-3 py-1 text-sm">
 
-                                    Vice Captain
+                                    {{ __('Vice Captain') }}
 
                                 </span>
 
                             @else
 
-                                Player
+                                {{ __('Player') }}
 
                             @endif
 

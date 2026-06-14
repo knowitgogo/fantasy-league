@@ -11,13 +11,13 @@
 
         <h1 class="text-3xl font-bold text-white">
 
-            Registered Users
+            {{ __('Registered Users') }}
 
         </h1>
 
         <p class="mt-2 text-slate-400">
 
-            All fantasy platform users
+            {{ __('All fantasy platform users') }}
 
         </p>
 
@@ -34,19 +34,19 @@
                 <tr>
 
                     <th class="p-4 text-left">
-                        ID
+                        {{ __('ID') }}
                     </th>
 
                     <th class="p-4 text-left">
-                        Name
+                        {{ __('Name') }}
                     </th>
 
                     <th class="p-4 text-left">
-                        Email
+                        {{ __('Email') }}
                     </th>
 
                     <th class="p-4 text-left">
-                        Joined
+                        {{ __('Joined') }}
                     </th>
 
                 </tr>
@@ -105,6 +105,6 @@
 <a href="{{ route('admin.users') }}"
    class="block rounded-lg px-4 py-2 text-slate-300 hover:bg-slate-800 hover:text-white">
 
-    Users
+    {{ __('Users') }}
 
 </a>

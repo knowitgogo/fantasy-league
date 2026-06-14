@@ -14,8 +14,7 @@
 
         <p class="text-slate-400 mt-2">
 
-            Total Players:
-            {{ $team->players->count() }}
+            {{ __('Total Players: :count', ['count' => $team->players->count()]) }}
 
         </p>
 
@@ -30,19 +29,19 @@
                 <tr>
 
                     <th class="p-4 text-left">
-                        Player Name
+                        {{ __('Player Name') }}
                     </th>
 
                     <th class="p-4 text-left">
-                        Country
+                        {{ __('Country') }}
                     </th>
 
                     <th class="p-4 text-left">
-                        Age
+                        {{ __('Age') }}
                     </th>
 
                     <th class="p-4 text-left">
-                        Price
+                        {{ __('Price') }}
                     </th>
 
                 </tr>
@@ -80,7 +79,7 @@
                     <td colspan="4"
                         class="p-6 text-center text-slate-400">
 
-                        No Players Assigned
+                        {{ __('No Players Assigned') }}
 
                     </td>
 
@@ -99,7 +98,7 @@
         <a href="{{ route('teams.index') }}"
            class="rounded-lg bg-slate-700 px-4 py-2 text-white">
 
-            Back
+            {{ __('Back') }}
 
         </a>
 
@@ -108,4 +107,3 @@
 </div>
 
 @endsection
-

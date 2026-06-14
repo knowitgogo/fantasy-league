@@ -25,7 +25,7 @@ class FantasyTeamController extends Controller
         if ($match->status != 'Upcoming') {
             return redirect()->back()
                 ->withErrors([
-                    'match' => 'Team creation is closed for this match.'
+                    'match' => __('Team creation is closed for this match.')
                 ]);
         }
 
@@ -75,7 +75,7 @@ class FantasyTeamController extends Controller
         ) {
             return back()->withErrors([
 
-                'captain' => 'Captain and Vice Captain must be selected from your chosen players.'
+                'captain' => __('Captain and Vice Captain must be selected from your chosen players.')
 
             ]);
         }
@@ -94,7 +94,7 @@ class FantasyTeamController extends Controller
         if ($alreadyExists) {
             return redirect()->back()
                 ->withErrors([
-                    'team' => 'You have already created a team for this match.'
+                    'team' => __('You have already created a team for this match.')
                 ]);
         }
         $fantasyTeam = FantasyTeams_model::create([
@@ -129,7 +129,7 @@ class FantasyTeamController extends Controller
 
             ->with(
                 'success',
-                'Fantasy Team Created Successfully'
+                __('Fantasy Team Created Successfully')
             );
     }
 

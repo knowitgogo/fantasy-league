@@ -10,13 +10,13 @@
 
         <h1 class="text-3xl font-bold text-white">
 
-            Tournament Matches
+            {{ __('Tournament Matches') }}
 
         </h1>
 
         <p class="mt-2 text-slate-400">
 
-            Select a match to create your fantasy team
+            {{ __('Select a match to create your fantasy team') }}
 
         </p>
 
@@ -35,24 +35,24 @@
                     <h2 class="text-2xl font-bold text-white">
 
                         {{ $match->team1->team_name }}
-                        vs
+                        {{ __('vs') }}
                         {{ $match->team2->team_name }}
 
                     </h2>
 
                     <p class="mt-2 text-slate-400">
 
-                        Match Date:
+                        {{ __('Match Date') }}:
                         {{ $match->match_date }}
 
                     </p>
 
                     <p class="mt-1 text-slate-400">
 
-                        Status:
+                        {{ __('Status') }}:
                         <span class="text-green-400">
 
-                            {{ $match->status }}
+                            {{ __($match->status) }}
 
                         </span>
 
@@ -65,14 +65,14 @@
                     <a href="{{ route('fantasy.team.create', $match->id) }}"
                        class="rounded-xl bg-indigo-600 px-5 py-3 text-white transition hover:bg-indigo-700">
 
-                        Create Fantasy Team
+                        {{ __('Create Fantasy Team') }}
 
                     </a>
 
                     <a href="{{ route('user.leaderboard') }}"
                        class="rounded-xl bg-yellow-600 px-5 py-3 text-white transition hover:bg-yellow-700">
 
-                        View Leaderboard
+                        {{ __('View Leaderboard') }}
 
                     </a>
 

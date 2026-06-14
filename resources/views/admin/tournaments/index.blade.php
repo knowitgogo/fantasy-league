@@ -6,16 +6,16 @@
     <div class="mx-auto max-w-7xl">
         <div class="mb-6 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
             <div>
-                <p class="text-sm font-medium text-slate-400">Admin</p>
+                <p class="text-sm font-medium text-slate-400">{{ __('Admin') }}</p>
                 <h1 class="mt-1 text-2xl font-semibold text-white">
-                    Tournaments
+                    {{ __('Tournaments') }}
                 </h1>
             </div>
 
             <button onclick="openCreateModal()"
                 class="bg-indigo-600 text-white px-4 py-2 rounded-lg">
 
-                Add Tournament
+                {{ __('Add Tournament') }}
 
             </button>
         </div>
@@ -31,13 +31,13 @@
                 <table class="w-full min-w-[760px] divide-y divide-slate-700">
                     <thead class="bg-slate-800">
                         <tr>
-                            <th class="px-5 py-3 text-left text-xs font-medium uppercase text-slate-400">Name</th>
-                            <th class="px-5 py-3 text-left text-xs font-medium uppercase text-slate-400">Start Date</th>
-                            <th class="px-5 py-3 text-left text-xs font-medium uppercase text-slate-400">End Date</th>
-                            <th class="px-5 py-3 text-left text-xs font-medium uppercase text-slate-400">Status</th>
-                            <th class="px-5 py-3 text-left text-xs font-medium uppercase text-slate-400">Teams</th>
-                            <th class="px-5 py-3 text-left text-xs font-medium uppercase text-slate-400">view</th>
-                            <th class="px-5 py-3 text-left text-xs font-medium uppercase text-slate-400">Actions</th>
+                            <th class="px-5 py-3 text-left text-xs font-medium uppercase text-slate-400">{{ __('Name') }}</th>
+                            <th class="px-5 py-3 text-left text-xs font-medium uppercase text-slate-400">{{ __('Start Date') }}</th>
+                            <th class="px-5 py-3 text-left text-xs font-medium uppercase text-slate-400">{{ __('End Date') }}</th>
+                            <th class="px-5 py-3 text-left text-xs font-medium uppercase text-slate-400">{{ __('Status') }}</th>
+                            <th class="px-5 py-3 text-left text-xs font-medium uppercase text-slate-400">{{ __('Teams') }}</th>
+                            <th class="px-5 py-3 text-left text-xs font-medium uppercase text-slate-400">{{ __('View') }}</th>
+                            <th class="px-5 py-3 text-left text-xs font-medium uppercase text-slate-400">{{ __('Actions') }}</th>
                         </tr>
                     </thead>
 
@@ -58,7 +58,7 @@
 
                             <td class="px-5 py-4 text-sm text-slate-300">
                                 <span class="inline-flex rounded-lg border border-slate-700 bg-slate-800 px-2.5 py-1 text-xs font-medium text-slate-300">
-                                    {{ $tournament->status }}
+                                    {{ __(ucfirst($tournament->status)) }}
                                 </span>
 
                             
@@ -73,7 +73,7 @@
                                 <a href="{{ route('tournaments.show', $tournament->id) }}"
                                     class="rounded-lg bg-indigo-600 px-4 py-2 text-white">
 
-                                    View Matches
+                                    {{ __('View Matches') }}
 
                                 </a>
 
@@ -97,7 +97,8 @@
 
                                     <form action="{{ route('tournaments.destroy', $tournament->id) }}"
                                         method="POST"
-                                        onsubmit="return confirm('Delete this tournament?')">
+                                        data-confirm="{{ __('Delete this tournament?') }}"
+                                        onsubmit="return confirm(this.dataset.confirm)">
 
                                         @csrf
                                         @method('DELETE')
@@ -105,7 +106,7 @@
                                         <button type="submit"
                                             class="bg-red-600 text-white px-3 py-1 rounded">
 
-                                            Delete
+                                            {{ __('Delete') }}
 
                                         </button>
 
@@ -133,7 +134,7 @@
     <div class="w-full max-w-lg rounded-2xl border border-slate-700 bg-slate-900 p-6 text-white shadow-2xl">
 
         <h2 class="mb-6 text-2xl font-bold text-white">
-            Create Tournament
+            {{ __('Create Tournament') }}
         </h2>
 
         <form action="{{ route('tournaments.store') }}"
@@ -145,7 +146,7 @@
             <div>
 
                 <label class="mb-2 block font-semibold text-slate-300">
-                    Tournament Name
+                    {{ __('Tournament Name') }}
                 </label>
 
                 <input type="text"
@@ -157,7 +158,7 @@
             <div>
 
                 <label class="mb-2 block font-semibold text-slate-300">
-                    Start Date
+                    {{ __('Start Date') }}
                 </label>
 
                 <input type="date"
@@ -169,7 +170,7 @@
             <div>
 
                 <label class="mb-2 block font-semibold text-slate-300">
-                    End Date
+                    {{ __('End Date') }}
                 </label>
 
                 <input type="date"
@@ -181,15 +182,15 @@
             <div>
 
                 <label class="mb-2 block font-semibold text-slate-300">
-                    Status
+                    {{ __('Status') }}
                 </label>
 
                 <select name="status"
                     class="w-full rounded-lg border border-slate-700 bg-slate-800 px-4 py-3 text-white placeholder:text-slate-400 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500">
 
-                    <option value="upcoming">Upcoming</option>
-                    <option value="active">Active</option>
-                    <option value="completed">Completed</option>
+                    <option value="upcoming">{{ __('Upcoming') }}</option>
+                    <option value="active">{{ __('Active') }}</option>
+                    <option value="completed">{{ __('Completed') }}</option>
 
                 </select>
 
@@ -198,7 +199,7 @@
 
                 <label class="mb-2 block font-semibold text-slate-300">
 
-                    Select Teams
+                    {{ __('Select Teams') }}
 
                 </label>
 
@@ -228,14 +229,14 @@
                     onclick="closeCreateModal()"
                     class="rounded-lg bg-slate-700 px-4 py-2 text-white transition hover:bg-slate-600">
 
-                    Cancel
+                    {{ __('Cancel') }}
 
                 </button>
 
                 <button type="submit"
                     class="rounded-lg bg-indigo-600 px-4 py-2 text-white transition hover:bg-indigo-700">
 
-                    Save
+                    {{ __('Save') }}
 
                 </button>
 
@@ -254,7 +255,7 @@
     <div class="w-full max-w-lg rounded-2xl border border-slate-700 bg-slate-900 p-6 text-white shadow-2xl">
 
         <h2 class="mb-6 text-2xl font-bold text-white">
-            Edit Tournament
+            {{ __('Edit Tournament') }}
         </h2>
 
         <form id="editForm"
@@ -267,7 +268,7 @@
             <div>
 
                 <label class="mb-2 block font-semibold text-slate-300">
-                    Tournament Name
+                    {{ __('Tournament Name') }}
                 </label>
 
                 <input type="text"
@@ -281,7 +282,7 @@
 
                 <label class="mb-2 block font-semibold text-slate-300">
 
-                    Teams
+                    {{ __('Teams') }}
 
                 </label>
 
@@ -308,7 +309,7 @@
             <div>
 
                 <label class="mb-2 block font-semibold text-slate-300">
-                    Start Date
+                    {{ __('Start Date') }}
                 </label>
 
                 <input type="date"
@@ -321,7 +322,7 @@
             <div>
 
                 <label class="mb-2 block font-semibold text-slate-300">
-                    End Date
+                    {{ __('End Date') }}
                 </label>
 
                 <input type="date"
@@ -334,16 +335,16 @@
             <div>
 
                 <label class="mb-2 block font-semibold text-slate-300">
-                    Status
+                    {{ __('Status') }}
                 </label>
 
                 <select id="edit_status"
                     name="status"
                     class="w-full rounded-lg border border-slate-700 bg-slate-800 px-4 py-3 text-white placeholder:text-slate-400 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500">
 
-                    <option value="upcoming">Upcoming</option>
-                    <option value="active">Active</option>
-                    <option value="completed">Completed</option>
+                    <option value="upcoming">{{ __('Upcoming') }}</option>
+                    <option value="active">{{ __('Active') }}</option>
+                    <option value="completed">{{ __('Completed') }}</option>
 
                 </select>
 
@@ -355,14 +356,14 @@
                     onclick="closeEditModal()"
                     class="rounded-lg bg-slate-700 px-4 py-2 text-white transition hover:bg-slate-600">
 
-                    Cancel
+                    {{ __('Cancel') }}
 
                 </button>
 
                 <button type="submit"
                     class="rounded-lg bg-indigo-600 px-4 py-2 text-white transition hover:bg-indigo-700">
 
-                    Update
+                    {{ __('Update') }}
 
                 </button>
 
