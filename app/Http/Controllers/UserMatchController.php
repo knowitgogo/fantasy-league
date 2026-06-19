@@ -27,4 +27,23 @@ class UserMatchController extends Controller
             compact('matches')
         );
     }
+
+    public function matchesApi($id)
+    {
+        $matches = Matches_model::with([
+
+            'team1',
+            'team2'
+
+        ])
+        ->where(
+            'tournament_id',
+            $id
+        )
+        ->get();
+
+        return response()->json(
+            $matches
+        );
+    }
 }

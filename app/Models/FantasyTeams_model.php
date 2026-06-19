@@ -31,7 +31,23 @@ class FantasyTeams_model extends Model
             'fantasy_team_players',
             'fantasy_team_id',
             'player_id'
+        )->withPivot(
+            'is_captain',
+            'is_vice_captain'
         );
+    }
+
+    public function deleteTeamApi($id)
+    {
+        $team = FantasyTeams_model::findOrFail($id);
+
+        $team->players()->detach();
+
+        $team->delete();
+
+        return response()->json([
+            'message' => 'Team deleted successfully'
+        ]);
     }
     
     

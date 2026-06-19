@@ -15,4 +15,17 @@ class UserTournamentController extends Controller
             compact('tournaments')
         );
     }
+
+    public function tournamentsApi()
+    {
+        $tournaments =
+            Tournament_model::orderBy('start_date')
+                ->get();
+
+        return response()->json(
+            $tournaments
+        );
+    }
 }
+
+

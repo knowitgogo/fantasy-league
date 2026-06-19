@@ -85,14 +85,95 @@ class UserDashboardController extends Controller
             )
         );
 
-        // return response()->json([
-        //     'myTeams' => $myTeams,
-        //     'matchesJoined' => $matchesJoined,
-        //     'upcomingMatch' => $upcomingMatch,
-        //     'rank' => $rank,
-        //     'upcomingMatches' => $upcomingMatches,
-        //     'liveMatches' => $liveMatches,
-        // ]);
+        
+    }
+
+    public function dashboardApi()
+    {
+        $user = User::find(15);//temporary
+        $myTeams = FantasyTeams_model::where(
+            'user_id',
+            $user->id
+        )->count();
+
+        $matchesJoined = FantasyTeams_model::where(
+            'user_id',
+            $user->id
+        )
+        ->distinct('match_id')
+        ->count();
+
+        $upcomingMatches = Matches_model::with([
+            'team1',
+            'team2'
+        ])
+        ->where(
+            'status',
+            MatchStatus::UPCOMING->value
+        )
+        ->orderBy('match_date')
+        ->take(5)
+        ->get();
+
+        $upcomingMatch =
+            $upcomingMatches->first();
+
+        $leaderboard = User::where(
+            'role',
+            'user'
+        )
+        ->orderByDesc('fantasy_points')
+        ->get();
+
+        $rank = $leaderboard
+            ->search(function ($item)
+            use ($user) {
+
+                return $item->id ==
+                    $user->id;
+            }) + 1;
+
+        $liveMatches = Matches_model::with([
+            'team1',
+            'team2'
+        ])
+        ->where(
+            'status',
+            MatchStatus::LIVE->value
+        )
+        ->orderBy('match_date')
+        ->get();
+
+        return response()->json([
+            'myTeams' => $myTeams,
+            'matchesJoined' => $matchesJoined,
+            'rank' => $rank,
+
+            'upcomingMatch' => $upcomingMatch,
+
+            'upcomingMatches' =>
+                $upcomingMatches,
+
+            'liveMatches' =>
+                $liveMatches
+        ]);
+    }
+
+    public function profileApi()
+    {
+        $user = User::find(15); // temporary
+
+        return response()->json([
+
+            'name' => $user->name,
+
+            'email' => $user->email,
+
+            'wallet_balance' => $user->wallet_balance,
+
+            'fantasy_points' => $user->fantasy_points
+
+        ]);
     }
     
 }

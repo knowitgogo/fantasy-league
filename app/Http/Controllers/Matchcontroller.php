@@ -312,7 +312,7 @@ class MatchController extends Controller
     {
         $request->validate([
 
-            'players' => 'required|array|min:11|max:11'
+            'players' => 'required|array|min:22|max:22'
 
         ]);
 
@@ -348,5 +348,22 @@ class MatchController extends Controller
                 'success',
                 __('Match Deleted Successfully')
             );
+    }
+
+
+
+
+
+    public function apiByTournament($id)
+    {
+        return Matches_model::with([
+            'team1',
+            'team2'
+        ])
+        ->where(
+            'tournament_id',
+            $id
+        )
+        ->get();
     }
 }

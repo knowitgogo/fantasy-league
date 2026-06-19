@@ -39,7 +39,7 @@ class Matches_model extends Model
 
     public function leaderboards()
     {
-        return $this->hasMany(Leaderboards_model::class, 'match_id');
+        return $this->hasMany(UserLeaderboard_model::class, 'match_id');
     }
 
     public function team1()

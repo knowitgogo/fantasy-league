@@ -6,7 +6,7 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use App\Models\Matches_model;
 use App\Models\Playerscore_model;
-use App\Models\Leaderboards_model;
+use App\Models\UserLeaderboard_model;
 use App\Models\FantasyTeams_model;
 use App\Models\FantasyTeamPlayers_model;
 
@@ -28,7 +28,7 @@ class LeaderboardController extends Controller
 
         // CLEAR OLD LEADERBOARD
 
-        Leaderboards_model::where(
+        UserLeaderboard_model::where(
             'match_id',
             $matchId
         )->delete();
@@ -94,7 +94,7 @@ class LeaderboardController extends Controller
         $rank = 1;
 
         foreach ($leaderboard as $data) {
-            Leaderboards_model::create([
+            UserLeaderboard_model::create([
 
                 'match_id' => $data['match_id'],
 
@@ -142,7 +142,7 @@ class LeaderboardController extends Controller
 
     public function index($matchId)
     {
-        $leaderboards = Leaderboards_model::with('user')
+        $leaderboards = UserLeaderboard_model::with('user')
 
             ->where('match_id', $matchId)
 
@@ -181,4 +181,28 @@ class LeaderboardController extends Controller
             compact('leaderboards')
         );
     }
+
+
+    public function globalLeaderboardApi()
+    {
+        return response()->json(
+
+            User::where(
+                'role',
+                'user'
+            )
+            ->orderByDesc(
+                'fantasy_points'
+            )
+            ->select(
+                'id',
+                'name',
+                'fantasy_points',
+            )
+            ->get()
+
+        );
+    } 
+
+
 }

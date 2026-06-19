@@ -24,6 +24,14 @@ return Application::configure(basePath: dirname(__DIR__))
         \App\Http\Middleware\SetLanguage::class,
     ]);
 
+    $middleware->validateCsrfTokens(
+        except: [
+            'store-team-api/*',
+            'delete-team-api/*',
+            'update-team-api/*',
+        ]
+    );
+
 })
 
     

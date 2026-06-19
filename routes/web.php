@@ -247,3 +247,58 @@ Route::get('/lang/{locale}', function (string $locale) {
 
     return redirect()->back();
 })->whereIn('locale', ['en', 'nl'])->name('lang.switch');
+
+
+//API TESTING AND DATA TO FRONTEND
+
+Route::get(
+    '/dashboard-data',
+    [UserDashboardController::class, 'dashboardApi']
+);
+
+Route::get(
+    '/tournaments-data',
+    [UserTournamentController::class, 'tournamentsApi']
+);
+
+Route::get(
+    '/matches-data/{id}',
+    [UserMatchController::class, 'matchesApi']
+);
+
+Route::get(
+    '/players-data/{matchId}',
+    [FantasyTeamController::class, 'playersApi']
+);
+
+Route::post(
+    '/store-team-api/{matchId}',
+    [FantasyTeamController::class, 'storeApi']
+);
+Route::get(
+    '/my-teams-api',
+    [FantasyTeamController::class, 'myTeamsApi']
+);
+Route::delete(
+    '/delete-team-api/{id}',
+    [FantasyTeamController::class, 'deleteTeamApi']
+);
+Route::get(
+    '/edit-team-api/{id}',
+    [FantasyTeamController::class,
+    'editTeamApi']
+);
+Route::put(
+    '/update-team-api/{id}',
+    [FantasyTeamController::class,
+    'updateTeamApi']
+);
+Route::get(
+    '/global-leaderboard-api',
+    [LeaderboardController::class,
+    'globalLeaderboardApi']
+);
+Route::get(
+    '/profile-api',
+    [UserDashboardController::class, 'profileApi']
+);

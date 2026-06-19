@@ -26,7 +26,7 @@ class User extends Authenticatable
     public function leaderboards()
     {
         return $this->hasMany(
-            Leaderboards_model::class,
+            UserLeaderboard_model::class,
             'user_id'
         );
     }
