@@ -366,4 +366,183 @@ class MatchController extends Controller
         )
         ->get();
     }
+    public function storeTournamentMatchApi(Request $request, $tournamentId)
+    {
+        $request->validate([
+
+            'team1_id' => 'required|exists:teams,id',
+
+            'team2_id' => 'required|exists:teams,id|different:team1_id',
+
+            'match_date' => 'required|date',
+
+            'status' => 'required|in:Upcoming,Completed,Live'
+
+        ]);
+
+        $tournament = Tournament_model::findOrFail($tournamentId);
+
+        $allowedTeamIds = $tournament
+            ->teams()
+            ->pluck('teams.id')
+            ->toArray();
+
+        if (
+            !in_array($request->team1_id, $allowedTeamIds)
+            ||
+            !in_array($request->team2_id, $allowedTeamIds)
+        ) {
+
+            return response()->json([
+                'message' => 'Selected teams do not belong to this tournament.'
+            ], 422);
+
+        }
+
+        $match = Matches_model::create([
+
+            'tournament_id' => $tournamentId,
+
+            'team1_id' => $request->team1_id,
+
+            'team2_id' => $request->team2_id,
+
+            'match_date' => $request->match_date,
+
+            'status' => $request->status
+
+        ]);
+
+        return response()->json([
+
+            'message' => 'Match Created Successfully',
+
+            'match' => $match
+
+        ]);
+    }
+    public function deleteMatchApi($id)
+    {
+        $match = Matches_model::findOrFail($id);
+
+        $match->delete();
+
+        return response()->json([
+
+            'message' => 'Match Deleted Successfully'
+
+        ]);
+    }
+    public function updateMatchApi(Request $request, $id)
+    {
+        $request->validate([
+
+            'team1_id' => 'required|exists:teams,id',
+
+            'team2_id' => 'required|exists:teams,id',
+
+            'match_date' => 'required|date',
+
+            'status' => 'required|in:Upcoming,Completed,Live',
+
+        ]);
+
+        // PREVENT SAME TEAM MATCH
+
+        if ($request->team1_id == $request->team2_id) {
+            return back()->withErrors([
+
+                'team2_id' => __('Both teams cannot be the same.')
+
+            ]);
+        }
+
+        $match = Matches_model::findOrFail($id);
+
+        $match->update([
+
+            'team1_id' => $request->team1_id,
+
+            'team2_id' => $request->team2_id,
+
+            'match_date' => $request->match_date,
+
+            'status' => $request->status,
+
+        ]);
+
+        return response()->json([
+
+            'message' => 'Match Updated Successfully'
+
+        ]);
+    }
+    public function managePlayersApi($matchId)
+    {
+        $match = Matches_model::with([
+            'team1',
+            'team2'
+        ])->findOrFail($matchId);
+
+        // TEAM 1 PLAYERS
+
+        $team1Players = $match
+            ->team1
+            ->players;
+
+        // TEAM 2 PLAYERS
+
+        $team2Players = $match
+            ->team2
+            ->players;
+
+        // ALREADY SELECTED PLAYERS
+
+        $selectedPlayers = MatchPlayers_model::where(
+            'match_id',
+            $matchId
+        )->pluck('player_id')->toArray();
+
+        return response()->json([
+
+            'match' => $match,
+
+            'team1Players' => $team1Players,
+
+            'team2Players' => $team2Players,
+
+            'selectedPlayers' => $selectedPlayers
+
+        ]);
+    }
+    public function savePlayersApi(Request $request, $matchId)
+    {
+        $request->validate([
+
+            'players' => 'required|array|min:22|max:22'
+
+        ]);
+
+        MatchPlayers_model::where(
+            'match_id',
+            $matchId
+        )->delete();
+
+        foreach ($request->players as $playerId) {
+            MatchPlayers_model::create([
+
+                'match_id' => $matchId,
+
+                'player_id' => $playerId
+
+            ]);
+        }
+
+        return response()->json([
+
+            'message' => 'Playing XI Updated Successfully'
+
+        ]);
+    }
+    
 }

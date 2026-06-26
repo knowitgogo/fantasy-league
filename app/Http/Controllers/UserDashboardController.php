@@ -90,7 +90,7 @@ class UserDashboardController extends Controller
 
     public function dashboardApi()
     {
-        $user = User::find(15);//temporary
+        $user = Auth::user();
         $myTeams = FantasyTeams_model::where(
             'user_id',
             $user->id
@@ -161,7 +161,7 @@ class UserDashboardController extends Controller
 
     public function profileApi()
     {
-        $user = User::find(15); // temporary
+        $user = Auth::user(); 
 
         return response()->json([
 

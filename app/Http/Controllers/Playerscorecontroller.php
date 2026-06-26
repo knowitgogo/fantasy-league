@@ -266,4 +266,89 @@ class PlayerscoreController extends Controller
         return redirect()->back()
             ->with('success', __('Scores Updated Successfully'));
     }
+
+
+
+    //api
+    public function manageScoresApi($matchId)
+    {
+        $match = Matches_model::with([
+            'team1',
+            'team2'
+        ])->findOrFail($matchId);
+
+        $players = MatchPlayers_model::with('player')
+            ->where('match_id', $matchId)
+            ->get();
+
+        foreach ($players as $matchPlayer) {
+
+            $matchPlayer->current_score =
+                Playerscore_model::where(
+                    'match_id',
+                    $matchId
+                )
+                ->where(
+                    'player_id',
+                    $matchPlayer->player_id
+                )
+                ->value('fantasy_points') ?? 0;
+        }
+
+        return response()->json([
+
+            'match' => $match,
+
+            'players' => $players
+
+        ]);
+    }
+
+    public function saveScoresApi(Request $request, $matchId)
+    {
+        $request->validate([
+
+            'scores' => 'required|array',
+
+            'scores.*' => 'required|integer|min:0'
+
+        ]);
+
+        $match = Matches_model::findOrFail($matchId);
+
+        foreach ($request->scores as $playerId => $score) {
+            $isPlaying = \App\Models\MatchPlayers_model::where(
+                'match_id',
+                $matchId
+            )
+                ->where(
+                    'player_id',
+                    $playerId
+                )
+                ->exists();
+
+            if (!$isPlaying) {
+                continue;
+            }
+
+            Playerscore_model::updateOrCreate(
+
+                [
+                    'match_id' => $matchId,
+                    'player_id' => $playerId
+                ],
+
+                [
+                    'fantasy_points' => $score
+                ]
+
+            );
+        }
+
+        return response()->json([
+
+            'message' => 'Scores Updated Successfully'
+
+        ]);
+    }
 }

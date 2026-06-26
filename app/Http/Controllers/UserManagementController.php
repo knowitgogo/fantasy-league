@@ -15,4 +15,24 @@ class UserManagementController extends Controller
 
         return view('admin.usermanagement', compact('users'));
     }
+
+    //api
+    public function getUsersApi()
+    {
+        $users = User::where(
+            'role',
+            'user'
+        )
+        ->select(
+            'id',
+            'name',
+            'email',
+            'wallet_balance',
+            'fantasy_points',
+            'created_at'
+        )
+        ->get();
+
+        return response()->json($users);
+    }
 }

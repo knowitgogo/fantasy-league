@@ -36,6 +36,43 @@ class AdminController extends Controller
             ));     
     }
 
+    //api
+    
+    public function dashboardApi()
+    {
+        return response()->json([
+
+            'totalUsers' => User::where(
+                'role',
+                'user'
+            )->count(),
+
+            'totalTournaments' => Tournament_model::count(),
+
+            'totalTeams' => Teams_model::count(),
+
+            'totalPlayers' => Players_model::count(),
+
+            'totalMatches' => Matches_model::count(),
+
+            'liveMatches' => Matches_model::where(
+                'status',
+                'Live'
+            )->count(),
+
+            'upcomingMatches' => Matches_model::where(
+                'status',
+                'Upcoming'
+            )->count(),
+
+            'completedMatches' => Matches_model::where(
+                'status',
+                'Completed'
+            )->count(),
+
+        ]);
+    }
+
     /**
      * Show the form for creating a new resource.
      */

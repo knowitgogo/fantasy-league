@@ -14,15 +14,19 @@ class PlayerController extends Controller
      */
     public function index()
     {
-        $players = Players_model::with('teams')
-            ->paginate(10);
+        // $players = Players_model::with('teams')
+        //     ->paginate(10);
 
-        $teams = Teams_model::all();
+        // // $teams = Teams_model::all();
 
-        return view(
-            'admin.players.index',
-            compact('players', 'teams')
-        );
+        // return view(
+        //     'admin.players.index',
+        //     compact('players')
+        //     // compact('players', 'teams')
+        // );
+        $players = Players_model::paginate(10);
+
+        return view('admin.players.index', compact('players'));
     }
 
     /**
@@ -122,5 +126,77 @@ class PlayerController extends Controller
 
         return redirect()->back()
             ->with('success', __('Player Deleted Successfully'));
+    }
+
+    //api
+    public function getPlayers()
+    {
+        $players = Players_model::all();
+
+        return response()->json($players);
+    }
+    public function addPlayerApi(Request $request)
+    {
+        $request->validate([
+
+            'player_name' => 'required',
+
+            'player_price' => 'required',
+
+        ]);
+
+        $player = Players_model::create([
+
+            'player_name' => $request->player_name,
+
+            'player_price' => $request->player_price,
+
+            'age' => $request->age,
+
+            'country' => $request->country,
+
+        ]);
+
+        return response()->json([
+            'success' => true,
+
+            'message' => 'Player Added Successfully',
+
+            'player' => $player,
+
+        ]);
+    }
+    public function updatePlayerApi(Request $request, $id)
+    {
+        $request->validate([
+            'player_name' => 'required',
+            'player_price' => 'required',
+        ]);
+
+        $player = Players_model::findOrFail($id);
+
+        $player->update([
+            'player_name' => $request->player_name,
+            'player_price' => $request->player_price,
+            'age' => $request->age,
+            'country' => $request->country,
+        ]);
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Player Updated Successfully',
+            'player' => $player,
+        ]);
+    }
+    public function deletePlayerApi($id)
+    {
+        $player = Players_model::findOrFail($id);
+
+        $player->delete();
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Player Deleted Successfully'
+        ]);
     }
 }

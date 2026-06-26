@@ -121,4 +121,70 @@ class TeamController extends Controller
         return redirect()->back()
             ->with('success', __('Team Deleted Successfully'));
     }
+
+
+    //api
+    public function getTeams()
+    {
+        return response()->json(
+            Teams_model::all()
+        );
+    }
+    public function getTeamsApi()
+    {
+        $teams = Teams_model::with('players')->get();
+
+        return response()->json($teams);
+    }
+    
+    public function addTeamApi(Request $request)
+    {
+        $request->validate([
+            'name' => 'required',
+            'players' => 'required|array|min:1'
+        ]);
+
+        $team = Teams_model::create([
+            'team_name' => $request->name
+        ]);
+
+        $team->players()->sync($request->players);
+
+        return response()->json([
+            'message' => 'Team Created Successfully'
+        ]);
+    }
+    public function updateTeamApi(Request $request, $id)
+    {
+        $team = Teams_model::findOrFail($id);
+
+        $team->update([
+            'team_name' => $request->name
+        ]);
+
+        $team->players()->sync($request->players ?? []);
+
+        return response()->json([
+            'message' => 'Team Updated Successfully'
+        ]);
+    }
+    public function deleteTeamApi($id)
+    {
+        $team = Teams_model::findOrFail($id);
+
+        $team->delete();
+
+        return response()->json([
+            'message' => 'Team Deleted Successfully'
+        ]);
+    }
+    public function showApi($id)
+    {
+        $team = Teams_model::with([
+            'players',
+            'tournaments'
+        ])->findOrFail($id);
+
+        return response()->json($team);
+    }
 }

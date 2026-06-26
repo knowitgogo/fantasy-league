@@ -130,4 +130,86 @@ class TournamentController extends Controller
         return redirect()->back()
             ->with('success', __('Tournament Deleted'));
     }
+
+    //api
+    public function getTournaments()
+    {
+        $tournaments = Tournament_model::with('teams')
+            ->paginate(10);
+
+        return response()->json($tournaments);
+    }
+    public function addTournamentApi(Request $request)
+    {
+        $request->validate([
+            'name' => 'required',
+            'start_date' => 'required',
+            'end_date' => 'required',
+            'status' => 'required',
+            'teams' => 'array'
+        ]);
+
+        $tournament = Tournament_model::create([
+            'name' => $request->name,
+            'start_date' => $request->start_date,
+            'end_date' => $request->end_date,
+            'status' => $request->status,
+        ]);
+
+        if ($request->teams) {
+            $tournament->teams()->sync(
+                $request->teams
+            );
+        }
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Tournament Added Successfully'
+        ]);
+    }
+    public function updateTournamentApi(Request $request,$id)
+    {
+        $tournament = Tournament_model::findOrFail($id);
+
+        $tournament->update([
+
+            'name'=>$request->name,
+
+            'start_date'=>$request->start_date,
+
+            'end_date'=>$request->end_date,
+
+            'status'=>$request->status,
+
+        ]);
+
+        $tournament->teams()->sync($request->teams ?? []);
+
+        return response()->json([
+
+            'message'=>'Tournament Updated Successfully'
+
+        ]);
+    }
+    public function deleteTournamentApi($id)
+    {
+        Tournament_model::findOrFail($id)->delete();
+
+        return response()->json([
+
+            'message'=>'Tournament Deleted Successfully'
+
+        ]);
+    }
+    public function showTournamentApi($id)
+    {
+        $tournament = Tournament_model::with([
+            'teams',
+            'matches.team1',
+            'matches.team2'
+        ])->findOrFail($id);
+
+        return response()->json($tournament);
+    }
+    
 }

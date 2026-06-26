@@ -36,4 +36,27 @@ class RecycleBinController extends Controller
             )
         );
     }
+
+    //api
+    public function indexApi()
+    {
+        return response()->json([
+
+            'tournaments' => Tournament_model::onlyTrashed()->get(),
+
+            'matches' => Matches_model::onlyTrashed()
+                ->with([
+                    'team1',
+                    'team2'
+                ])
+                ->get(),
+
+            'teams' => Teams_model::onlyTrashed()->get(),
+
+            'players' => Players_model::onlyTrashed()->get(),
+
+            'users' => User::onlyTrashed()->get()
+
+        ]);
+    }
 }

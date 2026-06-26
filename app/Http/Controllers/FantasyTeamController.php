@@ -180,7 +180,7 @@ class FantasyTeamController extends Controller
 
 
     ////api
-    public function playersApi($matchId)
+    public function playingplayersApi($matchId)
     {
         $match = Matches_model::with([
             'team1.players',
@@ -240,7 +240,7 @@ class FantasyTeamController extends Controller
 
         $fantasyTeam = FantasyTeams_model::create([
 
-            'user_id' => 1,
+            'user_id' => Auth::id(),
 
             'match_id' => $matchId,
 
@@ -284,10 +284,8 @@ class FantasyTeamController extends Controller
             'players'
 
         ])->where(
-
             'user_id',
-            16
-
+            Auth::id()
         )->get();
 
         return response()->json(
