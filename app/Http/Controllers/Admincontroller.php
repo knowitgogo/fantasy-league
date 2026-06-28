@@ -40,7 +40,23 @@ class AdminController extends Controller
     
     public function dashboardApi()
     {
+        // ONE QUERY FOR MATCHES
+
+        $matches = Matches_model::with([
+            'team1',
+            'team2'
+        ])
+        ->whereIn('status', [
+            'Upcoming',
+            'Live',
+            'Completed'
+        ])
+        ->orderBy('match_date')
+        ->get();
+
         return response()->json([
+
+            // DASHBOARD COUNTS
 
             'totalUsers' => User::where(
                 'role',
@@ -55,20 +71,31 @@ class AdminController extends Controller
 
             'totalMatches' => Matches_model::count(),
 
-            'liveMatches' => Matches_model::where(
-                'status',
-                'Live'
-            )->count(),
+            // MATCH COUNTS (FROM COLLECTION)
 
-            'upcomingMatches' => Matches_model::where(
-                'status',
-                'Upcoming'
-            )->count(),
+            'liveMatches' => $matches
+                ->where('status', 'Live')
+                ->count(),
 
-            'completedMatches' => Matches_model::where(
-                'status',
-                'Completed'
-            )->count(),
+            'upcomingMatches' => $matches
+                ->where('status', 'Upcoming')
+                ->count(),
+
+            'completedMatches' => $matches
+                ->where('status', 'Completed')
+                ->count(),
+
+            // MATCH LISTS
+
+            'liveMatchesList' => $matches
+                ->where('status', 'Live')
+                ->take(5)
+                ->values(),
+
+            'upcomingMatchesList' => $matches
+                ->where('status', 'Upcoming')
+                ->take(5)
+                ->values()
 
         ]);
     }

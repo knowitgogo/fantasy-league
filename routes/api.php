@@ -181,14 +181,14 @@ Route::middleware('auth:sanctum')->group(function () {
         '/matches/{id}/leaderboard-api',
         [LeaderboardController::class, 'indexApi']
     );
-    Route::get(
-        '/matches/{id}/leaderboard-api',
-        [LeaderboardController::class, 'indexApi']
-    );
-    Route::post(
-        '/matches/{id}/generate-leaderboard-api',
-        [LeaderboardController::class, 'generateApi']
-    );
+    // Route::get(
+    //     '/matches/{id}/leaderboard-api',
+    //     [LeaderboardController::class, 'indexApi']
+    // );
+    // Route::post(
+    //     '/matches/{id}/generate-leaderboard-api',
+    //     [LeaderboardController::class, 'generateApi']
+    // );
     Route::get(
         '/AdminGlobal-leaderboard-api',
         [LeaderboardController::class, 'AdminGlobalLeaderboardApi']

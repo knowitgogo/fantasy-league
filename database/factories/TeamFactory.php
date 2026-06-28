@@ -28,8 +28,6 @@ class TeamFactory extends Factory
 
             'team_name' => array_shift($teams),
 
-            'tournament_id' => 1
-
         ];
     }
 }

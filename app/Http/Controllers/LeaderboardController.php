@@ -214,130 +214,148 @@ class LeaderboardController extends Controller
     //api
     public function generateApi($matchId)
     {
-        $match = Matches_model::findOrFail($matchId);
+        try {
 
-        // PREVENT DUPLICATE GENERATION
+            $match = Matches_model::findOrFail($matchId);
 
-        if ($match->leaderboard_generated) {
-            return redirect()->back()
-                ->with(
-                    'error',
-                    __('Leaderboard already generated for this match.')
-                );
-        }
+            // PREVENT DUPLICATE GENERATION
 
-        // CLEAR OLD LEADERBOARD
+            if ($match->leaderboard_generated) {
 
-        UserLeaderboard_model::where(
-            'match_id',
-            $matchId
-        )->delete();
+                return response()->json([
 
-        // GET ALL FANTASY TEAMS OF MATCH
+                    'success' => false,
 
-        $fantasyTeams = FantasyTeams_model::where(
-            'match_id',
-            $matchId
-        )->get();
+                    'message' => 'Leaderboard already generated for this match.'
 
-        $leaderboard = [];
+                ], 409);
 
-        foreach ($fantasyTeams as $team) {
-            $selectedPlayers = FantasyTeamPlayers_model::where(
-                'fantasy_team_id',
-                $team->id
-            )->get();
-
-            $totalPoints = 0;
-
-            foreach ($selectedPlayers as $selectedPlayer) {
-                $score = Playerscore_model::where(
-                    'match_id',
-                    $matchId
-                )->where(
-                    'player_id',
-                    $selectedPlayer->player_id
-                )->first();
-
-                if ($score) {
-                    $totalPoints += $score->fantasy_points;
-                    if ($selectedPlayer->is_captain) {
-                        $totalPoints += $score->fantasy_points; // DOUBLE POINTS
-                    } elseif ($selectedPlayer->is_vice_captain) {
-                        $totalPoints += floor($score->fantasy_points) / 2; // HALF POINTS
-                    }
-                }
             }
 
-            $leaderboard[] = [
+            // CLEAR OLD LEADERBOARD
 
-                'user_id' => $team->user_id,
+            UserLeaderboard_model::where(
+                'match_id',
+                $matchId
+            )->delete();
 
-                'match_id' => $matchId,
+            // GET ALL FANTASY TEAMS OF MATCH
 
-                'total_points' => $totalPoints
+            $fantasyTeams = FantasyTeams_model::where(
+                'match_id',
+                $matchId
+            )->get();
 
-            ];
-        }
+            $leaderboard = [];
 
-        // SORT HIGHEST TO LOWEST
+            foreach ($fantasyTeams as $team) {
+                $selectedPlayers = FantasyTeamPlayers_model::where(
+                    'fantasy_team_id',
+                    $team->id
+                )->get();
 
-        usort($leaderboard, function ($a, $b) {
+                $totalPoints = 0;
 
-            return $b['total_points'] <=> $a['total_points'];
-        });
+                foreach ($selectedPlayers as $selectedPlayer) {
+                    $score = Playerscore_model::where(
+                        'match_id',
+                        $matchId
+                    )->where(
+                        'player_id',
+                        $selectedPlayer->player_id
+                    )->first();
 
-        // SAVE MATCH LEADERBOARD
-        // UPDATE GLOBAL POINTS
-        // UPDATE WALLET
+                    if ($score) {
+                        $totalPoints += $score->fantasy_points;
+                        if ($selectedPlayer->is_captain) {
+                            $totalPoints += $score->fantasy_points; // DOUBLE POINTS
+                        } elseif ($selectedPlayer->is_vice_captain) {
+                            $totalPoints += floor($score->fantasy_points) / 2; // HALF POINTS
+                        }
+                    }
+                }
 
-        $rank = 1;
+                $leaderboard[] = [
 
-        foreach ($leaderboard as $data) {
-            UserLeaderboard_model::create([
+                    'user_id' => $team->user_id,
 
-                'match_id' => $data['match_id'],
+                    'match_id' => $matchId,
 
-                'user_id' => $data['user_id'],
+                    'total_points' => $totalPoints
 
-                'total_points' => $data['total_points'],
+                ];
+            }
 
-                'rank' => $rank
+            // SORT HIGHEST TO LOWEST
+
+            usort($leaderboard, function ($a, $b) {
+
+                return $b['total_points'] <=> $a['total_points'];
+            });
+
+            // SAVE MATCH LEADERBOARD
+            // UPDATE GLOBAL POINTS
+            // UPDATE WALLET
+
+            $rank = 1;
+
+            foreach ($leaderboard as $data) {
+                UserLeaderboard_model::create([
+
+                    'match_id' => $data['match_id'],
+
+                    'user_id' => $data['user_id'],
+
+                    'total_points' => $data['total_points'],
+
+                    'rank' => $rank
+
+                ]);
+
+                $user = User::find($data['user_id']);
+
+                // GLOBAL FANTASY POINTS
+
+                $user->fantasy_points += $data['total_points'];
+
+                // REWARDS
+
+                if ($rank == 1) {
+                    $user->wallet_balance += 100;
+                } elseif ($rank == 2) {
+                    $user->wallet_balance += 50;
+                } elseif ($rank == 3) {
+                    $user->wallet_balance += 20;
+                }
+
+                $user->save();
+
+                $rank++;
+            }
+
+            // MARK MATCH AS GENERATED
+
+            $match->leaderboard_generated = true;
+
+            $match->save();
+
+            return response()->json([
+
+                'message' => 'Leaderboard Generated Successfully'
 
             ]);
 
-            $user = User::find($data['user_id']);
+        } catch (\Exception $e) {
 
-            // GLOBAL FANTASY POINTS
+            return response()->json([
 
-            $user->fantasy_points += $data['total_points'];
+                'success' => false,
 
-            // REWARDS
+                'message' => 'Unable to generate leaderboard. Please try again.'
 
-            if ($rank == 1) {
-                $user->wallet_balance += 100;
-            } elseif ($rank == 2) {
-                $user->wallet_balance += 50;
-            } elseif ($rank == 3) {
-                $user->wallet_balance += 20;
-            }
+            ], 500);
 
-            $user->save();
-
-            $rank++;
         }
-
-        // MARK MATCH AS GENERATED
-
-        $match->leaderboard_generated = true;
-
-        $match->save();
-
-        return response()->json([
-
-            'message' => 'Leaderboard Generated Successfully'
-
-        ]);
     }
     public function indexApi($matchId)
     {

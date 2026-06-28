@@ -15,11 +15,7 @@ class PlayerFactory extends Factory
         $team = Teams_model::inRandomOrder()->first();
 
         return [
-
-            'team_id' => $team->id,
-
-            'team_name' => $team->team_name,
-
+            
             'player_name' => fake()->unique()->name(),
 
             'player_price' => rand(100,1000),
