@@ -11,7 +11,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('players_leaderboard', function (Blueprint $table) {
+        Schema::create('user_leaderboards', function (Blueprint $table) {
            $table->id();
 
             $table->foreignId('match_id')
@@ -35,6 +35,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('players_leaderboard');
+        Schema::dropIfExists('user_leaderboards');
     }
 };

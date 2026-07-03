@@ -1,0 +1,656 @@
+<?php
+
+namespace App\Http\Controllers;
+
+use Illuminate\Http\Request;
+use App\Models\Matches_model;
+use App\Models\Tournament_model;
+use App\Models\MatchPlayers_model;
+use App\Services\MatchStatusService;
+class MatchController extends Controller
+{
+    private MatchStatusService $matchStatusService;
+
+    public function __construct(
+        MatchStatusService $matchStatusService
+    )
+    {
+        $this->matchStatusService = $matchStatusService;
+    }
+    /**
+     * Display a listing of the resource.
+     */
+    // public function index()
+    // {
+    //     // $matches = Matches_model::with([
+
+    //     //     'tournament',
+    //     //     'team1',
+    //     //     'team2'
+
+    //     // ])->get();
+
+    //     // $tournaments = Tournament_model::select(
+
+    //     //     'id',
+    //     //     'name'
+
+    //     // )->get();
+
+    //     // $teams = Teams_model::select(
+
+    //     //     'id',
+    //     //     'team_name'
+
+    //     // )->get();
+
+    //     // return view(
+
+    //     //     'admin.matches.index',
+
+    //     //     compact(
+    //     //         'matches',
+    //     //         'tournaments',
+    //     //         'teams'
+    //     //     )
+
+    //     // );
+    // }
+
+    /**
+     * Show the form for creating a new resource.
+     */
+    public function create()
+    {
+        //
+    }
+
+    /**
+     * Store a newly created resource in storage.
+     */
+    public function store(Request $request)
+    {
+        $this->matchStatusService->updateStatuses();
+        $request->validate([
+
+            'tournament_id' => 'required|exists:tournaments,id',
+
+            'team1_id' => 'required|exists:teams,id',
+
+            'team2_id' => 'required|exists:teams,id',
+
+            'match_date' => 'required|date',
+
+            // 'status' => 'required|in:Upcoming,Completed,Live',
+
+        ]);
+
+        // PREVENT SAME TEAM MATCH
+
+        if ($request->team1_id == $request->team2_id) {
+            return back()->withErrors([
+
+                'team2_id' => __('Both teams cannot be the same.')
+
+            ]);
+        }
+
+        $tournament = Tournament_model::findOrFail(
+            $request->tournament_id
+        );
+
+        $allowedTeamIds = $tournament
+            ->teams()
+            ->pluck('teams.id')
+            ->toArray();
+
+        if (
+            !in_array($request->team1_id, $allowedTeamIds)
+            ||
+            !in_array($request->team2_id, $allowedTeamIds)
+        ) {
+            return back()->withErrors([
+                'team1_id' =>
+                __('Selected teams do not belong to this tournament.')
+            ]);
+        }
+
+        //auto status update for matches
+        $start = \Carbon\Carbon::parse($request->match_date);
+
+        $end = $start->copy()->addHours(4);
+
+        $now = now();
+
+        if ($now->lt($start)) {
+
+            $status = 'Upcoming';
+
+        } elseif ($now->between($start, $end)) {
+
+            $status = 'Live';
+
+        } else {
+
+            $status = 'Completed';
+
+        }
+        Matches_model::create([
+
+            'tournament_id' => $request->tournament_id,
+
+            'team1_id' => $request->team1_id,
+
+            'team2_id' => $request->team2_id,
+
+            'match_date' => $request->match_date,
+
+            'status' => $status,
+
+        ]);
+
+        return redirect()->back()
+            ->with(
+                'success',
+                __('Match Created Successfully')
+            );
+    }
+
+
+    public function storeTournamentMatch(Request $request, $tournamentId)
+    {
+        $this->matchStatusService->updateStatuses();
+        $request->validate([
+
+            'team1_id' => 'required|exists:teams,id',
+
+            'team2_id' => 'required|exists:teams,id',
+
+            'match_date' => 'required|date',
+
+            // 'status' => 'required|in:Upcoming,Completed,Live'
+
+        ]);
+
+        $tournament = Tournament_model::findOrFail(
+            $tournamentId
+        );
+        
+
+        $allowedTeamIds = $tournament
+            ->teams()
+            ->pluck('teams.id')
+            ->toArray();
+
+        if (
+            !in_array($request->team1_id, $allowedTeamIds)
+            ||
+            !in_array($request->team2_id, $allowedTeamIds)
+        ) {
+            return back()->withErrors([
+                'team1_id' =>
+                __('Selected teams do not belong to this tournament.')
+            ]);
+        }
+
+        if ($request->team1_id == $request->team2_id) {
+            return back()->withErrors([
+
+                'team2_id' => __('Both teams cannot be the same.')
+
+            ]);
+        }
+        $start = \Carbon\Carbon::parse($request->match_date);
+
+        $end = $start->copy()->addHours(4);
+
+        $now = now();
+
+        if ($now->lt($start)) {
+
+            $status = 'Upcoming';
+
+        } elseif ($now->between($start, $end)) {
+
+            $status = 'Live';
+
+        } else {
+
+            $status = 'Completed';
+
+        }
+        Matches_model::create([
+
+            'tournament_id' => $tournamentId,
+
+            'team1_id' => $request->team1_id,
+
+            'team2_id' => $request->team2_id,
+
+            'match_date' => $request->match_date,
+
+            'status' => $status,
+
+        ]);
+
+        return redirect()->back()
+            ->with(
+                'success',
+                __('Match Created Successfully')
+            );
+    }
+
+    /**
+     * Display the specified resource.
+     */
+    public function show(string $id)
+    {
+        //
+    }
+
+    /**
+     * Show the form for editing the specified resource.
+     */
+    public function edit(string $id)
+    {
+        //
+    }
+
+    /**
+     * Update the specified resource in storage.
+     */
+    public function update(Request $request, string $id)
+    {
+        $this->matchStatusService->updateStatuses();
+        $request->validate([
+
+            'tournament_id' => 'required|exists:tournaments,id',
+
+            'team1_id' => 'required|exists:teams,id',
+
+            'team2_id' => 'required|exists:teams,id',
+
+            'match_date' => 'required|date',
+
+            // 'status' => 'required|in:Upcoming,Completed,Live',
+
+        ]);
+
+        // PREVENT SAME TEAM MATCH
+
+        if ($request->team1_id == $request->team2_id) {
+            return back()->withErrors([
+
+                'team2_id' => __('Both teams cannot be the same.')
+
+            ]);
+        }
+
+        $match = Matches_model::findOrFail($id);
+
+        $start = \Carbon\Carbon::parse($request->match_date);
+
+        $end = $start->copy()->addHours(4);
+
+        $now = now();
+
+        if ($now->lt($start)) {
+
+            $status = 'Upcoming';
+
+        } elseif ($now->between($start, $end)) {
+
+            $status = 'Live';
+
+        } else {
+
+            $status = 'Completed';
+
+        }
+        $match->update([
+
+            'tournament_id' => $request->tournament_id,
+
+            'team1_id' => $request->team1_id,
+
+            'team2_id' => $request->team2_id,
+
+            'match_date' => $request->match_date,
+
+            'status' => $status,
+
+        ]);
+
+        return redirect()->back()
+            ->with(
+                'success',
+                __('Match Updated Successfully')
+            );
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     */
+
+
+    public function managePlayers($matchId)
+    {
+        $this->matchStatusService->updateStatuses();
+        $match = Matches_model::with([
+            'team1',
+            'team2'
+        ])->findOrFail($matchId);
+
+        // TEAM 1 PLAYERS
+
+        $team1Players = $match
+            ->team1
+            ->players;
+
+        // TEAM 2 PLAYERS
+
+        $team2Players = $match
+            ->team2
+            ->players;
+
+        // ALREADY SELECTED PLAYERS
+
+        $selectedPlayers = MatchPlayers_model::where(
+            'match_id',
+            $matchId
+        )->pluck('player_id')->toArray();
+
+        return view(
+
+            'admin.matches.players',
+
+            compact(
+                'match',
+                'team1Players',
+                'team2Players',
+                'selectedPlayers'
+            )
+        );
+    }
+
+
+    public function savePlayers(Request $request, $matchId)
+    {
+        $request->validate([
+
+            'players' => 'required|array|min:22|max:22'
+
+        ]);
+
+        MatchPlayers_model::where(
+            'match_id',
+            $matchId
+        )->delete();
+
+        foreach ($request->players as $playerId) {
+            MatchPlayers_model::create([
+
+                'match_id' => $matchId,
+
+                'player_id' => $playerId
+
+            ]);
+        }
+
+        return redirect()->back()
+            ->with(
+                'success',
+                __('Playing players updated successfully')
+            );
+    }
+    public function destroy(string $id)
+    {
+        $match = Matches_model::findOrFail($id);
+
+        $match->delete();
+
+        return redirect()->back()
+            ->with(
+                'success',
+                __('Match Deleted Successfully')
+            );
+    }
+
+
+
+
+
+    public function apiByTournament($id)
+    {
+        $this->matchStatusService->updateStatuses();
+        return Matches_model::with([
+            'team1',
+            'team2'
+        ])
+        ->where(
+            'tournament_id',
+            $id
+        )
+        ->get();
+    }
+    public function storeTournamentMatchApi(Request $request, $tournamentId)
+    
+    {
+        $this->matchStatusService->updateStatuses();
+        $request->validate([
+
+            'team1_id' => 'required|exists:teams,id',
+
+            'team2_id' => 'required|exists:teams,id|different:team1_id',
+
+            'match_date' => 'required|date',
+
+            // 'status' => 'required|in:Upcoming,Completed,Live'
+
+        ]);
+
+        $tournament = Tournament_model::findOrFail($tournamentId);
+
+        $allowedTeamIds = $tournament
+            ->teams()
+            ->pluck('teams.id')
+            ->toArray();
+
+        if (
+            !in_array($request->team1_id, $allowedTeamIds)
+            ||
+            !in_array($request->team2_id, $allowedTeamIds)
+        ) {
+
+            return response()->json([
+                'message' => 'Selected teams do not belong to this tournament.'
+            ], 422);
+
+        }   
+        $start = \Carbon\Carbon::parse($request->match_date);
+
+        $end = $start->copy()->addHours(4);
+
+        $now = now();
+
+        if ($now->lt($start)) {
+
+            $status = 'Upcoming';
+
+        } elseif ($now->between($start, $end)) {
+
+            $status = 'Live';
+
+        } else {
+
+            $status = 'Completed';
+
+        }
+
+        $match = Matches_model::create([
+
+            'tournament_id' => $tournamentId,
+
+            'team1_id' => $request->team1_id,
+
+            'team2_id' => $request->team2_id,
+
+            'match_date' => $request->match_date,
+
+            'status' => $status,
+
+        ]);
+
+        return response()->json([
+
+            'message' => 'Match Created Successfully',
+
+            'match' => $match
+
+        ]);
+    }
+    public function deleteMatchApi($id)
+    {
+        $match = Matches_model::findOrFail($id);
+
+        $match->delete();
+
+        return response()->json([
+
+            'message' => 'Match Deleted Successfully'
+
+        ]);
+    }
+    public function updateMatchApi(Request $request, $id)
+    {
+        $this->matchStatusService->updateStatuses();
+        $request->validate([
+
+            'team1_id' => 'required|exists:teams,id',
+
+            'team2_id' => 'required|exists:teams,id',
+
+            'match_date' => 'required|date',
+
+            // 'status' => 'required|in:Upcoming,Completed,Live',
+
+        ]);
+
+        // PREVENT SAME TEAM MATCH
+
+        if ($request->team1_id == $request->team2_id) {
+            return back()->withErrors([
+
+                'team2_id' => __('Both teams cannot be the same.')
+
+            ]);
+        }
+
+        $match = Matches_model::findOrFail($id);
+        $start = \Carbon\Carbon::parse($request->match_date);
+
+        $end = $start->copy()->addHours(4);
+
+        $now = now();
+
+        if ($now->lt($start)) {
+
+            $status = 'Upcoming';
+
+        } elseif ($now->between($start, $end)) {
+
+            $status = 'Live';
+
+        } else {
+
+            $status = 'Completed';
+
+        }
+        $match->update([
+
+            'team1_id' => $request->team1_id,
+
+            'team2_id' => $request->team2_id,
+
+            'match_date' => $request->match_date,
+
+            'status' => $status,
+
+        ]);
+
+        return response()->json([
+
+            'message' => 'Match Updated Successfully'
+
+        ]);
+    }
+    public function managePlayersApi($matchId)
+    {
+        $this->matchStatusService->updateStatuses();
+        $match = Matches_model::with([
+            'team1',
+            'team2'
+        ])->findOrFail($matchId);
+
+        // TEAM 1 PLAYERS
+
+        $team1Players = $match
+            ->team1
+            ->players;
+
+        // TEAM 2 PLAYERS
+
+        $team2Players = $match
+            ->team2
+            ->players;
+
+        // ALREADY SELECTED PLAYERS
+
+        $selectedPlayers = MatchPlayers_model::where(
+            'match_id',
+            $matchId
+        )->pluck('player_id')->toArray();
+
+        return response()->json([
+
+            'match' => $match,
+
+            'team1Players' => $team1Players,
+
+            'team2Players' => $team2Players,
+
+            'selectedPlayers' => $selectedPlayers
+
+        ]);
+    }
+    public function savePlayersApi(Request $request, $matchId)
+    {
+        $request->validate([
+
+            'players' => 'required|array|min:22|max:22'
+
+        ]);
+
+        MatchPlayers_model::where(
+            'match_id',
+            $matchId
+        )->delete();
+
+        foreach ($request->players as $playerId) {
+            MatchPlayers_model::create([
+
+                'match_id' => $matchId,
+
+                'player_id' => $playerId
+
+            ]);
+        }
+
+        return response()->json([
+
+            'message' => 'Playing XI Updated Successfully'
+
+        ]);
+    }
+    
+}
