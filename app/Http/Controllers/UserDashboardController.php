@@ -7,11 +7,27 @@ use App\Models\FantasyTeams_model;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use App\Enums\MatchStatus;
-
+use App\Services\TournamentStatusService;
+use App\Services\MatchStatusService;
 class UserDashboardController extends Controller
 {
+    private TournamentStatusService $statusService;
+
+    private MatchStatusService $matchStatusService;
+
+    public function __construct(
+        TournamentStatusService $statusService,
+        MatchStatusService $matchStatusService
+    ) {
+        $this->statusService = $statusService;
+
+        $this->matchStatusService = $matchStatusService;
+    }
+    
     public function index()
     {
+        $this->statusService->updateStatuses();
+        $this->matchStatusService->updateStatuses();
         $user = Auth::user();
 
         $myTeams = FantasyTeams_model::where(
@@ -90,6 +106,8 @@ class UserDashboardController extends Controller
 
     public function dashboardApi()
     {
+        $this->statusService->updateStatuses();
+        $this->matchStatusService->updateStatuses();
         $user = Auth::user();
         $myTeams = FantasyTeams_model::where(
             'user_id',

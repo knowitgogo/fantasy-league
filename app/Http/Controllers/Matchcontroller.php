@@ -5,12 +5,18 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Matches_model;
 use App\Models\Tournament_model;
-use App\Models\Teams_model;
-use App\Models\Players_model;
 use App\Models\MatchPlayers_model;
-
+use App\Services\MatchStatusService;
 class MatchController extends Controller
 {
+    private MatchStatusService $matchStatusService;
+
+    public function __construct(
+        MatchStatusService $matchStatusService
+    )
+    {
+        $this->matchStatusService = $matchStatusService;
+    }
     /**
      * Display a listing of the resource.
      */
@@ -64,6 +70,7 @@ class MatchController extends Controller
      */
     public function store(Request $request)
     {
+        $this->matchStatusService->updateStatuses();
         $request->validate([
 
             'tournament_id' => 'required|exists:tournaments,id',
@@ -74,7 +81,7 @@ class MatchController extends Controller
 
             'match_date' => 'required|date',
 
-            'status' => 'required|in:Upcoming,Completed,Live',
+            // 'status' => 'required|in:Upcoming,Completed,Live',
 
         ]);
 
@@ -108,6 +115,26 @@ class MatchController extends Controller
             ]);
         }
 
+        //auto status update for matches
+        $start = \Carbon\Carbon::parse($request->match_date);
+
+        $end = $start->copy()->addHours(4);
+
+        $now = now();
+
+        if ($now->lt($start)) {
+
+            $status = 'Upcoming';
+
+        } elseif ($now->between($start, $end)) {
+
+            $status = 'Live';
+
+        } else {
+
+            $status = 'Completed';
+
+        }
         Matches_model::create([
 
             'tournament_id' => $request->tournament_id,
@@ -118,7 +145,7 @@ class MatchController extends Controller
 
             'match_date' => $request->match_date,
 
-            'status' => $request->status,
+            'status' => $status,
 
         ]);
 
@@ -132,7 +159,7 @@ class MatchController extends Controller
 
     public function storeTournamentMatch(Request $request, $tournamentId)
     {
-        
+        $this->matchStatusService->updateStatuses();
         $request->validate([
 
             'team1_id' => 'required|exists:teams,id',
@@ -141,7 +168,7 @@ class MatchController extends Controller
 
             'match_date' => 'required|date',
 
-            'status' => 'required|in:Upcoming,Completed,Live'
+            // 'status' => 'required|in:Upcoming,Completed,Live'
 
         ]);
 
@@ -173,7 +200,25 @@ class MatchController extends Controller
 
             ]);
         }
+        $start = \Carbon\Carbon::parse($request->match_date);
 
+        $end = $start->copy()->addHours(4);
+
+        $now = now();
+
+        if ($now->lt($start)) {
+
+            $status = 'Upcoming';
+
+        } elseif ($now->between($start, $end)) {
+
+            $status = 'Live';
+
+        } else {
+
+            $status = 'Completed';
+
+        }
         Matches_model::create([
 
             'tournament_id' => $tournamentId,
@@ -184,7 +229,7 @@ class MatchController extends Controller
 
             'match_date' => $request->match_date,
 
-            'status' => $request->status
+            'status' => $status,
 
         ]);
 
@@ -216,6 +261,7 @@ class MatchController extends Controller
      */
     public function update(Request $request, string $id)
     {
+        $this->matchStatusService->updateStatuses();
         $request->validate([
 
             'tournament_id' => 'required|exists:tournaments,id',
@@ -226,7 +272,7 @@ class MatchController extends Controller
 
             'match_date' => 'required|date',
 
-            'status' => 'required|in:Upcoming,Completed,Live',
+            // 'status' => 'required|in:Upcoming,Completed,Live',
 
         ]);
 
@@ -242,6 +288,25 @@ class MatchController extends Controller
 
         $match = Matches_model::findOrFail($id);
 
+        $start = \Carbon\Carbon::parse($request->match_date);
+
+        $end = $start->copy()->addHours(4);
+
+        $now = now();
+
+        if ($now->lt($start)) {
+
+            $status = 'Upcoming';
+
+        } elseif ($now->between($start, $end)) {
+
+            $status = 'Live';
+
+        } else {
+
+            $status = 'Completed';
+
+        }
         $match->update([
 
             'tournament_id' => $request->tournament_id,
@@ -252,7 +317,7 @@ class MatchController extends Controller
 
             'match_date' => $request->match_date,
 
-            'status' => $request->status,
+            'status' => $status,
 
         ]);
 
@@ -270,6 +335,7 @@ class MatchController extends Controller
 
     public function managePlayers($matchId)
     {
+        $this->matchStatusService->updateStatuses();
         $match = Matches_model::with([
             'team1',
             'team2'
@@ -356,6 +422,7 @@ class MatchController extends Controller
 
     public function apiByTournament($id)
     {
+        $this->matchStatusService->updateStatuses();
         return Matches_model::with([
             'team1',
             'team2'
@@ -367,7 +434,9 @@ class MatchController extends Controller
         ->get();
     }
     public function storeTournamentMatchApi(Request $request, $tournamentId)
+    
     {
+        $this->matchStatusService->updateStatuses();
         $request->validate([
 
             'team1_id' => 'required|exists:teams,id',
@@ -376,7 +445,7 @@ class MatchController extends Controller
 
             'match_date' => 'required|date',
 
-            'status' => 'required|in:Upcoming,Completed,Live'
+            // 'status' => 'required|in:Upcoming,Completed,Live'
 
         ]);
 
@@ -397,6 +466,25 @@ class MatchController extends Controller
                 'message' => 'Selected teams do not belong to this tournament.'
             ], 422);
 
+        }   
+        $start = \Carbon\Carbon::parse($request->match_date);
+
+        $end = $start->copy()->addHours(4);
+
+        $now = now();
+
+        if ($now->lt($start)) {
+
+            $status = 'Upcoming';
+
+        } elseif ($now->between($start, $end)) {
+
+            $status = 'Live';
+
+        } else {
+
+            $status = 'Completed';
+
         }
 
         $match = Matches_model::create([
@@ -409,7 +497,7 @@ class MatchController extends Controller
 
             'match_date' => $request->match_date,
 
-            'status' => $request->status
+            'status' => $status,
 
         ]);
 
@@ -435,6 +523,7 @@ class MatchController extends Controller
     }
     public function updateMatchApi(Request $request, $id)
     {
+        $this->matchStatusService->updateStatuses();
         $request->validate([
 
             'team1_id' => 'required|exists:teams,id',
@@ -443,7 +532,7 @@ class MatchController extends Controller
 
             'match_date' => 'required|date',
 
-            'status' => 'required|in:Upcoming,Completed,Live',
+            // 'status' => 'required|in:Upcoming,Completed,Live',
 
         ]);
 
@@ -458,7 +547,25 @@ class MatchController extends Controller
         }
 
         $match = Matches_model::findOrFail($id);
+        $start = \Carbon\Carbon::parse($request->match_date);
 
+        $end = $start->copy()->addHours(4);
+
+        $now = now();
+
+        if ($now->lt($start)) {
+
+            $status = 'Upcoming';
+
+        } elseif ($now->between($start, $end)) {
+
+            $status = 'Live';
+
+        } else {
+
+            $status = 'Completed';
+
+        }
         $match->update([
 
             'team1_id' => $request->team1_id,
@@ -467,7 +574,7 @@ class MatchController extends Controller
 
             'match_date' => $request->match_date,
 
-            'status' => $request->status,
+            'status' => $status,
 
         ]);
 
@@ -479,6 +586,7 @@ class MatchController extends Controller
     }
     public function managePlayersApi($matchId)
     {
+        $this->matchStatusService->updateStatuses();
         $match = Matches_model::with([
             'team1',
             'team2'

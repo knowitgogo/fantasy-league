@@ -5,9 +5,22 @@ namespace App\Http\Controllers;
 use App\Models\Teams_model;
 use App\Models\Tournament_model;
 use Illuminate\Http\Request;
-
+use App\Services\TournamentStatusService;
+use App\Services\MatchStatusService;
 class TournamentController extends Controller
 {
+    private TournamentStatusService $statusService;
+
+    private MatchStatusService $matchStatusService;
+
+    public function __construct(
+        TournamentStatusService $statusService,
+        MatchStatusService $matchStatusService
+    ) {
+        $this->statusService = $statusService;
+
+        $this->matchStatusService = $matchStatusService;
+    }
     /**
      * Display a listing of the resource.
      */
@@ -43,15 +56,31 @@ class TournamentController extends Controller
             'name' => 'required',
             'start_date' => 'required',
             'end_date' => 'required',
-            'status' => 'required',
+            // 'status' => 'required',
             'teams' => 'array'
         ]);
+        $today = now();
 
+        if ($today->lt($request->start_date)) {
+
+            $status = 'Upcoming';
+
+        } elseif (
+            $today->between($request->start_date,$request->end_date)
+        ) {
+
+            $status = 'Live';
+
+        } else {
+
+            $status = 'Completed';
+
+        }
         $tournament = Tournament_model::create([
             'name' => $request->name,
             'start_date' => $request->start_date,
             'end_date' => $request->end_date,
-            'status' => $request->status,
+            'status' => $status,
         ]);
 
         if ($request->teams) {
@@ -69,6 +98,8 @@ class TournamentController extends Controller
      */
     public function show($id)
     {
+        $this->statusService->updateStatuses();
+        $this->matchStatusService->updateStatuses();
         $tournament = Tournament_model::with([
             'teams',
             'matches.team1',
@@ -100,14 +131,29 @@ class TournamentController extends Controller
     public function update(Request $request, $id)
     {
         $tournament = Tournament_model::findOrFail($id);
+        $today = now();
 
+        if ($today->lt($request->start_date)) {
+
+            $status = 'Upcoming';
+
+        } elseif (
+            $today->between($request->start_date,$request->end_date)
+        ) {
+
+            $status = 'Live';
+
+        } else {
+
+            $status = 'Completed';
+
+        }
         $tournament->update([
 
             'name' => $request->name,
             'start_date' => $request->start_date,
             'end_date' => $request->end_date,
-            'status' => $request->status,
-
+            'status' => $status,
         ]);
 
         $tournament->teams()->sync(
@@ -131,9 +177,11 @@ class TournamentController extends Controller
             ->with('success', __('Tournament Deleted'));
     }
 
+
     //api
     public function getTournaments()
     {
+        $this->statusService->updateStatuses();
         $tournaments = Tournament_model::with('teams')
             ->paginate(10);
 
@@ -141,19 +189,34 @@ class TournamentController extends Controller
     }
     public function addTournamentApi(Request $request)
     {
+        $today = now();
         $request->validate([
             'name' => 'required',
             'start_date' => 'required',
             'end_date' => 'required',
-            'status' => 'required',
+            // 'status' => 'required',
             'teams' => 'array'
         ]);
+        if ($today->lt($request->start_date)) {
+
+            $status = 'Upcoming';
+
+        } elseif ($today->between($request->start_date, $request->end_date)) {
+
+            $status = 'Live';
+
+        } else {
+
+            $status = 'Completed';
+
+        }
 
         $tournament = Tournament_model::create([
             'name' => $request->name,
             'start_date' => $request->start_date,
             'end_date' => $request->end_date,
-            'status' => $request->status,
+            // 'status' => $request->status,
+            'status' => $status,
         ]);
 
         if ($request->teams) {
@@ -170,7 +233,23 @@ class TournamentController extends Controller
     public function updateTournamentApi(Request $request,$id)
     {
         $tournament = Tournament_model::findOrFail($id);
+        $today = now();
 
+        if ($today->lt($request->start_date)) {
+
+            $status = 'Upcoming';
+
+        } elseif (
+            $today->between($request->start_date,$request->end_date)
+        ) {
+
+            $status = 'Live';
+
+        } else {
+
+            $status = 'Completed';
+
+        }
         $tournament->update([
 
             'name'=>$request->name,
@@ -179,8 +258,7 @@ class TournamentController extends Controller
 
             'end_date'=>$request->end_date,
 
-            'status'=>$request->status,
-
+            'status' => $status,
         ]);
 
         $tournament->teams()->sync($request->teams ?? []);
@@ -203,6 +281,8 @@ class TournamentController extends Controller
     }
     public function showTournamentApi($id)
     {
+        $this->statusService->updateStatuses();
+        $this->matchStatusService->updateStatuses();
         $tournament = Tournament_model::with([
             'teams',
             'matches.team1',

@@ -79,7 +79,7 @@ Route::middleware('auth:sanctum')->group(function () {
     );
 
     Route::delete(
-        '/delete-team-api/{id}',
+        '/delete-fantasy-team-api/{id}',
         [FantasyTeamController::class, 'deleteTeamApi']
     );
 
@@ -89,7 +89,7 @@ Route::middleware('auth:sanctum')->group(function () {
     );
 
     Route::put(
-        '/update-team-api/{id}',
+        '/update-fantasy-team-api/{id}',
         [FantasyTeamController::class, 'updateTeamApi']
     );
 

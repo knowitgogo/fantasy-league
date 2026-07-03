@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
-
+use App\models\Players_model;
 use App\Models\Matches_model;
 use App\Models\MatchPlayers_model;
 use App\Models\FantasyTeams_model;
@@ -225,6 +225,36 @@ class FantasyTeamController extends Controller
     }
     public function storeApi(Request $request,$matchId) 
     {
+        $match = Matches_model::findOrFail($matchId);
+
+        if ($match->status != 'Upcoming') {
+
+            return response()->json([
+
+                'message' => 'Team creation is closed for this match.'
+
+            ], 403);
+        }
+        $alreadyExists = FantasyTeams_model::where(
+
+            'user_id',
+            Auth::id()
+
+        )->where(
+
+            'match_id',
+            $matchId
+
+        )->exists();
+
+        if ($alreadyExists) {
+
+            return response()->json([
+
+                'message' => 'You have already created a team for this match.'
+
+            ], 409);
+        }
 
         $request->validate([
 
@@ -237,6 +267,20 @@ class FantasyTeamController extends Controller
             'vice_captain' => 'required'
 
         ]);
+        $totalBudget = Players_model::whereIn(
+            'id',
+            $request->players
+        )->sum('player_price');
+
+        if ($totalBudget > 100) {
+
+            return response()->json([
+
+                'message' => 'Budget exceeded. Maximum budget is 100.'
+
+            ], 403);
+
+        }
 
         $fantasyTeam = FantasyTeams_model::create([
 
@@ -314,6 +358,17 @@ class FantasyTeamController extends Controller
     }
     public function updateTeamApi(Request $request, $id)
     {
+        $team = FantasyTeams_model::with('match')->findOrFail($id);
+
+        if ($team->match->status != 'Upcoming') {
+
+            return response()->json([
+
+                'message' => 'Fantasy team editing has been closed.'
+
+            ], 403);
+
+        }
         $request->validate([
 
             'team_name' => 'required',
@@ -325,6 +380,20 @@ class FantasyTeamController extends Controller
             'vice_captain' => 'required'
 
         ]);
+        $totalBudget = Players_model::whereIn(
+            'id',
+            $request->players
+        )->sum('player_price');
+
+        if ($totalBudget > 100) {
+
+            return response()->json([
+
+                'message' => 'Budget exceeded. Maximum budget is 100.'
+
+            ], 403);
+
+        }
 
         $team = FantasyTeams_model::findOrFail($id);
 

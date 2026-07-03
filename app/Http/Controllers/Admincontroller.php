@@ -7,14 +7,28 @@ use App\Models\Players_model;
 use App\Models\Matches_model;
 use App\Models\User;
 use Illuminate\Http\Request;
-
+use App\Services\TournamentStatusService;
+use App\Services\MatchStatusService;
 class AdminController extends Controller
 {
+    private TournamentStatusService $statusService;
+
+    private MatchStatusService $matchStatusService;
+
+    public function __construct(
+        TournamentStatusService $statusService,
+        MatchStatusService $matchStatusService
+    ) {
+        $this->statusService = $statusService;
+
+        $this->matchStatusService = $matchStatusService;
+    }
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
+        $this->matchStatusService->updateStatuses();
             $totalTournaments = Tournament_model::count();
 
             $totalTeams = Teams_model::count();
@@ -40,6 +54,8 @@ class AdminController extends Controller
     
     public function dashboardApi()
     {
+        $this->matchStatusService->updateStatuses();
+        $this->statusService->updateStatuses();
         // ONE QUERY FOR MATCHES
 
         $matches = Matches_model::with([

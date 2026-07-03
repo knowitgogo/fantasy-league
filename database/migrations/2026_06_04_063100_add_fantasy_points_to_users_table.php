@@ -11,7 +11,7 @@ return new class extends Migration
         Schema::table('users', function (Blueprint $table) {
 
             $table->integer('fantasy_points')
-                  ->default(0)
+                  ->default(100)
                   ->after('wallet_balance');
 
         });

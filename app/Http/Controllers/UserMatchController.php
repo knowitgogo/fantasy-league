@@ -3,11 +3,20 @@
 namespace App\Http\Controllers;
 
 use App\Models\Matches_model;
-
+use App\Services\MatchStatusService;
 class UserMatchController extends Controller
 {
+    private MatchStatusService $matchStatusService;
+
+    public function __construct(
+        MatchStatusService $matchStatusService
+    )
+    {
+        $this->matchStatusService = $matchStatusService;
+    }
     public function index($id)
     {
+        $this->matchStatusService->updateStatuses();
         $matches = Matches_model::with([
 
             'team1',
@@ -30,6 +39,7 @@ class UserMatchController extends Controller
 
     public function matchesApi($id)
     {
+        $this->matchStatusService->updateStatuses();
         $matches = Matches_model::with([
 
             'team1',
