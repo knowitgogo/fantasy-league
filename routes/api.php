@@ -18,6 +18,11 @@ use App\Http\Controllers\UserLeaderboardController;
 use App\Http\Controllers\FantasyTeamController;
 use App\Http\Controllers\UserDashboardController;
 use App\Http\Controllers\RecycleBinController;
+use App\Http\Controllers\SignatureController;
+
+Route::post('/signature', function () {
+    dd('Route reached');
+});
 
 //API TESTING AND DATA TO FRONTEND
 // PUBLIC ROUTES
@@ -92,10 +97,14 @@ Route::middleware('auth:sanctum')->group(function () {
         '/update-fantasy-team-api/{id}',
         [FantasyTeamController::class, 'updateTeamApi']
     );
+    Route::post(
+        '/profile-image',
+        [UserDashboardController::class, 'uploadProfileImage']
+    );
 
 });
 
-
+    
 // admin routes
 Route::middleware('auth:sanctum')->group(function () {
     Route::get(
@@ -224,4 +233,28 @@ Route::middleware('auth:sanctum')->group(function () {
         '/admin/recycle-bin-api',
         [RecycleBinController::class,'indexApi']
     );
+    //download team players
+    Route::get(
+        '/admin/teams-api/{id}/download', 
+        [TeamController::class, 'downloadCsv']
+    );
+    Route::get(
+        '/admin/teams-api/{id}/download-excel',
+        [TeamController::class, 'downloadExcel']
+    );
+    Route::get(
+        '/admin/teams-api/{id}/download-pdf',
+        [TeamController::class, 'downloadPdf']
+    );
+    
+
+    
 });
+    
+    
+    
+Route::post('/signature', [SignatureController::class, 'store']);
+Route::post('/signature-base64', [SignatureController::class, 'storeBase64']);
+
+//practice --sample data from api
+Route::get('/external-users', [AdminController::class, 'externalUsers']);

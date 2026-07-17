@@ -9,6 +9,9 @@ use Illuminate\Support\Facades\Auth;
 use App\Enums\MatchStatus;
 use App\Services\TournamentStatusService;
 use App\Services\MatchStatusService;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
+
 class UserDashboardController extends Controller
 {
     private TournamentStatusService $statusService;
@@ -189,8 +192,65 @@ class UserDashboardController extends Controller
 
             'wallet_balance' => $user->wallet_balance,
 
-            'fantasy_points' => $user->fantasy_points
+            'fantasy_points' => $user->fantasy_points,
+            'profile_image' => $user->profile_image
+                ? asset('storage/' . $user->profile_image)
+                : null
 
+        ]);
+    }
+    public function uploadProfileImage(Request $request)
+    {
+        // $request->validate([
+        //     'profile_image' => 'required|image|mimes:jpg,jpeg,png|max:5120'
+        // ]);
+
+        //base64
+        $request->validate([
+            'profile_image' => 'required|string'
+        ]);
+
+        $user = Auth::user();
+
+        if ($user->profile_image) {
+
+            Storage::disk('public')->delete($user->profile_image);
+
+        }
+
+        // $path = $request
+        //     ->file('profile_image')
+        //     ->store('profiles', 'public');
+
+        $base64Image = $request->profile_image;
+
+        //delete header from recieved string in base64
+        $image = preg_replace(
+            '/^data:image\/\w+;base64,/',
+            '',
+            $base64Image
+        );
+
+        $image = base64_decode($image);
+
+        $fileName = uniqid() . '.jpg';
+
+        Storage::disk('public')->put(
+
+            'profiles/' . $fileName,
+
+            $image
+
+        );
+        $path = 'profiles/' . $fileName;
+
+        $user->profile_image = $path;
+
+        $user->save();
+
+        return response()->json([
+            'message' => 'Profile image uploaded successfully.',
+            'profile_image' => $path
         ]);
     }
     

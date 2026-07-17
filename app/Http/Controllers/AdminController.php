@@ -9,6 +9,9 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use App\Services\TournamentStatusService;
 use App\Services\MatchStatusService;
+
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Http;
 class AdminController extends Controller
 {
     private TournamentStatusService $statusService;
@@ -115,52 +118,28 @@ class AdminController extends Controller
 
         ]);
     }
-
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
+    
+    
+    
+    //practice --sample data from api
+    public function externalUsers()
     {
-        //
-    }
+        try {
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
-    {
-        //
-    }
+            $response = Http::get(
+                'https://jsonplaceholder.typicode.com/users'
+            );
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
-    {
-        //
-    }
+            return response()->json(
+                $response->json()
+            );
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
-    {
-        //
-    }
+        } catch (\Exception $e) {
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
-    {
-        //
-    }
+            return response()->json([
+                'message' => 'Unable to fetch users.'
+            ], 500);
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
-    {
-        //
+        }
     }
 }

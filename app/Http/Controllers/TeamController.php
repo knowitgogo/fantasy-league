@@ -6,6 +6,9 @@ use Illuminate\Http\Request;
 use App\Models\Teams_model;
 use App\Models\Tournament_model;
 use App\Models\Players_model;
+use App\Exports\PlayersExport;
+use Maatwebsite\Excel\Facades\Excel;
+use Barryvdh\DomPDF\Facade\Pdf;
 
 class TeamController extends Controller
 {
@@ -120,6 +123,75 @@ class TeamController extends Controller
 
         return redirect()->back()
             ->with('success', __('Team Deleted Successfully'));
+    }
+
+    /**
+     * Downloads the list of players belonging to a specific team as a CSV file.
+     * Fetches the team and related players, creates a streamed CSV file writing headers 
+     * and player columns, and returns it as a browser attachment download.
+     * 
+     * Route: GET /api/admin/teams-api/{id}/download
+     * 
+     * @param string|int $id
+     * @return \Symfony\Component\HttpFoundation\StreamedResponse
+     */
+    public function downloadCsv($id)
+    {
+        $team = Teams_model::with('players')->findOrFail($id);
+
+        $fileName = $team->team_name . '.csv';
+
+        $headers = [
+            'Content-Type' => 'text/csv',
+            'Content-Disposition' => "attachment; filename=\"$fileName\"",
+        ];
+
+        $callback = function () use ($team) {
+
+            $file = fopen('php://output', 'w');
+
+            fputcsv($file, [
+                'Player',
+                'Country',
+                'Age',
+                'Price'
+            ]);
+
+            foreach ($team->players as $player) {
+
+                fputcsv($file, [
+                    $player->player_name,
+                    $player->country,
+                    $player->age,
+                    $player->player_price
+                ]);
+            }
+
+            fclose($file);
+        };
+
+        return response()->stream($callback, 200, $headers);
+    }
+
+    public function downloadExcel($id)
+    {
+        return Excel::download(
+            new PlayersExport($id),
+            'players.xlsx'
+        );
+    }
+    public function downloadPdf($id)
+    {
+        $team = Teams_model::with('players')->findOrFail($id);
+
+        $pdf = Pdf::loadView(
+            'pdf.team',
+            compact('team')
+        );
+
+        return $pdf->download(
+            $team->team_name . '.pdf'
+        );
     }
 
 
